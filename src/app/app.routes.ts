@@ -50,6 +50,27 @@ export const routes: Routes = [
                 path: 'dashboard',
                 loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
             },
+            {
+                path: 'members',
+                loadComponent: () => import('./features/members/members.component').then(m => m.MembersComponent)
+            },
+            {
+                path: 'members/:id',
+                loadComponent: () => import('./features/members/member-detail/member-detail.component').then(m => m.MemberDetailComponent)
+            },
+
+            {
+                path: 'courses',
+                loadComponent: () => import('./features/courses/courses.component').then(m => m.CoursesComponent)
+            },
+            {
+                path: 'subscriptions',
+                loadComponent: () => import('./features/subscriptions/subscriptions.component').then(m => m.SubscriptionsComponent)
+            },
+            {
+                path: 'schedule',
+                loadComponent: () => import('./features/schedule/schedule.component').then(m => m.ScheduleComponent)
+            },
             // Placeholders for other routes to prevent errors until created
             { path: '**', redirectTo: 'dashboard' }
         ]

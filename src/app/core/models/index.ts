@@ -50,6 +50,7 @@ export interface Subscription {
   price: number;
   durationMonths: number;
   gymId: string;
+  maxEntries?: number;
 }
 
 export interface MemberSubscription {
