@@ -71,6 +71,10 @@ export const routes: Routes = [
                 path: 'schedule',
                 loadComponent: () => import('./features/schedule/schedule.component').then(m => m.ScheduleComponent)
             },
+            {
+                path: 'settings',
+                loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent)
+            },
             // Placeholders for other routes to prevent errors until created
             { path: '**', redirectTo: 'dashboard' }
         ]

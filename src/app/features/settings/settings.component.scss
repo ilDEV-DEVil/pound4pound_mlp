@@ -1,0 +1,46 @@
+@use '../../../styles/variables' as *;
+
+.settings-container {
+    padding-bottom: $space-8;
+}
+
+.nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-3 $space-4;
+    border-radius: $radius-md;
+    text-align: left;
+    color: $text-muted;
+    transition: all $transition-fast;
+
+    &:hover {
+        background-color: $bg-tertiary;
+        color: $text-primary;
+        transform: translateX(4px);
+    }
+
+    &.active {
+        background-color: rgba($accent-primary, 0.15);
+        color: $accent-primary;
+        border-left: 3px solid $accent-primary;
+    }
+}
+
+// Simple animations
+.animate-enter {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
