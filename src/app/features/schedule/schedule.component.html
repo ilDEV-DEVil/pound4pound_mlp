@@ -1,87 +1,99 @@
-<div class="schedule-container">
-  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-    <div>
-      <h1 class="text-2xl font-bold mb-1">Calendario Corsi</h1>
-      <p class="text-muted text-sm">Programmazione settimanale delle lezioni</p>
-    </div>
-    <app-button (click)="openAddModal()">
-      + Nuovo Corso
-    </app-button>
-  </div>
-
-  <div class="hidden lg:block overflow-x-auto pb-4">
-    <div class="min-w-[800px]">
-      <!-- Header Days -->
-      <div class="grid grid-cols-7 gap-1 mb-1">
-        @for (day of days; track day) {
-        <div class="bg-gray-800 p-3 text-center rounded-t-lg border-b-2 border-accent">
-          <span class="font-bold block capitalize">{{ dayLabels[day] }}</span>
-        </div>
-        }
-      </div>
-
-      <!-- Calendar Grid -->
-      <div class="grid grid-cols-7 gap-1 h-[600px] bg-gray-900/50 rounded-b-lg p-1 relative">
-        @for (day of days; track day; let i = $index) {
-        <div class="relative h-full bg-gray-800/20 rounded border border-gray-800/50 p-1">
-          @for (slot of getSlotsForDay(day); track slot.courseId + slot.timeStart) {
-          <div
-            class="absolute w-[95%] left-[2.5%] rounded p-2 text-xs border-l-4 cursor-pointer hover:brightness-110 transition-all shadow-lg overflow-hidden group"
-            [ngClass]="slot.colorClass" [style.top]="calculateTop(slot.timeStart)"
-            [style.height]="calculateHeight(slot.timeStart, slot.timeEnd)" (click)="onSlotClick(slot)">
-            <div class="font-bold flex justify-between items-start">
-              <span>{{ slot.timeStart }}</span>
-            </div>
-            <div class="font-bold text-sm my-1 truncate">{{ slot.name }}</div>
-            <div class="opacity-80 truncate">{{ slot.instructor }}</div>
-
-            <!-- Hover Detail -->
-            <div
-              class="hidden group-hover:flex absolute inset-0 bg-black/80 items-center justify-center backdrop-blur-sm">
-              <span class="font-bold text-white">Dettagli →</span>
-            </div>
-          </div>
+<div class="schedule-container h-full flex flex-col">
+  <!-- Header Section with Month/Year Selection -->
+  <header class="schedule-header">
+    <div class="header-top">
+      <div class="date-selectors">
+        <select [ngModel]="selectedMonth()" (ngModelChange)="selectedMonth.set(+$event); onMonthYearChange()"
+          class="month-select">
+          @for (monthName of monthNames; track monthName; let i = $index) {
+          <option [value]="i">{{ monthName }}</option>
           }
-        </div>
-        }
+        </select>
 
-        <!-- Time Markers (Visual Guide) -->
-        <div
-          class="absolute left-0 top-0 bottom-0 -ml-8 w-8 flex flex-col justify-between text-[10px] text-gray-500 py-2 text-right pr-2">
-          <span>08:00</span>
-          <span>12:00</span>
-          <span>16:00</span>
-          <span>20:00</span>
-          <span>22:00</span>
-        </div>
+        <select [ngModel]="selectedYear()" (ngModelChange)="selectedYear.set(+$event); onMonthYearChange()"
+          class="year-select">
+          @for (year of years; track year) {
+          <option [value]="year">{{ year }}</option>
+          }
+        </select>
       </div>
     </div>
-  </div>
 
-  <!-- Quick List View (for mobile mostly) -->
-  <div class="mt-8 lg:hidden">
-    <h3 class="font-bold mb-4 text-accent">Lista Corsi</h3>
-    @for (course of courses(); track course.id) {
-    <app-card class="mb-4">
-      <div class="flex justify-between items-start">
-        <div>
-          <h4 class="font-bold text-lg">{{ course.name }}</h4>
-          <p class="text-sm text-muted mb-2">Istr. {{ course.instructor }}</p>
-          <div class="flex flex-wrap gap-2">
-            @for (s of course.schedule; track s.day) {
-            <span class="text-xs bg-gray-700 px-2 py-1 rounded">
-              {{ dayLabels[s.day] }} {{ s.startTime }}-{{ s.endTime }}
-            </span>
-            }
+    <!-- 7 Day Cards Strip -->
+    <div class="date-strip no-scrollbar">
+      @for (day of weekDays(); track day.date) {
+      <button class="date-card" [class.active]="selectedDate()?.date === day.date" (click)="selectDate(day)">
+        <span class="day-name">{{ day.dayName }}</span>
+        <span class="day-number">{{ day.dayNumber }}</span>
+        @if (day.isToday) {
+        <span class="today-dot"></span>
+        }
+      </button>
+      }
+    </div>
+  </header>
+
+  <!-- Main Content Layout (Daily Timeline) -->
+  <main class="schedule-content">
+    <div class="content-max-width">
+      @if (selectedDate(); as selected) {
+      <div class="day-brief animate-enter">
+        <div class="day-title">
+          <h2 class="full-date">{{ dayLabels[selected.fullDay] }} {{ selected.dayNumber }} {{
+            monthNames[selected.date.getMonth()] }}</h2>
+          <span class="current-time">Palinsesto odierno</span>
+        </div>
+        <button class="add-btn" (click)="openAddModal()" aria-label="Aggiungi corso">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14M5 12h14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Timeline List -->
+      <div class="timeline-list animate-enter-staggered">
+        @for (slot of dailySlots(); track slot.courseId + slot.timeStart) {
+        <div class="timeline-item">
+          <div class="time-marker">
+            <span class="marker-dot"></span>
+            <span class="marker-line"></span>
+          </div>
+
+          <div class="course-card" [class]="slot.colorClass" (click)="onSlotClick(slot)">
+            <div class="card-glass"></div>
+            <div class="card-content">
+              <div class="card-header">
+                <h3 class="course-name">{{ slot.name }}</h3>
+              </div>
+
+              <div class="card-footer">
+                <div class="footer-item">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10" stroke-width="2" />
+                    <path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span>{{ slot.timeStart }} - {{ slot.timeEnd }}</span>
+                </div>
+                <div class="footer-item">
+                  <span class="instructor-tag">Istr. {{ slot.instructor }}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        } @empty {
+        <div class="empty-state">
+          <div class="empty-icon">🎨</div>
+          <p>Nessun corso in programma per questo giorno</p>
+        </div>
+        }
       </div>
-    </app-card>
-    }
-  </div>
+      }
+    </div>
+  </main>
 
-  <app-modal [isOpen]="isBookingModalOpen" title="Prenota Lezione" confirmLabel="Prenota Posto"
-    [loading]="bookingLoading" (close)="closeBookingModal()" (confirm)="confirmBooking()">
+  <app-modal [isOpen]="isBookingModalOpen()" title="Doyou want to join?" confirmLabel="Prenota Posto"
+    [loading]="bookingLoading()" (close)="closeBookingModal()" (confirm)="confirmBooking()">
     @if (selectedSlot) {
     <div class="flex flex-col gap-4">
       <div class="flex items-center gap-4 p-3 bg-gray-800 rounded-lg">
@@ -93,21 +105,7 @@
           <p class="text-sm text-gray-400">Istr. {{ selectedSlot.instructor }}</p>
         </div>
       </div>
-
-      <div class="grid grid-cols-2 gap-4">
-        <div class="bg-gray-800/50 p-3 rounded border border-gray-700">
-          <label class="text-xs text-gray-500 uppercase block mb-1">Giorno</label>
-          <span class="font-bold text-white capitalize">{{ dayLabels[selectedSlot.day] }}</span>
-        </div>
-        <div class="bg-gray-800/50 p-3 rounded border border-gray-700">
-          <label class="text-xs text-gray-500 uppercase block mb-1">Orario</label>
-          <span class="font-bold text-white">{{ selectedSlot.timeStart }} - {{ selectedSlot.timeEnd }}</span>
-        </div>
-      </div>
-
-      <div class="p-3 bg-blue-900/20 border border-blue-500/30 rounded text-sm text-blue-200">
-        ℹ️ Cliccando su "Prenota" confermi la tua presenza. Ricorda di cancellare se non puoi partecipare.
-      </div>
+      <p class="text-gray-300">Confermi la tua prenotazione per questo corso?</p>
     </div>
     }
   </app-modal>

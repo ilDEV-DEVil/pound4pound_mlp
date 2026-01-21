@@ -1,21 +1,326 @@
-// Schedule Component specific styles
+@use 'sass:color';
+@use '../../../styles/variables' as *;
+
+// Local Design Tokens
+$purple-primary: #8B5CF6;
+$purple-glow: rgba(168, 85, 247, 0.4);
+$glass-bg: rgba(255, 255, 255, 0.05);
+$glass-border: rgba(255, 255, 255, 0.1);
+
 .schedule-container {
-    // Custom scrollbar for the horizontal calendar view
-    .overflow-x-auto {
-        scrollbar-width: thin;
-        scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    background: $bg-primary;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-        &::-webkit-scrollbar {
-            height: 6px;
+.schedule-header {
+    padding: $space-4 $space-6;
+    background: rgba($bg-secondary, 0.5);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid $glass-border;
+    border-radius: $radius-lg;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $space-6;
+
+        .date-selectors {
+            display: flex;
+            gap: $space-4;
+
+            select {
+                background: $bg-tertiary;
+                border: 1px solid $glass-border;
+                color: $text-primary;
+                padding: $space-2 $space-4;
+                border-radius: $radius-lg;
+                font-weight: $font-bold;
+                font-size: $text-lg;
+                cursor: pointer;
+                transition: all 0.2s;
+
+                &:focus {
+                    outline: none;
+                    border-color: $purple-primary;
+                    box-shadow: 0 0 0 2px rgba($purple-primary, 0.2);
+                }
+
+                option {
+                    background: $bg-tertiary;
+                }
+            }
         }
 
-        &::-webkit-scrollbar-track {
-            background: transparent;
+        .notification-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: $radius-full;
+            background: $glass-bg;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $text-muted;
+            transition: all 0.2s;
+
+            svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            &:hover {
+                background: $purple-primary;
+                color: white;
+            }
+        }
+    }
+
+    .date-strip {
+        display: flex;
+        gap: $space-4;
+        overflow-x: auto;
+        padding: $space-2 0;
+        width: 100%;
+
+        .date-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            min-width: 70px;
+            padding: $space-4 $space-2;
+            border-radius: $radius-2xl;
+            background: $bg-tertiary;
+            border: 1px solid $glass-border;
+            color: $text-muted;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+
+            .day-name {
+                font-size: 11px;
+                font-weight: $font-bold;
+                text-transform: uppercase;
+                margin-bottom: $space-1;
+            }
+
+            .day-number {
+                font-size: $text-xl;
+                font-weight: $font-bold;
+            }
+
+            .today-dot {
+                position: absolute;
+                bottom: 8px;
+                width: 4px;
+                height: 4px;
+                background: $purple-primary;
+                border-radius: $radius-full;
+            }
+
+            &.active {
+                background: $purple-primary;
+                color: white;
+                border-color: $purple-primary;
+                box-shadow: 0 10px 20px rgba($purple-primary, 0.3);
+                transform: scale(1.05);
+
+                .today-dot {
+                    background: white;
+                }
+            }
+
+            &:not(.active):hover {
+                background: $glass-bg;
+                border-color: $purple-glow;
+                color: $text-primary;
+            }
+        }
+    }
+}
+
+.schedule-content {
+    flex: 1;
+    padding: $space-8 $space-6;
+
+    .content-max-width {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .day-brief {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $space-8;
+
+        .day-title {
+            .full-date {
+                font-size: $text-3xl;
+                font-weight: $font-bold;
+                color: $text-primary;
+            }
+
+            .current-time {
+                color: $text-muted;
+                font-size: $text-sm;
+            }
         }
 
-        &::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
+        .add-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, $purple-primary, color.adjust($purple-primary, $lightness: -10%));
+            border-radius: $radius-xl;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba($purple-primary, 0.4);
+            transition: all 0.2s;
+
+            &:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 20px rgba($purple-primary, 0.6);
+            }
         }
+    }
+}
+
+.timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-6;
+}
+
+.timeline-item {
+    display: flex;
+    gap: $space-6;
+    position: relative;
+
+    .time-marker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 24px;
+        padding-top: $space-4;
+
+        .marker-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: $radius-full;
+            background: $bg-tertiary;
+            border: 2px solid $purple-primary;
+            z-index: 2;
+        }
+
+        .marker-line {
+            width: 2px;
+            flex: 1;
+            background: $glass-border;
+            margin-top: -$space-1;
+        }
+    }
+}
+
+.course-card {
+    flex: 1;
+    background: $bg-secondary;
+    border-radius: $radius-2xl;
+    border: 1px solid $glass-border;
+    padding: $space-4 $space-6;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateX(10px);
+        border-color: $purple-primary;
+        background: rgba($purple-primary, 0.05);
+    }
+
+    .course-name {
+        font-size: $text-xl;
+        font-weight: $font-bold;
+        margin-bottom: $space-4;
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .footer-item {
+            display: flex;
+            align-items: center;
+            gap: $space-2;
+            color: $text-muted;
+            font-size: $text-sm;
+
+            .icon {
+                width: 16px;
+                height: 16px;
+            }
+
+            .instructor-tag {
+                background: $glass-bg;
+                padding: $space-1 $space-3;
+                border-radius: $radius-full;
+                color: $purple-primary;
+                font-weight: $font-bold;
+            }
+        }
+    }
+}
+
+.empty-state {
+    text-align: center;
+    padding: $space-16 0;
+    color: $text-muted;
+
+    .empty-icon {
+        font-size: 60px;
+        margin-bottom: $space-4;
+    }
+}
+
+.no-scrollbar {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.animate-enter {
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+.animate-enter-staggered>* {
+    opacity: 0;
+    animation: slideUp 0.5s ease-out forwards;
+
+    @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.1}s;
+        }
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

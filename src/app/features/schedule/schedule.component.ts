@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { CourseService } from '../../core/services/course.service';
-import { Course, CourseSchedule, DayOfWeek } from '../../core/models';
-import { CardComponent, ButtonComponent, ModalComponent } from '../../shared/components';
+import { Course, DayOfWeek, Sport } from '../../core/models';
+import { ModalComponent, InputComponent } from '../../shared/components';
 
 interface CalendarSlot {
   courseId: string;
@@ -14,10 +15,18 @@ interface CalendarSlot {
   colorClass: string;
 }
 
+interface DayInfo {
+  date: Date;
+  dayName: string; // "LUN", "MAR"
+  dayNumber: string; // "24", "25"
+  fullDay: DayOfWeek; // 'monday', etc.
+  isToday: boolean;
+}
+
 @Component({
   selector: 'app-schedule',
   standalone: true,
-  imports: [CommonModule, CardComponent, ButtonComponent, ModalComponent],
+  imports: [CommonModule, FormsModule, ModalComponent, InputComponent],
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.scss'
 })
@@ -25,8 +34,23 @@ export class ScheduleComponent {
   private courseService = inject(CourseService);
 
   courses = signal<Course[]>([]);
-  days: DayOfWeek[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
+  // Date Management
+  currentDate = new Date();
+  selectedMonth = signal<number>(this.currentDate.getMonth()); // 0-11
+  selectedYear = signal<number>(this.currentDate.getFullYear());
+
+  weekDays = signal<DayInfo[]>([]);
+  selectedDate = signal<DayInfo | null>(null);
+
+  monthNames = [
+    'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+    'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+  ];
+
+  years = Array.from({ length: 10 }, (_, i) => this.currentDate.getFullYear() - 2 + i);
+
+  // Mappings
   dayLabels: Record<string, string> = {
     monday: 'Lunedì',
     tuesday: 'Martedì',
@@ -36,6 +60,18 @@ export class ScheduleComponent {
     saturday: 'Sabato',
     sunday: 'Domenica'
   };
+
+  shortDayLabels: Record<string, string> = {
+    monday: 'LUN',
+    tuesday: 'MAR',
+    wednesday: 'MER',
+    thursday: 'GIO',
+    friday: 'VEN',
+    saturday: 'SAB',
+    sunday: 'DOM'
+  };
+
+  sports: Sport[] = ['boxing', 'kickboxing', 'mma', 'muaythai', 'bjj'];
 
   // Color palette for courses
   colors = [
@@ -47,7 +83,60 @@ export class ScheduleComponent {
   ];
 
   constructor() {
+    this.generateWeek();
     this.refresh();
+  }
+
+  onMonthYearChange() {
+    const date = new Date(this.selectedYear(), this.selectedMonth(), 1);
+    this.generateWeek(date);
+  }
+
+  generateWeek(baseDate: Date = new Date()) {
+    const startOfWeek = this.getStartOfWeek(baseDate);
+    const days: DayInfo[] = [];
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(startOfWeek);
+      date.setDate(startOfWeek.getDate() + i);
+
+      const dayIndex = date.getDay();
+      const angularDay = this.mapJsDayToAngularDay(dayIndex);
+
+      days.push({
+        date: date,
+        dayName: this.shortDayLabels[angularDay],
+        dayNumber: date.getDate().toString(),
+        fullDay: angularDay,
+        isToday: this.isSameDate(date, new Date())
+      });
+    }
+
+    this.weekDays.set(days);
+
+    // Select today if in this week, otherwise first day of week
+    const today = days.find(d => d.isToday) || days[0];
+    this.selectedDate.set(today);
+  }
+
+  private getStartOfWeek(date: Date): Date {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    d.setDate(diff);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  private mapJsDayToAngularDay(jsDay: number): DayOfWeek {
+    const daysMap: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    return daysMap[jsDay];
+  }
+
+  private isSameDate(date1: Date, date2: Date): boolean {
+    return date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate();
   }
 
   refresh() {
@@ -56,11 +145,18 @@ export class ScheduleComponent {
     });
   }
 
-  getSlotsForDay(day: DayOfWeek): CalendarSlot[] {
+  selectDate(day: DayInfo) {
+    this.selectedDate.set(day);
+  }
+
+  dailySlots = computed(() => {
+    const selected = this.selectedDate();
+    if (!selected) return [];
+
     const slots: CalendarSlot[] = [];
+    const day = selected.fullDay;
 
     this.courses().forEach((course, index) => {
-      // Assign persistent color based on index
       const color = this.colors[index % this.colors.length];
 
       course.schedule
@@ -78,57 +174,34 @@ export class ScheduleComponent {
         });
     });
 
-    return slots;
-  }
+    return slots.sort((a, b) => a.timeStart.localeCompare(b.timeStart));
+  });
 
-  // Calculate CSS top position percentage based on time (start 08:00, end 23:00)
-  calculateTop(time: string): string {
-    const [hours, minutes] = time.split(':').map(Number);
-    const startHour = 8;
-    const totalHours = 15; // 8am to 11pm
-
-    const minutesFromStart = (hours - startHour) * 60 + minutes;
-    const totalMinutes = totalHours * 60;
-
-    return `${(minutesFromStart / totalMinutes) * 100}%`;
-  }
-
-  calculateHeight(start: string, end: string): string {
-    const [h1, m1] = start.split(':').map(Number);
-    const [h2, m2] = end.split(':').map(Number);
-
-    const durationMinutes = (h2 * 60 + m2) - (h1 * 60 + m1);
-    const totalMinutes = 15 * 60; // 15 hours total day view
-
-    return `${(durationMinutes / totalMinutes) * 100}%`;
-  }
-
+  // Modal signals
   selectedSlot: CalendarSlot | null = null;
-  isBookingModalOpen = false;
-  bookingLoading = false;
+  isBookingModalOpen = signal(false);
+  bookingLoading = signal(false);
 
   onSlotClick(slot: CalendarSlot) {
     this.selectedSlot = slot;
-    this.isBookingModalOpen = true;
+    this.isBookingModalOpen.set(true);
   }
 
   closeBookingModal() {
-    this.isBookingModalOpen = false;
+    this.isBookingModalOpen.set(false);
     this.selectedSlot = null;
   }
 
   confirmBooking() {
     if (!this.selectedSlot) return;
-
-    this.bookingLoading = true;
+    this.bookingLoading.set(true);
     this.courseService.bookClass(
       this.selectedSlot.courseId,
       this.selectedSlot.day,
       this.selectedSlot.timeStart
     ).subscribe(() => {
-      this.bookingLoading = false;
+      this.bookingLoading.set(false);
       this.closeBookingModal();
-      // Optional: Show success toast
       alert(`Prenotazione confermata per ${this.selectedSlot?.name}!`);
     });
   }
