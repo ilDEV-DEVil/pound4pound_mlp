@@ -1,0 +1,129 @@
+// =====================================================
+// POUND FOR POUND — Typography
+// =====================================================
+
+@use 'variables' as *;
+
+// Import Inter from Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: $font-family;
+    font-size: $text-base;
+    font-weight: $font-regular;
+    line-height: $leading-normal;
+    color: $text-primary;
+}
+
+// Headings
+.h1 {
+    font-size: $text-4xl;
+    font-weight: $font-bold;
+    line-height: $leading-tight;
+}
+
+.h2 {
+    font-size: $text-3xl;
+    font-weight: $font-bold;
+    line-height: $leading-tight;
+}
+
+.h3 {
+    font-size: $text-2xl;
+    font-weight: $font-semibold;
+    line-height: $leading-tight;
+}
+
+.h4 {
+    font-size: $text-xl;
+    font-weight: $font-semibold;
+    line-height: $leading-tight;
+}
+
+.h5 {
+    font-size: $text-lg;
+    font-weight: $font-medium;
+    line-height: $leading-tight;
+}
+
+.h6 {
+    font-size: $text-base;
+    font-weight: $font-medium;
+    line-height: $leading-tight;
+}
+
+// Body text
+.text-lg {
+    font-size: $text-lg;
+}
+
+.text-base {
+    font-size: $text-base;
+}
+
+.text-sm {
+    font-size: $text-sm;
+}
+
+.text-xs {
+    font-size: $text-xs;
+}
+
+// Text colors
+.text-primary {
+    color: $text-primary;
+}
+
+.text-secondary {
+    color: $text-secondary;
+}
+
+.text-muted {
+    color: $text-muted;
+}
+
+.text-disabled {
+    color: $text-disabled;
+}
+
+.text-accent {
+    color: $accent-primary;
+}
+
+.text-success {
+    color: $success;
+}
+
+.text-warning {
+    color: $warning;
+}
+
+.text-error {
+    color: $error;
+}
+
+// Font weights
+.font-regular {
+    font-weight: $font-regular;
+}
+
+.font-medium {
+    font-weight: $font-medium;
+}
+
+.font-semibold {
+    font-weight: $font-semibold;
+}
+
+.font-bold {
+    font-weight: $font-bold;
+}
+
+// Label style (for card headers, section titles)
+.label {
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $text-muted;
+}
