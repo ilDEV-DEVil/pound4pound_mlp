@@ -45,6 +45,40 @@ export class CourseService {
         return of(newCourse).pipe(delay(600));
     }
 
+    deleteLesson(courseId: string, day: DayOfWeek, startTime: string): Observable<boolean> {
+        const courses = this.storage.getItem<Course[]>('courses') || [];
+
+        // Flessibilità per ID diversi (c-001 vs course-001) salvati nello storage
+        const normalizedId = courseId.replace('course-', 'c-');
+        const courseIndex = courses.findIndex(c => c.id === courseId || c.id === normalizedId);
+
+        if (courseIndex !== -1) {
+            const course = courses[courseIndex];
+            const initialCount = course.schedule.length;
+            course.schedule = course.schedule.filter(
+                s => !(s.day === day && s.startTime === startTime)
+            );
+
+            this.storage.setItem('courses', courses);
+            return of(true).pipe(delay(500));
+        }
+
+        return of(false).pipe(delay(500));
+    }
+
+    updateCourse(id: string, updates: Partial<Course>): Observable<Course | null> {
+        const courses = this.storage.getItem<Course[]>('courses') || [];
+        const index = courses.findIndex(c => c.id === id);
+
+        if (index !== -1) {
+            courses[index] = { ...courses[index], ...updates };
+            this.storage.setItem('courses', courses);
+            return of(courses[index]).pipe(delay(500));
+        }
+
+        return of(null).pipe(delay(500));
+    }
+
     bookClass(courseId: string, day: string, timeStart: string): Observable<boolean> {
         // Mock booking - in real app would create a Session record
         return of(true).pipe(delay(800));

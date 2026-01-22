@@ -13,6 +13,7 @@ interface CalendarSlot {
   timeEnd: string;
   day: DayOfWeek;
   colorClass: string;
+  membersCount: number;
 }
 
 interface DayInfo {
@@ -26,7 +27,7 @@ interface DayInfo {
 @Component({
   selector: 'app-schedule',
   standalone: true,
-  imports: [CommonModule, FormsModule, ModalComponent, InputComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.scss'
 })
@@ -42,6 +43,7 @@ export class ScheduleComponent {
 
   weekDays = signal<DayInfo[]>([]);
   selectedDate = signal<DayInfo | null>(null);
+  currentWeekStart = signal<Date>(this.getStartOfWeek(new Date()));
 
   monthNames = [
     'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
@@ -88,12 +90,32 @@ export class ScheduleComponent {
   }
 
   onMonthYearChange() {
-    const date = new Date(this.selectedYear(), this.selectedMonth(), 1);
-    this.generateWeek(date);
+    const newDate = new Date(this.selectedYear(), this.selectedMonth(), 1);
+    this.currentWeekStart.set(this.getStartOfWeek(newDate));
+    this.generateWeek();
   }
 
-  generateWeek(baseDate: Date = new Date()) {
-    const startOfWeek = this.getStartOfWeek(baseDate);
+  prevWeek() {
+    const current = new Date(this.currentWeekStart());
+    current.setDate(current.getDate() - 7);
+    this.currentWeekStart.set(current);
+    this.generateWeek();
+  }
+
+  nextWeek() {
+    const current = new Date(this.currentWeekStart());
+    current.setDate(current.getDate() + 7);
+    this.currentWeekStart.set(current);
+    this.generateWeek();
+  }
+
+  goToToday() {
+    this.currentWeekStart.set(this.getStartOfWeek(new Date()));
+    this.generateWeek();
+  }
+
+  generateWeek() {
+    const startOfWeek = this.currentWeekStart();
     const days: DayInfo[] = [];
 
     for (let i = 0; i < 7; i++) {
@@ -113,6 +135,12 @@ export class ScheduleComponent {
     }
 
     this.weekDays.set(days);
+
+    // Sync Month/Year selectors with the week being viewed (using middle of week for stability)
+    const midWeek = new Date(startOfWeek);
+    midWeek.setDate(midWeek.getDate() + 3);
+    this.selectedMonth.set(midWeek.getMonth());
+    this.selectedYear.set(midWeek.getFullYear());
 
     // Select today if in this week, otherwise first day of week
     const today = days.find(d => d.isToday) || days[0];
@@ -169,7 +197,8 @@ export class ScheduleComponent {
             timeStart: s.startTime,
             timeEnd: s.endTime,
             day: s.day,
-            colorClass: color
+            colorClass: color,
+            membersCount: Math.floor(Math.random() * 12) + 4
           });
         });
     });
@@ -178,35 +207,158 @@ export class ScheduleComponent {
   });
 
   // Modal signals
-  selectedSlot: CalendarSlot | null = null;
-  isBookingModalOpen = signal(false);
-  bookingLoading = signal(false);
+  selectedDetailSlot = signal<CalendarSlot | null>(null);
 
   onSlotClick(slot: CalendarSlot) {
-    this.selectedSlot = slot;
-    this.isBookingModalOpen.set(true);
+    this.selectedDetailSlot.set(slot);
+    const dialog = document.getElementById('lesson-detail-dialog') as HTMLDialogElement;
+    if (dialog) {
+      dialog.showModal();
+    }
   }
 
-  closeBookingModal() {
-    this.isBookingModalOpen.set(false);
-    this.selectedSlot = null;
+  closeDetailModal() {
+    const dialog = document.getElementById('lesson-detail-dialog') as HTMLDialogElement;
+    if (dialog) {
+      dialog.close();
+    }
+    this.selectedDetailSlot.set(null);
   }
 
-  confirmBooking() {
-    if (!this.selectedSlot) return;
-    this.bookingLoading.set(true);
-    this.courseService.bookClass(
-      this.selectedSlot.courseId,
-      this.selectedSlot.day,
-      this.selectedSlot.timeStart
-    ).subscribe(() => {
-      this.bookingLoading.set(false);
-      this.closeBookingModal();
-      alert(`Prenotazione confermata per ${this.selectedSlot?.name}!`);
+  editLesson() {
+    const slot = this.selectedDetailSlot();
+    if (!slot) return;
+
+    this.isEditing.set(true);
+    this.editingCourseId.set(slot.courseId);
+
+    this.courseForm.set({
+      name: slot.name,
+      instructor: slot.instructor,
+      sport: 'boxing', // Sport would ideally be in slot, defaulting for now
+      day: slot.day,
+      startTime: slot.timeStart,
+      endTime: slot.timeEnd
+    });
+
+    this.closeDetailModal();
+    const dialog = document.getElementById('add-lesson-dialog') as HTMLDialogElement;
+    if (dialog) {
+      dialog.showModal();
+    }
+  }
+
+  deleteLesson() {
+    const slot = this.selectedDetailSlot();
+
+    if (!slot) return;
+
+    // Rimosso confirm() per evitare blocchi e procedere direttamente
+    this.courseService.deleteLesson(slot.courseId, slot.day, slot.timeStart).subscribe({
+      next: (success) => {
+        if (success) {
+          this.closeDetailModal();
+          this.refresh();
+        } else {
+          alert('Errore: corso non trovato nello storage locale o ID non corrispondente.');
+        }
+      },
+      error: (err) => {
+      }
     });
   }
 
+  // Course Form Modal Logic
+  courseForm = signal({
+    name: '',
+    instructor: '',
+    sport: 'boxing' as Sport,
+    day: 'monday' as DayOfWeek,
+    startTime: '10:00',
+    endTime: '11:00'
+  });
+
+  isEditing = signal(false);
+  editingCourseId = signal<string | null>(null);
+
   openAddModal() {
-    alert('Gestione corsi completa in arrivo nel prossimo aggiornamento!');
+    this.isEditing.set(false);
+    this.editingCourseId.set(null);
+
+    const selected = this.selectedDate();
+    this.courseForm.set({
+      name: '',
+      instructor: '',
+      sport: 'boxing',
+      day: selected ? selected.fullDay : 'monday',
+      startTime: '10:00',
+      endTime: '11:00'
+    });
+
+    const dialog = document.getElementById('add-lesson-dialog') as HTMLDialogElement;
+    if (dialog) {
+      dialog.showModal();
+    }
+  }
+
+  closeAddModal() {
+    const dialog = document.getElementById('add-lesson-dialog') as HTMLDialogElement;
+    if (dialog) {
+      dialog.close();
+    }
+  }
+
+  saveCourse() {
+    const data = this.courseForm();
+    if (!data.name || !data.instructor) {
+      alert('Per favore compila tutti i campi obbligatori.');
+      return;
+    }
+
+    const courseData: Partial<Course> = {
+      name: data.name,
+      instructor: data.instructor,
+      sport: data.sport,
+      schedule: [{
+        day: data.day,
+        startTime: data.startTime,
+        endTime: data.endTime
+      }]
+    };
+
+    if (this.isEditing() && this.editingCourseId()) {
+      this.courseService.updateCourse(this.editingCourseId()!, courseData).subscribe(() => {
+        this.finalizeSave('Lezione modificata con successo!');
+      });
+    } else {
+      this.courseService.addCourse(courseData).subscribe(() => {
+        this.finalizeSave('Lezione aggiunta con successo!');
+      });
+    }
+  }
+
+  private finalizeSave(message: string) {
+    this.closeAddModal();
+    this.refresh();
+    alert(message);
+  }
+
+  // Booking logic
+  bookingLoading = signal(false);
+
+  confirmBooking() {
+    const slot = this.selectedDetailSlot();
+    if (!slot) return;
+
+    this.bookingLoading.set(true);
+    this.courseService.bookClass(
+      slot.courseId,
+      slot.day,
+      slot.timeStart
+    ).subscribe(() => {
+      this.bookingLoading.set(false);
+      this.closeDetailModal();
+      alert(`Prenotazione confermata per ${slot.name}!`);
+    });
   }
 }

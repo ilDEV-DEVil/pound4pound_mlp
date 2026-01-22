@@ -17,6 +17,22 @@
           }
         </select>
       </div>
+
+      <div class="week-navigation">
+        <button class="today-btn" (click)="goToToday()">
+          Oggi
+        </button>
+        <button class="nav-btn" (click)="prevWeek()" aria-label="Settimana precedente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M15 18l-6-6 6-6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <button class="nav-btn" (click)="nextWeek()" aria-label="Settimana successiva">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M9 18l6-6-6-6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- 7 Day Cards Strip -->
@@ -92,21 +108,190 @@
     </div>
   </main>
 
-  <app-modal [isOpen]="isBookingModalOpen()" title="Doyou want to join?" confirmLabel="Prenota Posto"
-    [loading]="bookingLoading()" (close)="closeBookingModal()" (confirm)="confirmBooking()">
-    @if (selectedSlot) {
-    <div class="flex flex-col gap-4">
-      <div class="flex items-center gap-4 p-3 bg-gray-800 rounded-lg">
-        <div class="w-12 h-12 rounded-full bg-accent text-white flex items-center justify-center text-xl font-bold">
-          {{ selectedSlot.name.charAt(0) }}
+  <!-- Lesson Detail Dialog -->
+  <dialog id="lesson-detail-dialog" class="lesson-dialog">
+    @if (selectedDetailSlot(); as slot) {
+    <div class="dialog-container">
+      <div class="dialog-header">
+        <div class="course-badge" [class]="slot.colorClass.split(' ')[0]">
+          {{ slot.name.charAt(0) }}
         </div>
-        <div>
-          <h4 class="font-bold text-lg text-white">{{ selectedSlot.name }}</h4>
-          <p class="text-sm text-gray-400">Istr. {{ selectedSlot.instructor }}</p>
+        <div class="header-info">
+          <h3 class="text-2xl font-black text-white">{{ slot.name }}</h3>
+          <p class="text-gray-400">Palinsesto: {{ dayLabels[slot.day] }}</p>
+        </div>
+        <button type="button" (click)="closeDetailModal()" class="close-dialog" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <div class="detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke-width="2" />
+                <path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div class="detail-info">
+              <span class="label">Orario</span>
+              <span class="value">{{ slot.timeStart }} - {{ slot.timeEnd }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div class="detail-info">
+              <span class="label">Istruttore</span>
+              <span class="value">{{ slot.instructor }}</span>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div class="detail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <circle cx="9" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div class="detail-info w-full">
+              <span class="label">Partecipanti</span>
+              <div class="participant-info">
+                <span class="value">{{ slot.membersCount }} / 20</span>
+                <div class="progress-bar">
+                  <div class="progress" [style.width.%]="(slot.membersCount / 20) * 100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice-box">
+          <span class="icon">ℹ️</span>
+          <p>Puoi modificare o eliminare questa lezione se sei un amministratore.</p>
         </div>
       </div>
-      <p class="text-gray-300">Confermi la tua prenotazione per questo corso?</p>
+
+      <div class="dialog-footer">
+        <div class="management-actions">
+          <button type="button" class="btn-edit" (click)="editLesson()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Modifica
+          </button>
+          <button type="button" class="btn-delete" (click)="deleteLesson()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
+              <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Elimina
+          </button>
+        </div>
+
+        <button class="btn-primary" (click)="confirmBooking()" [disabled]="bookingLoading()">
+          {{ bookingLoading() ? 'In corso...' : 'Prenota Posto' }}
+        </button>
+      </div>
     </div>
     }
-  </app-modal>
+  </dialog>
+
+  <!-- Add/Edit Lesson Modal -->
+  <dialog id="add-lesson-dialog" class="lesson-dialog">
+    <div class="dialog-container">
+      <div class="dialog-header">
+        <div class="course-badge" style="background: #9333ea; color: white;">
+          @if (isEditing()) {
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width: 20px;">
+            <path
+              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          } @else {
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width: 24px;">
+            <path d="M12 5v14M5 12h14" stroke-width="3" stroke-linecap="round" />
+          </svg>
+          }
+        </div>
+        <div class="header-info">
+          <h3 class="text-2xl font-black text-white">
+            {{ isEditing() ? 'Modifica Lezione' : 'Nuova Lezione' }}
+          </h3>
+          <p class="text-gray-400">
+            {{ isEditing() ? 'Aggiorna i dettagli della lezione' : 'Inserisci i dettagli del corso' }}
+          </p>
+        </div>
+        <button type="button" (click)="closeAddModal()" class="close-dialog" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Nome Corso *</label>
+            <input type="text" [(ngModel)]="courseForm().name" placeholder="es. Boxe Principianti">
+          </div>
+
+          <div class="form-field">
+            <label>Istruttore *</label>
+            <input type="text" [(ngModel)]="courseForm().instructor" placeholder="Nome dell'istruttore">
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>Sport</label>
+              <select [(ngModel)]="courseForm().sport">
+                @for (sport of sports; track sport) {
+                <option [value]="sport">{{ sport | titlecase }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-field">
+              <label>Giorno</label>
+              <select [(ngModel)]="courseForm().day">
+                @for (day of (dayLabels | keyvalue); track day.key) {
+                <option [value]="day.key">{{ day.value }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>Orario Inizio</label>
+              <input type="time" [(ngModel)]="courseForm().startTime">
+            </div>
+            <div class="form-field">
+              <label>Orario Fine</label>
+              <input type="time" [(ngModel)]="courseForm().endTime">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dialog-footer">
+        <button type="button" class="btn-primary w-full" (click)="saveCourse()">
+          {{ isEditing() ? 'Salva Modifiche' : 'Crea Lezione' }}
+        </button>
+      </div>
+    </div>
+  </dialog>
 </div>
