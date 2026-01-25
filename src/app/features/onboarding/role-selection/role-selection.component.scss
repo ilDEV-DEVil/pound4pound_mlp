@@ -1,0 +1,77 @@
+@use '../../../../styles/variables' as *;
+
+.role-selection-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.role-card {
+    background: $bg-secondary;
+    border: 2px solid $border-subtle;
+    border-radius: $radius-lg;
+    padding: $space-6;
+    cursor: pointer;
+    transition: all $transition-normal;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    &:hover {
+        border-color: $border-default;
+        transform: translateY(-2px);
+    }
+
+    &.selected {
+        border-color: $accent-primary;
+        background: rgba($accent-primary, 0.05);
+
+        .role-icon {
+            transform: scale(1.1);
+        }
+
+        .selection-indicator {
+            background-color: $accent-primary;
+            border-color: $accent-primary;
+
+            &::after {
+                content: '✓';
+                color: $bg-primary;
+                font-size: 14px;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.role-icon {
+    font-size: 48px;
+    margin-bottom: $space-4;
+    transition: transform $transition-normal;
+}
+
+.role-title {
+    font-size: $text-lg;
+    font-weight: $font-bold;
+    margin-bottom: $space-2;
+    color: $text-primary;
+}
+
+.role-desc {
+    font-size: $text-sm;
+    color: $text-muted;
+    line-height: 1.5;
+}
+
+.selection-indicator {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid $border-default;
+    margin-top: $space-4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-fast;
+}

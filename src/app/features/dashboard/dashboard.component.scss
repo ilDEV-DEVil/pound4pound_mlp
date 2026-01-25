@@ -126,7 +126,7 @@ $border-light: rgba(0, 0, 0, 0.08);
             align-items: center;
             justify-content: center;
             font-size: $text-xl;
-            
+
             &.blue {
                 background: rgba($brand-blue, 0.1);
                 color: $brand-blue;
@@ -507,6 +507,7 @@ $border-light: rgba(0, 0, 0, 0.08);
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -517,7 +518,7 @@ $border-light: rgba(0, 0, 0, 0.08);
     animation: fadeIn 0.5s ease-out forwards;
 }
 
-.animate-stagger > * {
+.animate-stagger>* {
     opacity: 0;
     animation: fadeIn 0.5s ease-out forwards;
 
