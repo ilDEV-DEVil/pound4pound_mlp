@@ -1,9 +1,8 @@
-import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CourseService } from '../../core/services/course.service';
 import { Course, DayOfWeek, Sport } from '../../core/models';
-import { ModalComponent, InputComponent } from '../../shared/components';
+import { CourseService } from '../../core/services/course.service';
 
 interface CalendarSlot {
   courseId: string;

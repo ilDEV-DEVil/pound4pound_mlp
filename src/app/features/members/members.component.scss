@@ -1,11 +1,15 @@
-.bg-accent-subtle {
-    background-color: var(--accent-subtle);
-}
-
-.border-accent {
-    border-color: var(--accent-primary);
-}
-
-.border-default {
-    border-color: var(--border-default);
+.members-container {
+    padding: 1.5rem;
+    
+    .bg-accent-subtle {
+        background-color: var(--accent-subtle);
+    }
+    
+    .border-accent {
+        border-color: var(--accent-primary);
+    }
+    
+    .border-default {
+        border-color: var(--border-default);
+    }
 }

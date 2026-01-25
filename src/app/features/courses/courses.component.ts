@@ -9,7 +9,8 @@ import { Course, Sport } from '../../core/models';
   selector: 'app-courses',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, CardComponent, ButtonComponent, InputComponent],
-  templateUrl: './courses.component.html'
+  templateUrl: './courses.component.html',
+  styleUrl: './courses.component.scss'
 })
 export class CoursesComponent {
   private courseService = inject(CourseService);
