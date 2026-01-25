@@ -10,7 +10,8 @@ import { StorageService } from '../../../core/services/storage.service';
     selector: 'app-member-detail',
     standalone: true,
     imports: [CommonModule, RouterLink, CardComponent, ButtonComponent],
-    templateUrl: './member-detail.component.html'
+    templateUrl: './member-detail.component.html',
+    styleUrl: './member-detail.component.scss'
 })
 export class MemberDetailComponent implements OnInit {
     private route = inject(ActivatedRoute);
