@@ -77,11 +77,10 @@ export class ScheduleComponent {
 
   // Color palette for courses
   colors = [
-    'bg-blue-900/60 border-blue-500 text-blue-100',
-    'bg-purple-900/60 border-purple-500 text-purple-100',
-    'bg-orange-900/60 border-orange-500 text-orange-100',
-    'bg-green-900/60 border-green-500 text-green-100',
-    'bg-red-900/60 border-red-500 text-red-100',
+    'course-blue',
+    'course-red',
+    'course-blue-alt',
+    'course-red-alt',
   ];
 
   constructor() {

@@ -156,11 +156,7 @@ import { MockDataService } from '../../core/services/mock-data.service';
       }
     </div>
   `,
-    styles: [`
-    .kpi-card {
-      height: 100%;
-    }
-  `]
+    styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
     authService = inject(AuthService);

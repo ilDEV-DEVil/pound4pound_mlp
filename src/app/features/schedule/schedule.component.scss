@@ -1,25 +1,32 @@
 @use 'sass:color';
 @use '../../../styles/variables' as *;
 
-// Local Design Tokens
-$purple-primary: #8B5CF6;
-$purple-glow: rgba(168, 85, 247, 0.4);
-$glass-bg: rgba(255, 255, 255, 0.05);
-$glass-border: rgba(255, 255, 255, 0.1);
+// Local Design Tokens (Brand Refresh correctly applied)
+$app-bg: #C7D6D5;
+$brand-red: #E71D36;
+$brand-blue: #3066BE;
+$brand-red-dark: #C0152B;
+$brand-blue-dark: #255198;
+$brand-red-glow: rgba(231, 29, 54, 0.2);
+$brand-blue-glow: rgba(48, 102, 190, 0.2);
+$text-dark: #1A1D21;
+$text-subtle: #4A5568;
+$border-light: rgba(0, 0, 0, 0.08);
 
 .schedule-container {
-    background: $bg-primary;
+    background: $app-bg;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    color: $text-dark;
 }
 
 .schedule-header {
     padding: $space-4 $space-6;
-    background: rgba($bg-secondary, 0.5);
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid $glass-border;
-    border-radius: $radius-lg;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid $border-light;
+    border-radius: 0 0 $radius-2xl $radius-2xl;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -35,11 +42,11 @@ $glass-border: rgba(255, 255, 255, 0.1);
             gap: $space-4;
 
             select {
-                background: $bg-tertiary;
-                border: 1px solid rgba($purple-primary, 0.3);
-                color: $text-primary;
+                background: white;
+                border: 2px solid $border-light;
+                color: $text-dark;
                 padding: $space-2 $space-4;
-                border-radius: $radius-lg;
+                border-radius: $radius-xl;
                 font-weight: $font-bold;
                 font-size: $text-lg;
                 cursor: pointer;
@@ -47,14 +54,13 @@ $glass-border: rgba(255, 255, 255, 0.1);
 
                 &:focus {
                     outline: none;
-                    border-color: $purple-primary;
-                    box-shadow: 0 0 0 2px rgba($purple-primary, 0.2);
+                    border-color: $brand-blue;
+                    box-shadow: 0 0 0 3px rgba($brand-blue, 0.1);
                 }
 
                 option {
-                    background: $bg-tertiary;
-                    color: white;
-                    padding: $space-2;
+                    background: white;
+                    color: $text-dark;
                 }
             }
         }
@@ -65,35 +71,31 @@ $glass-border: rgba(255, 255, 255, 0.1);
 
             .today-btn {
                 padding: 0 $space-4;
-                height: 40px;
-                border-radius: $radius-lg;
-                background: $glass-bg;
-                border: 1px solid $glass-border;
-                color: white;
+                height: 42px;
+                border-radius: $radius-xl;
+                background: white;
+                border: 2px solid $border-light;
+                color: $text-dark;
                 font-size: 13px;
                 font-weight: $font-bold;
                 cursor: pointer;
                 transition: all 0.2s;
-                margin-right: $space-1;
 
                 &:hover {
-                    background: rgba(255, 255, 255, 0.1);
-                    border-color: rgba(255, 255, 255, 0.2);
+                    background: $brand-blue;
+                    border-color: $brand-blue;
+                    color: white;
                     transform: translateY(-2px);
-                }
-
-                &:active {
-                    transform: translateY(0);
                 }
             }
 
             .nav-btn {
-                width: 40px;
-                height: 40px;
-                border-radius: $radius-lg;
-                background: $glass-bg;
-                border: 1px solid $glass-border;
-                color: white;
+                width: 42px;
+                height: 42px;
+                border-radius: $radius-xl;
+                background: white;
+                border: 2px solid $border-light;
+                color: $text-dark;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -106,14 +108,11 @@ $glass-border: rgba(255, 255, 255, 0.1);
                 }
 
                 &:hover {
-                    background: $purple-primary;
-                    border-color: $purple-primary;
-                    box-shadow: 0 0 15px $purple-glow;
+                    background: $brand-red;
+                    border-color: $brand-red;
+                    box-shadow: 0 8px 15px $brand-red-glow;
+                    color: white;
                     transform: translateY(-2px);
-                }
-
-                &:active {
-                    transform: translateY(0);
                 }
             }
         }
@@ -122,11 +121,12 @@ $glass-border: rgba(255, 255, 255, 0.1);
             width: 44px;
             height: 44px;
             border-radius: $radius-full;
-            background: $glass-bg;
+            background: white;
+            border: 2px solid $border-light;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: $text-muted;
+            color: $text-subtle;
             transition: all 0.2s;
 
             svg {
@@ -135,8 +135,9 @@ $glass-border: rgba(255, 255, 255, 0.1);
             }
 
             &:hover {
-                background: $purple-primary;
+                background: $brand-blue;
                 color: white;
+                border-color: $brand-blue;
             }
         }
     }
@@ -156,10 +157,10 @@ $glass-border: rgba(255, 255, 255, 0.1);
             flex: 1;
             min-width: 70px;
             padding: $space-4 $space-2;
-            border-radius: $radius-2xl;
-            background: $bg-tertiary;
-            border: 1px solid $glass-border;
-            color: $text-muted;
+            border-radius: $radius-xl;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid $border-light;
+            color: $text-subtle;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
 
@@ -168,6 +169,7 @@ $glass-border: rgba(255, 255, 255, 0.1);
                 font-weight: $font-bold;
                 text-transform: uppercase;
                 margin-bottom: $space-1;
+                opacity: 0.7;
             }
 
             .day-number {
@@ -178,18 +180,18 @@ $glass-border: rgba(255, 255, 255, 0.1);
             .today-dot {
                 position: absolute;
                 bottom: 8px;
-                width: 4px;
-                height: 4px;
-                background: $purple-primary;
+                width: 5px;
+                height: 5px;
+                background: $brand-red;
                 border-radius: $radius-full;
             }
 
             &.active {
-                background: $purple-primary;
+                background: $brand-blue;
                 color: white;
-                border-color: $purple-primary;
-                box-shadow: 0 10px 20px rgba($purple-primary, 0.3);
-                transform: scale(1.05);
+                border-color: $brand-blue;
+                box-shadow: 0 8px 16px rgba($brand-blue, 0.25);
+                transform: translateY(-4px);
 
                 .today-dot {
                     background: white;
@@ -197,9 +199,10 @@ $glass-border: rgba(255, 255, 255, 0.1);
             }
 
             &:not(.active):hover {
-                background: $glass-bg;
-                border-color: $purple-glow;
-                color: $text-primary;
+                background: white;
+                border-color: $brand-blue;
+                color: $brand-blue;
+                transform: translateY(-2px);
             }
         }
     }
@@ -224,30 +227,30 @@ $glass-border: rgba(255, 255, 255, 0.1);
             .full-date {
                 font-size: $text-3xl;
                 font-weight: $font-bold;
-                color: $text-primary;
+                color: $text-dark;
             }
 
             .current-time {
-                color: $text-muted;
+                color: $text-subtle;
                 font-size: $text-sm;
             }
         }
 
         .add-btn {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, $purple-primary, color.adjust($purple-primary, $lightness: -10%));
+            width: 54px;
+            height: 54px;
+            background: linear-gradient(135deg, $brand-red, $brand-red-dark);
             border-radius: $radius-xl;
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba($purple-primary, 0.4);
-            transition: all 0.2s;
+            box-shadow: 0 10px 20px $brand-red-glow;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
             &:hover {
-                transform: scale(1.1);
-                box-shadow: 0 6px 20px rgba($purple-primary, 0.6);
+                transform: scale(1.1) rotate(90deg);
+                box-shadow: 0 15px 30px rgba($brand-red, 0.4);
             }
         }
     }
@@ -272,18 +275,19 @@ $glass-border: rgba(255, 255, 255, 0.1);
         padding-top: $space-4;
 
         .marker-dot {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: $radius-full;
-            background: $bg-tertiary;
-            border: 2px solid $purple-primary;
+            background: white;
+            border: 3px solid $brand-blue;
             z-index: 2;
+            box-shadow: 0 0 10px rgba($brand-blue, 0.2);
         }
 
         .marker-line {
             width: 2px;
             flex: 1;
-            background: $glass-border;
+            background: rgba(0, 0, 0, 0.05);
             margin-top: -$space-1;
         }
     }
@@ -291,19 +295,51 @@ $glass-border: rgba(255, 255, 255, 0.1);
 
 .course-card {
     flex: 1;
-    background: $bg-secondary;
-    border-radius: $radius-2xl;
-    border: 1px solid $glass-border;
-    padding: $space-4 $space-6;
+    background: white;
+    border-radius: $radius-xl;
+    border: 1px solid $border-light;
+    padding: $space-5 $space-6;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 
     &:hover {
-        transform: translateX(10px);
-        border-color: $purple-primary;
-        background: rgba($purple-primary, 0.05);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    &.course-blue {
+        border-left: 6px solid $brand-blue;
+
+        .course-name {
+            color: $brand-blue;
+        }
+    }
+
+    &.course-red {
+        border-left: 6px solid $brand-red;
+
+        .course-name {
+            color: $brand-red;
+        }
+    }
+
+    &.course-blue-alt {
+        border-left: 6px solid #1e40af;
+
+        .course-name {
+            color: #1e40af;
+        }
+    }
+
+    &.course-red-alt {
+        border-left: 6px solid #991b1b;
+
+        .course-name {
+            color: #991b1b;
+        }
     }
 
     .course-name {
@@ -321,20 +357,22 @@ $glass-border: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             gap: $space-2;
-            color: $text-muted;
+            color: $text-subtle;
             font-size: $text-sm;
 
             .icon {
                 width: 16px;
                 height: 16px;
+                opacity: 0.6;
             }
 
             .instructor-tag {
-                background: $glass-bg;
+                background: rgba(0, 0, 0, 0.04);
                 padding: $space-1 $space-3;
                 border-radius: $radius-full;
-                color: $purple-primary;
+                color: $text-dark;
                 font-weight: $font-bold;
+                font-size: 12px;
             }
         }
     }
@@ -343,11 +381,12 @@ $glass-border: rgba(255, 255, 255, 0.1);
 .empty-state {
     text-align: center;
     padding: $space-16 0;
-    color: $text-muted;
+    color: $text-subtle;
 
     .empty-icon {
         font-size: 60px;
         margin-bottom: $space-4;
+        opacity: 0.5;
     }
 }
 
@@ -387,7 +426,7 @@ $glass-border: rgba(255, 255, 255, 0.1);
 }
 
 // -----------------------------------------------------
-// Lesson Detail Dialog (Native Dialog)
+// Lesson Detail Dialog
 // -----------------------------------------------------
 .lesson-dialog {
     border: none;
@@ -395,21 +434,20 @@ $glass-border: rgba(255, 255, 255, 0.1);
     padding: 0;
     max-width: 500px;
     width: 95%;
-    margin: auto; // Native dialog centering
+    margin: auto;
     border-radius: $radius-2xl;
     overflow: visible;
 
     &::backdrop {
         background: rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(10px);
-        animation: fadeIn 0.3s ease-out;
+        backdrop-filter: blur(8px);
     }
 
     .dialog-container {
-        background: $bg-secondary;
-        border: 1px solid $glass-border;
+        background: white;
+        border: none;
         border-radius: $radius-2xl;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25);
         overflow: hidden;
         animation: zoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -419,49 +457,57 @@ $glass-border: rgba(255, 255, 255, 0.1);
         display: flex;
         align-items: center;
         gap: $space-4;
-        border-bottom: 1px solid $glass-border;
+        border-bottom: 1px solid $border-light;
         position: relative;
+        background: #f8fafc;
 
         .course-badge {
-            width: 48px;
-            height: 48px;
-            border-radius: $radius-xl;
+            width: 52px;
+            height: 52px;
+            border-radius: $radius-lg;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: $text-2xl;
             font-weight: $font-bold;
             color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+            &.brand-badge {
+                background: linear-gradient(135deg, $brand-red, $brand-blue);
+            }
         }
 
         .header-info {
             flex: 1;
 
-            h3,
+            h3 {
+                color: $text-dark !important;
+                font-size: $text-xl;
+                margin: 0;
+                font-weight: $font-bold;
+            }
+
             p {
-                color: white !important;
+                color: $text-subtle !important;
+                margin: 2px 0 0 0;
             }
         }
 
         .close-dialog {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: $radius-full;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: $text-subtle;
             cursor: pointer;
             transition: all 0.2s;
 
             &:hover {
-                background: $glass-bg;
-                color: white;
-            }
-
-            svg {
-                width: 20px;
-                height: 20px;
+                background: rgba(0, 0, 0, 0.05);
+                color: $text-dark;
             }
         }
     }
@@ -481,18 +527,18 @@ $glass-border: rgba(255, 255, 255, 0.1);
             gap: $space-4;
 
             .detail-icon {
-                width: 38px;
-                height: 38px;
+                width: 42px;
+                height: 42px;
                 border-radius: $radius-lg;
-                background: $glass-bg;
+                background: rgba(0, 0, 0, 0.04);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: $purple-primary;
+                color: $brand-blue;
 
                 svg {
-                    width: 18px;
-                    height: 18px;
+                    width: 20px;
+                    height: 20px;
                 }
             }
 
@@ -505,14 +551,15 @@ $glass-border: rgba(255, 255, 255, 0.1);
                 .label {
                     font-size: 11px;
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    color: rgba(255, 255, 255, 0.6);
+                    letter-spacing: 0.1em;
+                    color: $text-subtle;
+                    font-weight: $font-bold;
                 }
 
                 .value {
                     font-size: $text-base;
                     font-weight: $font-bold;
-                    color: white;
+                    color: $text-dark;
                 }
             }
 
@@ -524,14 +571,14 @@ $glass-border: rgba(255, 255, 255, 0.1);
 
                 .progress-bar {
                     flex: 1;
-                    height: 6px;
-                    background: $bg-tertiary;
+                    height: 8px;
+                    background: rgba(0, 0, 0, 0.06);
                     border-radius: $radius-full;
                     overflow: hidden;
 
                     .progress {
                         height: 100%;
-                        background: $purple-primary;
+                        background: $brand-blue;
                         border-radius: $radius-full;
                     }
                 }
@@ -539,8 +586,8 @@ $glass-border: rgba(255, 255, 255, 0.1);
         }
 
         .notice-box {
-            background: $glass-bg;
-            border: 1px solid $glass-border;
+            background: rgba($brand-blue, 0.05);
+            border: 1px solid rgba($brand-blue, 0.1);
             padding: $space-4;
             border-radius: $radius-lg;
             display: flex;
@@ -553,7 +600,7 @@ $glass-border: rgba(255, 255, 255, 0.1);
 
             p {
                 font-size: $text-sm;
-                color: white;
+                color: $text-subtle;
                 margin: 0;
             }
         }
@@ -561,8 +608,8 @@ $glass-border: rgba(255, 255, 255, 0.1);
 
     .dialog-footer {
         padding: $space-6;
-        background: rgba($bg-primary, 0.3);
-        border-top: 1px solid $glass-border;
+        background: #f8fafc;
+        border-top: 1px solid $border-light;
         display: flex;
         flex-direction: column;
         gap: $space-4;
@@ -575,35 +622,31 @@ $glass-border: rgba(255, 255, 255, 0.1);
                 display: flex;
                 align-items: center;
                 gap: $space-2;
-                padding: 4px 10px;
+                padding: 6px 12px;
                 border-radius: $radius-md;
-                font-size: 12px;
+                font-size: 13px;
                 font-weight: $font-bold;
                 transition: all 0.2s;
                 border: 1px solid transparent;
                 cursor: pointer;
-
-                svg {
-                    width: 14px;
-                    height: 14px;
-                }
             }
 
             .btn-edit {
-                background: $glass-bg;
-                color: $text-secondary;
-                border-color: $glass-border;
+                background: white;
+                color: $text-subtle;
+                border-color: $border-light;
 
                 &:hover {
-                    background: $bg-hover;
-                    color: white;
+                    background: rgba(0, 0, 0, 0.02);
+                    color: $text-dark;
+                    border-color: $text-muted;
                 }
             }
 
             .btn-delete {
-                background: rgba($error, 0.1);
+                background: rgba($error, 0.05);
                 color: $error;
-                border-color: rgba($error, 0.2);
+                border-color: rgba($error, 0.1);
 
                 &:hover {
                     background: $error;
@@ -613,20 +656,22 @@ $glass-border: rgba(255, 255, 255, 0.1);
         }
 
         .btn-primary {
-            padding: $space-2 $space-4;
-            font-size: 14px;
-            background: $purple-primary;
+            padding: $space-3 $space-6;
+            font-size: 15px;
+            background: $brand-blue;
             color: white;
-            border-radius: $radius-lg;
+            border-radius: $radius-xl;
             font-weight: $font-bold;
             cursor: pointer;
             transition: all 0.2s;
             width: fit-content;
             align-self: flex-end;
+            box-shadow: 0 6px 15px rgba($brand-blue, 0.2);
 
             &:hover:not(:disabled) {
-                box-shadow: 0 0 20px $purple-glow;
+                box-shadow: 0 10px 20px rgba($brand-blue, 0.3);
                 transform: translateY(-2px);
+                background: $brand-blue-dark;
             }
 
             &:disabled {
@@ -657,54 +702,29 @@ $glass-border: rgba(255, 255, 255, 0.1);
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: rgba(255, 255, 255, 0.6);
+        color: $text-subtle;
+        font-weight: $font-bold;
     }
 
     input,
     select {
-        background: $bg-tertiary;
-        border: 1px solid rgba($purple-primary, 0.3);
-        border-radius: $radius-lg;
-        padding: $space-2 $space-3;
-        color: white;
+        background: white;
+        border: 2px solid $border-light;
+        border-radius: $radius-xl;
+        padding: $space-3 $space-4;
+        color: $text-dark;
         font-size: $text-sm;
         transition: all 0.2s;
         outline: none;
 
         &:focus {
-            border-color: $purple-primary;
-            box-shadow: 0 0 0 2px rgba($purple-primary, 0.2);
-            background: $glass-bg;
+            border-color: $brand-blue;
+            box-shadow: 0 3px 12px rgba($brand-blue, 0.1);
         }
 
         &::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        &::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-            cursor: pointer;
-            opacity: 0.8;
-
-            &:hover {
-                opacity: 1;
-            }
-        }
-    }
-
-    select {
-        cursor: pointer;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right $space-3 center;
-        background-size: 16px;
-        padding-right: $space-8;
-
-        option {
-            background: $bg-secondary;
-            color: white;
-            padding: $space-2;
+            color: $text-muted;
+            opacity: 0.5;
         }
     }
 }
