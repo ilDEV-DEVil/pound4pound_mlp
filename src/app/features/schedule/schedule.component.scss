@@ -230,7 +230,7 @@ $border-light: rgba(0, 0, 0, 0.08);
   }
 
   &.selected {
-    background: $brand-blue; // ✓ Background blu pieno
+    background: $brand-blue;
     border-color: $brand-blue;
     box-shadow: 0 8px 16px rgba($brand-blue, 0.4);
     border-width: 3px;
@@ -240,7 +240,6 @@ $border-light: rgba(0, 0, 0, 0.08);
       background: $brand-blue;
     }
 
-    // Testo bianco quando selezionato
     .day-name {
       color: rgba(255, 255, 255, 0.9);
     }
@@ -249,8 +248,13 @@ $border-light: rgba(0, 0, 0, 0.08);
       color: white;
     }
 
+    .today-indicator {
+      background: white;
+      color: $brand-blue;
+    }
+
     &:hover {
-      background: $brand-blue-dark; // Hover ancora più scuro
+      background: $brand-blue-dark;
       border-color: $brand-blue-dark;
     }
   }
@@ -809,13 +813,13 @@ $border-light: rgba(0, 0, 0, 0.08);
 // Responsive
 @media (max-width: 1024px) {
   .week-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, 1fr);
   }
 }
 
 @media (max-width: 768px) {
   .schedule-container {
-    padding: $space-4;
+    padding: $space-3;
   }
 
   .header-content {
@@ -834,13 +838,76 @@ $border-light: rgba(0, 0, 0, 0.08);
     gap: $space-4;
   }
 
+  // ✓ FORZA 7 COLONNE SU MOBILE
   .week-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 3px;
+    margin-bottom: $space-4;
+  }
+
+  .day-card {
+    padding: 4px 1px;
+    min-width: 0;
+    border-radius: 8px;
+    border-width: 1px;
+
+    &::before {
+      height: 3px;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    &.today {
+      border-width: 2px;
+    }
+
+    &.selected {
+      border-width: 2px;
+      box-shadow: 0 4px 8px rgba($brand-blue, 0.4);
+    }
+  }
+
+  .day-header {
+    gap: 8px;
+  }
+
+  .day-name {
+    font-size: 7px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+
+  .day-number {
+    font-size: 0.875rem;
+    line-height: 1;
+  }
+
+  .today-indicator {
+    display: block;
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    margin: 4px auto 0; // ✓ "auto" centra orizzontalmente
+    font-size: 0;
+    line-height: 0;
+    border-radius: 50%;
   }
 
   .lesson-slot {
     flex-direction: column;
     align-items: flex-start;
+    
+    &:hover {
+      transform: translateX(0) translateY(-2px);
+    }
+  }
+
+  .slot-time {
+    min-width: 100%;
+    justify-content: center;
   }
 
   .slot-meta {
@@ -854,5 +921,50 @@ $border-light: rgba(0, 0, 0, 0.08);
 
   .form-row {
     grid-template-columns: 1fr;
+  }
+}
+
+// Extra small devices - ancora più compatto
+@media (max-width: 480px) {
+  .week-grid {
+    gap: 8px;
+  }
+
+  .day-card {
+    padding: 3px 0px;
+  }
+
+  .day-name {
+    font-size: 0.6rem;
+  }
+
+  .day-number {
+    font-size: 1.4rem;
+  }
+}
+
+// iPhone SE e schermi molto piccoli
+@media (max-width: 375px) {
+  .week-grid {
+    gap: 2px !important;
+  }
+
+  .day-card {
+    padding: 2px 0px;
+    border-radius: 6px;
+  }
+
+  .day-name {
+    font-size: 6px;
+    letter-spacing: -0.8px;
+  }
+
+  .day-number {
+    font-size: 0.75rem;
+  }
+
+  .today-indicator {
+    font-size: 5px;
+    padding: 1px 2px;
   }
 }
