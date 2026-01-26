@@ -1,146 +1,196 @@
 <div class="dashboard-container">
-      <div class="mb-8">
-        <h2 class="h2">Bentornato, {{ currentUser()?.firstName }}!</h2>
-        <p class="text-muted">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <div>
+        <h1 class="greeting">
+          Benvenuto, {{ currentUser()?.firstName || 'Utente' }}! 👋
+        </h1>
+        <p class="subtitle">
           {{ currentUser()?.role === 'manager' ? 'Ecco cosa sta succedendo nella tua palestra.' : 'Pronto per il prossimo allenamento?' }}
         </p>
       </div>
-
-      <!-- MANAGER VIEW -->
-      @if (currentUser()?.role === 'manager') {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <!-- KPI Cards -->
-          <app-card [hoverable]="true" [accent]="true" class="kpi-card">
-            <div class="flex flex-col">
-              <span class="text-sm text-muted uppercase tracking-wider">Iscritti Totali</span>
-              <span class="text-3xl font-bold mt-1">127</span>
-              <span class="text-xs text-green-500 mt-2">↑ 5% questo mese</span>
-            </div>
-          </app-card>
-          
-          <app-card [hoverable]="true" [accent]="true" class="kpi-card">
-            <div class="flex flex-col">
-              <span class="text-sm text-muted uppercase tracking-wider">Abbonamenti Attivi</span>
-              <span class="text-3xl font-bold mt-1">98</span>
-            </div>
-          </app-card>
-
-          <app-card [hoverable]="true" class="kpi-card">
-            <div class="flex flex-col">
-              <span class="text-sm text-muted uppercase tracking-wider">In Scadenza</span>
-              <span class="text-3xl font-bold mt-1 text-warning">12</span>
-              <span class="text-xs text-muted mt-2">Prossimi 7 giorni</span>
-            </div>
-          </app-card>
-          
-           <app-card [hoverable]="true" class="kpi-card">
-            <div class="flex flex-col">
-              <span class="text-sm text-muted uppercase tracking-wider">Corsi Oggi</span>
-              <span class="text-3xl font-bold mt-1">3</span>
-            </div>
-          </app-card>
-        </div>
-
-        <div class="grid lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2">
-            <app-card title="Corsi di Oggi">
-               <div class="flex flex-col gap-4">
-                 @for (course of todayCourses; track course.id) {
-                   <div class="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg border border-gray-700">
-                     <div>
-                       <div class="font-bold">{{ course.startTime }} - {{ course.name }}</div>
-                       <div class="text-xs text-muted">Istruttore: {{ course.instructor }}</div>
-                     </div>
-                     <div class="flex items-center gap-4">
-                       <span class="text-sm">{{ course.enrolledMembers.length }}/{{ course.maxCapacity }} iscritti</span>
-                       <app-button size="sm" variant="ghost">→</app-button>
-                     </div>
-                   </div>
-                 }
-                 @if (todayCourses.length === 0) {
-                   <p class="text-muted text-center py-4">Nessun corso programmato per oggi.</p>
-                 }
-               </div>
-            </app-card>
-          </div>
-
-          <div>
-            <app-card title="Attenzione Richiesta" [accent]="true">
-              <ul class="space-y-4">
-                <li class="flex gap-3 text-sm">
-                  <span class="text-warning">⚠</span>
-                  <span>12 abbonamenti scadono questa settimana</span>
-                </li>
-                <li class="flex gap-3 text-sm">
-                  <span class="text-info">ℹ</span>
-                  <span>3 nuove richieste di iscrizione in attesa</span>
-                </li>
-              </ul>
-              <div class="mt-6 text-center">
-                <app-button variant="secondary" [fullWidth]="true" size="sm">Vedi tutti gli avvisi</app-button>
-              </div>
-            </app-card>
-          </div>
-        </div>
-      }
-
-      <!-- ATHLETE VIEW -->
-      @if (currentUser()?.role === 'athlete') {
-        <div class="grid lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2">
-            <app-card title="Il Tuo Abbonamento" class="mb-6">
-              <div class="flex justify-between items-end mb-4">
-                <div>
-                  <h3 class="text-xl font-bold text-accent">Open Annuale</h3>
-                  <p class="text-sm text-muted">Scade il: 15 Marzo 2026</p>
-                </div>
-                <div class="text-right">
-                  <span class="text-2xl font-bold">234</span>
-                  <span class="text-xs text-muted block">giorni rimanenti</span>
-                </div>
-              </div>
-              <div class="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
-                <div class="bg-accent h-full w-[65%]"></div>
-              </div>
-            </app-card>
-
-            <app-card title="Prossimi Allenamenti">
-              <div class="flex flex-col gap-3">
-                 <!-- Mock items -->
-                 <div class="flex items-center p-3 bg-gray-800/50 rounded-lg border border-gray-700">
-                   <div class="w-12 text-center font-bold text-accent border-r border-gray-700 pr-3 mr-3">
-                     OGGI
-                   </div>
-                   <div class="flex-1">
-                     <div class="font-bold">17:00 - Boxe Principianti</div>
-                     <div class="text-xs text-muted">Fight Club Milano</div>
-                   </div>
-                   <app-button size="sm" variant="secondary" [disabled]="true">Iscritto ✓</app-button>
-                 </div>
-
-                 <div class="flex items-center p-3 bg-gray-800/50 rounded-lg border border-gray-700">
-                   <div class="w-12 text-center font-bold text-muted border-r border-gray-700 pr-3 mr-3">
-                     DOM
-                   </div>
-                   <div class="flex-1">
-                     <div class="font-bold">18:30 - MMA Avanzato</div>
-                     <div class="text-xs text-muted">Fight Club Milano</div>
-                   </div>
-                   <app-button size="sm" variant="secondary" [disabled]="true">Iscritto ✓</app-button>
-                 </div>
-              </div>
-            </app-card>
-          </div>
-
-          <div>
-            <app-card title="Dalla tua palestra">
-               <div class="p-4 bg-gray-800/30 rounded border border-gray-700 mb-4">
-                 <h4 class="font-bold text-sm mb-1">Chiusura Festiva</h4>
-                 <p class="text-xs text-muted">La palestra rimarrà chiusa il giorno 25 Aprile per festa nazionale.</p>
-                 <span class="text-[10px] text-gray-500 mt-2 block">2 ore fa</span>
-               </div>
-            </app-card>
-          </div>
-        </div>
-      }
+      <div class="user-avatar">
+        {{ currentUser()?.firstName?.charAt(0) || 'U' }}{{ currentUser()?.lastName?.charAt(0) || '' }}
+      </div>
     </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon blue">👥</div>
+        <span class="stat-label">Iscritti Attivi</span>
+      </div>
+      <div class="stat-value">247</div>
+      <div class="stat-change positive">
+        <span>↗</span> +12% questo mese
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon red">📅</div>
+        <span class="stat-label">Lezioni Oggi</span>
+      </div>
+      <div class="stat-value">{{ todayCourses.length }}</div>
+      <div class="stat-change">
+        {{ getTotalEnrolled() }} iscritti totali
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon blue">💰</div>
+        <span class="stat-label">Entrate Mese</span>
+      </div>
+      <div class="stat-value">€ 8,450</div>
+      <div class="stat-change positive">
+        <span>↗</span> +8% rispetto al mese scorso
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon red">🔥</div>
+        <span class="stat-label">Lezioni Settimana</span>
+      </div>
+      <div class="stat-value">42</div>
+      <div class="stat-change">
+        Media: 6 al giorno
+      </div>
+    </div>
+  </div>
+
+  <!-- Prossime Lezioni -->
+  <div class="upcoming-section">
+    <div class="section-header">
+      <h2 class="section-title">Prossime Lezioni di Oggi</h2>
+      <a href="/app/schedule" class="view-all-btn">Vedi tutte →</a>
+    </div>
+
+    @if (todayCourses.length > 0) {
+      <div class="lessons-list">
+        @for (course of todayCourses; track course.id) {
+          <div class="lesson-card" [class]="getLessonClass($index)">
+            <div class="lesson-time">{{ course.startTime }}</div>
+            <div class="lesson-info">
+              <div class="lesson-name">{{ course.name }}</div>
+              <div class="lesson-instructor">
+                <span class="instructor-icon">👤</span>
+                {{ course.instructor }}
+              </div>
+            </div>
+            <div class="lesson-capacity">
+              <div class="capacity-bar">
+                <div class="capacity-fill" [style.width.%]="getCapacityPercentage(course)"></div>
+              </div>
+              <span class="capacity-text">{{ course.enrolledMembers.length }} / {{ course.maxCapacity }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-lessons">
+        <div class="empty-icon">📅</div>
+        <p class="empty-text">Nessun corso programmato per oggi.</p>
+      </div>
+    }
+  </div>
+
+  <!-- Notifiche e Avvisi -->
+  <div class="content-grid">
+    <!-- Notifiche -->
+    <div class="notifications-section">
+      <div class="section-header">
+        <div class="header-with-icon">
+          <div class="header-icon warning">⚠️</div>
+          <h2 class="section-title">Notifiche</h2>
+        </div>
+      </div>
+      
+      <div class="notifications-list">
+        <div class="notification-item warning">
+          <div class="notification-icon">⏰</div>
+          <div class="notification-content">
+            <div class="notification-title">Scadenza Abbonamento</div>
+            <p class="notification-message">5 membri hanno l'abbonamento in scadenza entro 7 giorni</p>
+          </div>
+          <span class="notification-time">Oggi</span>
+        </div>
+
+        <div class="notification-item info">
+          <div class="notification-icon">📧</div>
+          <div class="notification-content">
+            <div class="notification-title">Nuova Iscrizione</div>
+            <p class="notification-message">Marco Bianchi si è iscritto al corso di Boxe</p>
+          </div>
+          <span class="notification-time">2 ore fa</span>
+        </div>
+
+        <div class="notification-item success">
+          <div class="notification-icon">✓</div>
+          <div class="notification-content">
+            <div class="notification-title">Pagamento Ricevuto</div>
+            <p class="notification-message">Abbonamento rinnovato: Laura Verdi - €80</p>
+          </div>
+          <span class="notification-time">5 ore fa</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avvisi Importanti -->
+    <div class="alerts-section">
+      <div class="section-header">
+        <div class="header-with-icon">
+          <div class="header-icon info">📢</div>
+          <h2 class="section-title">Avvisi</h2>
+        </div>
+      </div>
+
+      <div class="alerts-list">
+        <div class="alert-card important">
+          <div class="alert-badge">Importante</div>
+          <div class="alert-content">
+            <h3 class="alert-title">Manutenzione Programmata</h3>
+            <p class="alert-message">La palestra rimarrà chiusa il giorno 25 Aprile per festa nazionale.</p>
+          </div>
+        </div>
+
+        <div class="alert-card reminder">
+          <div class="alert-badge">Promemoria</div>
+          <div class="alert-content">
+            <h3 class="alert-title">Riunione Staff</h3>
+            <p class="alert-message">Mercoledì 28 Gennaio alle ore 14:00 - Sala riunioni</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions (solo per Manager) -->
+  @if (currentUser()?.role === 'manager') {
+    <div class="quick-actions-section">
+      <h2 class="section-title">Azioni Rapide</h2>
+      <div class="quick-actions">
+        <button class="action-btn blue">
+          <div class="action-icon">➕</div>
+          <span class="action-label">Nuovo Iscritto</span>
+        </button>
+        <button class="action-btn red">
+          <div class="action-icon">🥊</div>
+          <span class="action-label">Nuova Lezione</span>
+        </button>
+        <button class="action-btn blue">
+          <div class="action-icon">💳</div>
+          <span class="action-label">Registra Pagamento</span>
+        </button>
+        <button class="action-btn red">
+          <div class="action-icon">📊</div>
+          <span class="action-label">Report Mensile</span>
+        </button>
+      </div>
+    </div>
+  }
+</div>
