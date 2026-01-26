@@ -1,205 +1,302 @@
-<div class="settings-container fade-in">
-    <div class="flex flex-col md:flex-row gap-6">
-        <!-- Sidebar Navigation -->
-        <div class="w-full md:w-64 flex-shrink-0">
-            <app-card class="sticky top-24">
-                <nav class="flex flex-col gap-1">
-                    <button (click)="setActiveTab('profile')" [class.active]="activeTab() === 'profile'"
-                        class="nav-item">
-                        <span class="text-xl">👤</span>
-                        <span class="font-medium">Profilo</span>
-                    </button>
-                    <button (click)="setActiveTab('app')" [class.active]="activeTab() === 'app'" class="nav-item">
-                        <span class="text-xl">⚙️</span>
-                        <span class="font-medium">Preferenze</span>
-                    </button>
-                    <button (click)="setActiveTab('security')" [class.active]="activeTab() === 'security'"
-                        class="nav-item">
-                        <span class="text-xl">🔒</span>
-                        <span class="font-medium">Sicurezza</span>
-                    </button>
-
-                    <div class="h-px bg-gray-700 my-2"></div>
-
-                    <button (click)="logout()" class="nav-item text-red-400 hover:bg-red-900/20">
-                        <span class="text-xl">🚪</span>
-                        <span class="font-medium">Logout</span>
-                    </button>
-                </nav>
-            </app-card>
+<div class="settings-container">
+  <!-- Header -->
+  <div class="settings-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">Impostazioni</h1>
+        <p class="page-subtitle">Gestisci il tuo account e le preferenze</p>
+      </div>
+      <div class="user-profile-badge">
+        <div class="profile-avatar">
+          {{ profileData().firstName.charAt(0) }}{{ profileData().lastName.charAt(0) }}
         </div>
-
-        <!-- Main Content Area -->
-        <div class="flex-1">
-            <!-- Profile Tab -->
-            @if (activeTab() === 'profile') {
-            <div class="animate-enter">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-white">Il mio Profilo</h2>
-                    <p class="text-gray-400">Gestisci le tue informazioni personali</p>
-                </div>
-
-                <app-card>
-                    <div
-                        class="flex flex-col items-center sm:flex-row gap-6 mb-8 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
-                        <div class="relative group cursor-pointer">
-                            <div
-                                class="w-24 h-24 rounded-full bg-accent text-white flex items-center justify-center text-3xl font-bold border-4 border-gray-800 shadow-xl overflow-hidden">
-                                {{ profileData().firstName.charAt(0) }}{{ profileData().lastName.charAt(0) }}
-                            </div>
-                            <div
-                                class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <span>📷</span>
-                            </div>
-                        </div>
-                        <div class="text-center sm:text-left">
-                            <h3 class="text-xl font-bold">{{ profileData().firstName }} {{ profileData().lastName }}
-                            </h3>
-                            <p class="text-accent mb-2">Atleta Intermedio</p>
-                            <button class="text-xs bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded transition-colors">
-                                Cambia Foto
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <app-input label="Nome" placeholder="Il tuo nome" [(ngModel)]="profileData().firstName">
-                        </app-input>
-                        <app-input label="Cognome" placeholder="Il tuo cognome" [(ngModel)]="profileData().lastName">
-                        </app-input>
-                        <app-input label="Email" type="email" placeholder="email@esempio.com"
-                            [(ngModel)]="profileData().email">
-                        </app-input>
-                        <app-input label="Telefono" type="tel" placeholder="+39 ..." [(ngModel)]="profileData().phone">
-                        </app-input>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Bio</label>
-                        <textarea
-                            class="w-full bg-gray-800 border-gray-700 rounded-md text-white focus:ring-accent focus:border-accent"
-                            rows="3" [(ngModel)]="profileData().bio"></textarea>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <app-button (click)="saveProfile()" [loading]="isLoading">
-                            Salva Modifiche
-                        </app-button>
-                    </div>
-                </app-card>
-            </div>
-            }
-
-            <!-- App Settings Tab -->
-            @if (activeTab() === 'app') {
-            <div class="animate-enter">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-white">Preferenze App</h2>
-                    <p class="text-gray-400">Personalizza la tua esperienza</p>
-                </div>
-
-                <app-card class="mb-6">
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                        <span>🎨</span> Aspetto
-                    </h3>
-                    <div class="flex items-center justify-between p-3 bg-gray-800/30 rounded mb-2">
-                        <div>
-                            <div class="font-bold">Dark Mode</div>
-                            <div class="text-xs text-gray-400">Usa il tema scuro per l'interfaccia</div>
-                        </div>
-                        <!-- Mock Toggle -->
-                        <div class="w-12 h-6 rounded-full relative cursor-pointer transition-colors"
-                            [class.bg-accent]="appSettings().darkMode" [class.bg-gray-600]="!appSettings().darkMode"
-                            (click)="appSettings().darkMode = !appSettings().darkMode">
-                            <div class="absolute top-1 w-4 h-4 rounded-full bg-white transition-all duration-200"
-                                [class.left-7]="appSettings().darkMode" [class.left-1]="!appSettings().darkMode"></div>
-                        </div>
-                    </div>
-                </app-card>
-
-                <app-card>
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                        <span>🔔</span> Notifiche
-                    </h3>
-
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-2">
-                            <div>
-                                <div class="font-medium">Notifiche Push</div>
-                                <div class="text-xs text-gray-400">Ricevi avvisi per le lezioni</div>
-                            </div>
-                            <input type="checkbox" [(ngModel)]="appSettings().notifications"
-                                class="w-5 h-5 accent-accent">
-                        </div>
-                        <div class="h-px bg-gray-800"></div>
-
-                        <div class="flex items-center justify-between p-2">
-                            <div>
-                                <div class="font-medium">Email Newsletter</div>
-                                <div class="text-xs text-gray-400">Ricevi novità e offerte</div>
-                            </div>
-                            <input type="checkbox" [(ngModel)]="appSettings().emailUpdates"
-                                class="w-5 h-5 accent-accent">
-                        </div>
-                        <div class="h-px bg-gray-800"></div>
-
-                        <div class="flex items-center justify-between p-2">
-                            <div>
-                                <div class="font-medium">Profilo Pubblico</div>
-                                <div class="text-xs text-gray-400">Mostra il tuo profilo agli altri membri</div>
-                            </div>
-                            <input type="checkbox" [(ngModel)]="appSettings().publicProfile"
-                                class="w-5 h-5 accent-accent">
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end mt-6">
-                        <app-button (click)="saveAppSettings()" [loading]="isLoading">
-                            Salva Preferenze
-                        </app-button>
-                    </div>
-                </app-card>
-            </div>
-            }
-
-            <!-- Security Tab -->
-            @if (activeTab() === 'security') {
-            <div class="animate-enter">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-white">Sicurezza</h2>
-                    <p class="text-gray-400">Gestisci password e accessi</p>
-                </div>
-
-                <app-card>
-                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                        <span>🔑</span> Modifica Password
-                    </h3>
-
-                    <div class="flex flex-col gap-4 max-w-md">
-                        <app-input label="Password Attuale" type="password"
-                            [(ngModel)]="securityData().currentPassword">
-                        </app-input>
-
-                        <app-input label="Nuova Password" type="password" [(ngModel)]="securityData().newPassword">
-                        </app-input>
-
-                        <app-input label="Conferma Password" type="password"
-                            [(ngModel)]="securityData().confirmPassword">
-                        </app-input>
-                    </div>
-
-                    <div class="mt-4 p-3 bg-yellow-900/20 border border-yellow-600/30 rounded text-sm text-yellow-200">
-                        ⚠️ Assicurati di usare una password sicura con almeno 8 caratteri.
-                    </div>
-
-                    <div class="flex justify-end mt-6">
-                        <app-button (click)="updatePassword()" [loading]="isLoading">
-                            Aggiorna Password
-                        </app-button>
-                    </div>
-                </app-card>
-            </div>
-            }
+        <div class="profile-info">
+          <div class="profile-name">{{ profileData().firstName }} {{ profileData().lastName }}</div>
+          <div class="profile-role">Atleta Intermedio</div>
         </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs-container">
+    <div class="tabs-nav">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab() === 'profile'"
+        (click)="setActiveTab('profile')"
+      >
+        <span class="tab-icon">👤</span>
+        <span class="tab-label">Profilo</span>
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab() === 'app'"
+        (click)="setActiveTab('app')"
+      >
+        <span class="tab-icon">⚙️</span>
+        <span class="tab-label">Preferenze</span>
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab() === 'security'"
+        (click)="setActiveTab('security')"
+      >
+        <span class="tab-icon">🔒</span>
+        <span class="tab-label">Sicurezza</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Profile Tab -->
+    @if (activeTab() === 'profile') {
+      <div class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">Informazioni Personali</h2>
+          <p class="section-subtitle">Gestisci le tue informazioni personali</p>
+        </div>
+
+        <div class="form-card">
+          <div class="form-grid">
+            <div class="form-row">
+              <div class="form-field">
+                <label class="field-label">NOME</label>
+                <input 
+                  type="text" 
+                  class="field-input"
+                  [ngModel]="profileData().firstName"
+                  (ngModelChange)="profileData.set({...profileData(), firstName: $event})"
+                />
+              </div>
+
+              <div class="form-field">
+                <label class="field-label">COGNOME</label>
+                <input 
+                  type="text" 
+                  class="field-input"
+                  [ngModel]="profileData().lastName"
+                  (ngModelChange)="profileData.set({...profileData(), lastName: $event})"
+                />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="field-label">EMAIL</label>
+              <input 
+                type="email" 
+                class="field-input"
+                [ngModel]="profileData().email"
+                (ngModelChange)="profileData.set({...profileData(), email: $event})"
+              />
+            </div>
+
+            <div class="form-field">
+              <label class="field-label">TELEFONO</label>
+              <input 
+                type="tel" 
+                class="field-input"
+                [ngModel]="profileData().phone"
+                (ngModelChange)="profileData.set({...profileData(), phone: $event})"
+              />
+            </div>
+
+            <div class="form-field">
+              <label class="field-label">BIO</label>
+              <textarea 
+                class="field-textarea"
+                rows="4"
+                [ngModel]="profileData().bio"
+                (ngModelChange)="profileData.set({...profileData(), bio: $event})"
+                placeholder="Parlaci di te..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="action-btn save-btn" (click)="saveProfile()" [disabled]="isLoading">
+              @if (isLoading) {
+                <span>⏳ Salvataggio...</span>
+              } @else {
+                <span>💾 Salva Modifiche</span>
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- App Settings Tab -->
+    @if (activeTab() === 'app') {
+      <div class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">Preferenze Applicazione</h2>
+          <p class="section-subtitle">Personalizza la tua esperienza</p>
+        </div>
+
+        <div class="settings-card">
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-icon blue">🌙</div>
+              <div class="setting-details">
+                <h3 class="setting-title">Modalità Scura</h3>
+                <p class="setting-description">Attiva il tema scuro per ridurre l'affaticamento degli occhi</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input 
+                type="checkbox" 
+                [checked]="appSettings().darkMode"
+                (change)="appSettings.set({...appSettings(), darkMode: !appSettings().darkMode})"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-icon red">🔔</div>
+              <div class="setting-details">
+                <h3 class="setting-title">Notifiche Push</h3>
+                <p class="setting-description">Ricevi notifiche sulle lezioni e gli eventi</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input 
+                type="checkbox" 
+                [checked]="appSettings().notifications"
+                (change)="appSettings.set({...appSettings(), notifications: !appSettings().notifications})"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-icon blue">📧</div>
+              <div class="setting-details">
+                <h3 class="setting-title">Aggiornamenti via Email</h3>
+                <p class="setting-description">Ricevi newsletter e aggiornamenti periodici</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input 
+                type="checkbox" 
+                [checked]="appSettings().emailUpdates"
+                (change)="appSettings.set({...appSettings(), emailUpdates: !appSettings().emailUpdates})"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <div class="setting-info">
+              <div class="setting-icon red">🌍</div>
+              <div class="setting-details">
+                <h3 class="setting-title">Profilo Pubblico</h3>
+                <p class="setting-description">Rendi visibile il tuo profilo agli altri atleti</p>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input 
+                type="checkbox" 
+                [checked]="appSettings().publicProfile"
+                (change)="appSettings.set({...appSettings(), publicProfile: !appSettings().publicProfile})"
+              />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="action-btn save-btn" (click)="saveAppSettings()" [disabled]="isLoading">
+              @if (isLoading) {
+                <span>⏳ Salvataggio...</span>
+              } @else {
+                <span>💾 Salva Preferenze</span>
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Security Tab -->
+    @if (activeTab() === 'security') {
+      <div class="content-section">
+        <div class="section-header">
+          <h2 class="section-title">Sicurezza e Accesso</h2>
+          <p class="section-subtitle">Gestisci password e accessi</p>
+        </div>
+
+        <div class="form-card">
+          <div class="security-alert">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-content">
+              <h4 class="alert-title">Modifica Password</h4>
+              <p class="alert-message">Assicurati di utilizzare una password sicura con almeno 8 caratteri</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="field-label">PASSWORD ATTUALE</label>
+              <input 
+                type="password" 
+                class="field-input"
+                [ngModel]="securityData().currentPassword"
+                (ngModelChange)="securityData.set({...securityData(), currentPassword: $event})"
+                placeholder="Inserisci password attuale"
+              />
+            </div>
+
+            <div class="form-field">
+              <label class="field-label">NUOVA PASSWORD</label>
+              <input 
+                type="password" 
+                class="field-input"
+                [ngModel]="securityData().newPassword"
+                (ngModelChange)="securityData.set({...securityData(), newPassword: $event})"
+                placeholder="Inserisci nuova password"
+              />
+            </div>
+
+            <div class="form-field">
+              <label class="field-label">CONFERMA PASSWORD</label>
+              <input 
+                type="password" 
+                class="field-input"
+                [ngModel]="securityData().confirmPassword"
+                (ngModelChange)="securityData.set({...securityData(), confirmPassword: $event})"
+                placeholder="Conferma nuova password"
+              />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="action-btn save-btn" (click)="updatePassword()" [disabled]="isLoading">
+              @if (isLoading) {
+                <span>⏳ Aggiornamento...</span>
+              } @else {
+                <span>🔒 Aggiorna Password</span>
+              }
+            </button>
+          </div>
+        </div>
+
+        <!-- Logout Section -->
+        <div class="logout-section">
+          <div class="logout-card">
+            <div class="logout-info">
+              <h3 class="logout-title">Disconnetti Account</h3>
+              <p class="logout-description">Esci dall'applicazione su questo dispositivo</p>
+            </div>
+            <button class="action-btn logout-btn" (click)="logout()">
+              <span>🚪 Disconnetti</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
 </div>
