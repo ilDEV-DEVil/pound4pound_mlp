@@ -1,3 +1,542 @@
+// Design Tokens inline (standalone)
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+$space-12: 3rem;
+$space-16: 4rem;
+
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+$text-3xl: 1.875rem;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+
+$radius-lg: 0.5rem;
+$radius-xl: 0.75rem;
+$radius-2xl: 1rem;
+$radius-full: 9999px;
+$radius-md: 0.375rem;
+
+$app-bg: #C7D6D5;
+$brand-red: #E71D36;
+$brand-blue: #3066BE;
+$brand-blue-dark: #255198;
+$brand-red-glow: rgba(231, 29, 54, 0.2);
+$brand-blue-glow: rgba(48, 102, 190, 0.2);
+$text-dark: #1A1D21;
+$text-subtle: #4A5568;
+$border-light: rgba(0, 0, 0, 0.08);
+
+// Sport Colors
+$boxing-color: #dc2626;
+$kickboxing-color: #ea580c;
+$mma-color: #7c3aed;
+$muaythai-color: #0891b2;
+$bjj-color: #059669;
+
 .courses-container {
-    padding: 1.5rem;
+  background: $app-bg;
+  min-height: 100vh;
+  padding: $space-8;
+}
+
+// Header
+.courses-header {
+  margin-bottom: $space-8;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid $border-light;
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.page-title {
+  font-size: $text-3xl;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0 0 $space-1 0;
+}
+
+.page-subtitle {
+  font-size: $text-base;
+  color: $text-subtle;
+  margin: 0;
+}
+
+// Form Card
+.form-card {
+  background: white;
+  border: 1px solid $border-light;
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  margin-bottom: $space-8;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $space-6;
+  padding-bottom: $space-4;
+  border-bottom: 2px solid $border-light;
+}
+
+.form-title {
+  font-size: $text-2xl;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0;
+}
+
+.close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-full;
+  background: rgba(0, 0, 0, 0.04);
+  border: none;
+  color: $text-subtle;
+  font-size: $text-xl;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba($brand-red, 0.1);
+    color: $brand-red;
+    transform: rotate(90deg);
+  }
+}
+
+// Form
+.course-form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.field-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-subtle;
+  font-weight: $font-bold;
+}
+
+.select-field {
+  width: 100%;
+  padding: $space-3 $space-4;
+  background: white;
+  border: 2px solid $border-light;
+  border-radius: $radius-xl;
+  color: $text-dark;
+  font-size: $text-base;
+  font-weight: $font-medium;
+  cursor: pointer;
+  transition: all 0.3s;
+  outline: none;
+
+  &:hover {
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+
+  &:focus {
+    border-color: $brand-blue;
+    box-shadow: 0 0 0 3px $brand-blue-glow;
+  }
+
+  option {
+    padding: $space-2;
+  }
+}
+
+.textarea-field {
+  width: 100%;
+  padding: $space-3 $space-4;
+  background: white;
+  border: 2px solid $border-light;
+  border-radius: $radius-xl;
+  color: $text-dark;
+  font-size: $text-base;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.3s;
+  outline: none;
+
+  &::placeholder {
+    color: $text-subtle;
+    opacity: 0.5;
+  }
+
+  &:focus {
+    border-color: $brand-blue;
+    box-shadow: 0 0 0 3px $brand-blue-glow;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-3;
+  padding-top: $space-4;
+  border-top: 1px solid $border-light;
+}
+
+// Courses Grid
+.courses-content {
+  min-height: 400px;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: $space-6;
+}
+
+// Course Card
+.course-card {
+  background: white;
+  border: 1px solid $border-light;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, $brand-red, $brand-blue);
+    transition: height 0.3s;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+
+    &::before {
+      height: 8px;
+    }
+  }
+
+  // Sport-specific colors
+  &.sport-boxing::before {
+    background: $boxing-color;
+  }
+
+  &.sport-kickboxing::before {
+    background: $kickboxing-color;
+  }
+
+  &.sport-mma::before {
+    background: $mma-color;
+  }
+
+  &.sport-muaythai::before {
+    background: $muaythai-color;
+  }
+
+  &.sport-bjj::before {
+    background: $bjj-color;
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $space-6 $space-6 $space-4;
+}
+
+.sport-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: $radius-xl;
+  background: linear-gradient(135deg, $brand-red, $brand-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s;
+}
+
+.sport-boxing .sport-badge {
+  background: linear-gradient(135deg, $boxing-color, darken($boxing-color, 10%));
+}
+
+.sport-kickboxing .sport-badge {
+  background: linear-gradient(135deg, $kickboxing-color, darken($kickboxing-color, 10%));
+}
+
+.sport-mma .sport-badge {
+  background: linear-gradient(135deg, $mma-color, darken($mma-color, 10%));
+}
+
+.sport-muaythai .sport-badge {
+  background: linear-gradient(135deg, $muaythai-color, darken($muaythai-color, 10%));
+}
+
+.sport-bjj .sport-badge {
+  background: linear-gradient(135deg, $bjj-color, darken($bjj-color, 10%));
+}
+
+.course-card:hover .sport-badge {
+  transform: scale(1.05) rotate(5deg);
+}
+
+.sport-icon {
+  font-size: 32px;
+}
+
+.sport-label {
+  padding: $space-2 $space-4;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: $radius-full;
+  font-size: 11px;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $text-subtle;
+}
+
+.card-body {
+  padding: 0 $space-6 $space-6;
+}
+
+.course-name {
+  font-size: $text-2xl;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0 0 $space-4 0;
+}
+
+.instructor-info {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  background: rgba($brand-blue, 0.05);
+  border-radius: $radius-lg;
+  margin-bottom: $space-4;
+}
+
+.instructor-icon {
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+.instructor-name {
+  font-size: $text-sm;
+  font-weight: $font-semibold;
+  color: $text-dark;
+}
+
+.course-description {
+  font-size: $text-sm;
+  color: $text-subtle;
+  margin: 0 0 $space-5 0;
+  line-height: 1.6;
+}
+
+.course-stats {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.stat-badge {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: $radius-lg;
+}
+
+.stat-icon {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+.stat-text {
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  color: $text-dark;
+}
+
+.card-footer {
+  display: flex;
+  gap: $space-2;
+  padding: $space-5 $space-6 $space-6;
+  border-top: 1px solid $border-light;
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: $space-3;
+  border: 2px solid $border-light;
+  background: white;
+  border-radius: $radius-lg;
+  font-size: $text-sm;
+  font-weight: $font-bold;
+  color: $text-dark;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  span {
+    font-size: 16px;
+  }
+
+  &.view:hover {
+    border-color: $brand-blue;
+    background: rgba($brand-blue, 0.05);
+    color: $brand-blue;
+    transform: translateY(-2px);
+  }
+
+  &.edit:hover {
+    border-color: $brand-red;
+    background: rgba($brand-red, 0.05);
+    color: $brand-red;
+    transform: translateY(-2px);
+  }
+}
+
+// Empty State
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-16 $space-8;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px dashed $border-light;
+  border-radius: $radius-2xl;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: $space-5;
+  opacity: 0.5;
+}
+
+.empty-title {
+  font-size: $text-2xl;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0 0 $space-2 0;
+}
+
+.empty-message {
+  font-size: $text-base;
+  color: $text-subtle;
+  margin: 0 0 $space-6 0;
+  max-width: 400px;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .courses-container {
+    padding: $space-4;
+  }
+
+  .header-top {
+    flex-direction: column;
+    gap: $space-4;
+    align-items: stretch;
+
+    app-button {
+      width: 100%;
+    }
+  }
+
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .card-footer {
+    flex-direction: column;
+  }
+}
+
+// Animazione per l'ingresso delle card
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.course-card {
+  animation: fadeInUp 0.4s ease-out backwards;
+
+  @for $i from 1 through 12 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
 }

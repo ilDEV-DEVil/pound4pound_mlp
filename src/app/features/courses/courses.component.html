@@ -1,86 +1,149 @@
 <div class="courses-container">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-        <div>
-            <h1 class="text-2xl font-bold mb-1">Gestione Corsi</h1>
-            <p class="text-muted text-sm">Definisci i corsi offerti dalla tua palestra</p>
-        </div>
-        <app-button (click)="openCreateMode()">
-            + Nuovo Corso
-        </app-button>
+  <!-- Header -->
+  <div class="courses-header">
+    <div class="header-top">
+      <div>
+        <h1 class="page-title">Gestione Corsi</h1>
+        <p class="page-subtitle">Organizza e gestisci i corsi della tua palestra</p>
+      </div>
+      <app-button (clicked)="openCreateMode()">
+        <span>+</span> Nuovo Corso
+      </app-button>
     </div>
+  </div>
 
-    <div class="grid lg:grid-cols-3 gap-6">
-        <!-- List of Courses -->
-        <div class="lg:col-span-2 grid gap-4">
-            @for (course of courses(); track course.id) {
-            <app-card [hoverable]="true" class="group relative overflow-hidden">
-                <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center relative z-10">
-                    <div class="flex items-start gap-4">
-                        <div
-                            class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center text-2xl border border-gray-700">
-                            {{ getSportIcon(course.sport) }}
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-white">{{ course.name }}</h3>
-                            <p class="text-sm text-muted mb-1">{{ course.description }}</p>
-                            <div class="flex gap-4 text-xs text-gray-400">
-                                <span>Istruttore: <strong class="text-gray-300">{{ course.instructor }}</strong></span>
-                                <span>Capienza: <strong class="text-gray-300">{{ course.maxCapacity }}</strong></span>
-                            </div>
-                        </div>
-                    </div>
+  <!-- Create Form -->
+  @if (isCreating()) {
+    <div class="form-card">
+      <div class="form-header">
+        <h2 class="form-title">Crea Nuovo Corso</h2>
+        <button class="close-btn" (click)="cancelCreate()">✕</button>
+      </div>
 
-                    <div
-                        class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity self-end sm:self-center">
-                        <button class="p-2 text-muted hover:text-white transition-colors" title="Modifica">✎</button>
-                        <button class="p-2 text-red-500 hover:text-red-400 transition-colors"
-                            title="Elimina">🗑</button>
-                    </div>
-                </div>
-            </app-card>
-            } @empty {
-            <div class="p-8 text-center border border-dashed border-gray-700 rounded text-muted">
-                Nessun corso definito.
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="course-form">
+        <div class="form-grid">
+          <div class="form-row">
+            <div class="form-field">
+              <app-input
+                label="NOME CORSO"
+                formControlName="name"
+                placeholder="es. Boxe Principianti"
+              ></app-input>
             </div>
-            }
+
+            <div class="form-field">
+              <app-input
+                label="ISTRUTTORE"
+                formControlName="instructor"
+                placeholder="es. Marco Rossi"
+              ></app-input>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="field-label">SPORT</label>
+              <select formControlName="sport" class="select-field">
+                <option value="boxing">🥊 Boxe</option>
+                <option value="kickboxing">🦶 Kickboxing</option>
+                <option value="mma">🤼 MMA</option>
+                <option value="muaythai">🥋 Muay Thai</option>
+                <option value="bjj">🐍 Brazilian Jiu-Jitsu</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <app-input
+                label="CAPIENZA MASSIMA"
+                type="number"
+                formControlName="maxCapacity"
+                placeholder="20"
+              ></app-input>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">DESCRIZIONE</label>
+            <textarea
+              formControlName="description"
+              placeholder="Descrizione del corso (opzionale)"
+              rows="3"
+              class="textarea-field"
+            ></textarea>
+          </div>
         </div>
 
-        <!-- Create/Edit Form (Sidebar) -->
-        @if (isCreating()) {
-        <div class="lg:col-span-1">
-            <app-card [headerTemplate]="true" title="Nuovo Corso">
-                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
-                    <app-input label="Nome Corso" placeholder="Es. Boxe Avanzata" formControlName="name"></app-input>
-
-                    <div class="flex flex-col gap-1">
-                        <label class="text-sm font-medium text-gray-300">Sport</label>
-                        <select formControlName="sport"
-                            class="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-all">
-                            <option value="boxing">Boxe</option>
-                            <option value="kickboxing">Kickboxing</option>
-                            <option value="mma">MMA</option>
-                            <option value="muaythai">Muay Thai</option>
-                            <option value="bjj">BJJ / Grappling</option>
-                        </select>
-                    </div>
-
-                    <app-input label="Istruttore" placeholder="Nome Cognome" formControlName="instructor"></app-input>
-
-                    <app-input label="Capienza Max" type="number" placeholder="20"
-                        formControlName="maxCapacity"></app-input>
-
-                    <app-input label="Descrizione" placeholder="Breve descrizione..."
-                        formControlName="description"></app-input>
-
-                    <div class="flex gap-2 mt-2">
-                        <app-button type="button" variant="ghost" [fullWidth]="true"
-                            (click)="cancelCreate()">Annulla</app-button>
-                        <app-button type="submit" [loading]="loading" [fullWidth]="true"
-                            [disabled]="form.invalid">Salva</app-button>
-                    </div>
-                </form>
-            </app-card>
+        <div class="form-actions">
+          <app-button variant="secondary" type="button" (clicked)="cancelCreate()">
+            Annulla
+          </app-button>
+          <app-button type="submit" [loading]="loading" [disabled]="form.invalid">
+            Crea Corso
+          </app-button>
         </div>
-        }
+      </form>
     </div>
+  }
+
+  <!-- Courses Grid -->
+  <div class="courses-content">
+    @if (courses().length > 0) {
+      <div class="courses-grid">
+        @for (course of courses(); track course.id) {
+          <div class="course-card" [class]="'sport-' + course.sport">
+            <div class="card-header">
+              <div class="sport-badge">
+                <span class="sport-icon">{{ getSportIcon(course.sport) }}</span>
+              </div>
+              <div class="sport-label">{{ getSportLabel(course.sport) }}</div>
+            </div>
+
+            <div class="card-body">
+              <h3 class="course-name">{{ course.name }}</h3>
+              
+              <div class="instructor-info">
+                <span class="instructor-icon">👤</span>
+                <span class="instructor-name">{{ course.instructor }}</span>
+              </div>
+
+              @if (course.description) {
+                <p class="course-description">{{ course.description }}</p>
+              }
+
+              <div class="course-stats">
+                <div class="stat-badge">
+                  <span class="stat-icon">👥</span>
+                  <span class="stat-text">Max {{ course.maxCapacity }} persone</span>
+                </div>
+                <div class="stat-badge">
+                  <span class="stat-icon">📅</span>
+                  <span class="stat-text">{{ getScheduleCount(course) }} lezioni/settimana</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button class="action-btn view">
+                <span>👁️</span> Dettagli
+              </button>
+              <button class="action-btn edit">
+                <span>✏️</span> Modifica
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <div class="empty-icon">🥊</div>
+        <h3 class="empty-title">Nessun corso disponibile</h3>
+        <p class="empty-message">
+          Inizia creando il tuo primo corso per organizzare le attività della palestra.
+        </p>
+        <app-button (clicked)="openCreateMode()">
+          Crea primo corso
+        </app-button>
+      </div>
+    }
+  </div>
 </div>

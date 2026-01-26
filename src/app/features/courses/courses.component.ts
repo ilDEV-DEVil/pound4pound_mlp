@@ -50,10 +50,8 @@ export class CoursesComponent {
 
   onSubmit() {
     if (this.form.invalid) return;
-
     this.loading = true;
     const val = this.form.value;
-
     this.courseService.addCourse({
       name: val.name!,
       sport: val.sport as Sport,
@@ -77,5 +75,20 @@ export class CoursesComponent {
       bjj: '🐍'
     };
     return icons[sport] || '❓';
+  }
+
+  getSportLabel(sport: Sport): string {
+    const labels: Record<Sport, string> = {
+      boxing: 'Boxe',
+      kickboxing: 'Kickboxing',
+      mma: 'MMA',
+      muaythai: 'Muay Thai',
+      bjj: 'BJJ'
+    };
+    return labels[sport] || sport;
+  }
+
+  getScheduleCount(course: Course): number {
+    return course.schedule?.length || 0;
   }
 }
