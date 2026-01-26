@@ -1,81 +1,75 @@
 <div class="member-detail-container">
   <!-- Header / Back Navigation -->
-  <div class="mb-6">
-    <a routerLink="/app/members" class="text-muted hover:text-white text-sm flex items-center gap-2 mb-2">
+  <div class="header-section">
+    <a routerLink="/app/members" class="back-link">
       <span>←</span> Torna alla lista
     </a>
 
     @if (member(); as m) {
-    <div class="flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <div
-          class="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-bold text-gray-400">
+    <div class="member-header">
+      <div class="member-info">
+        <div class="member-avatar">
           {{ getInitials(m) }}
         </div>
         <div>
-          <h1 class="text-3xl font-bold">{{ m.firstName }} {{ m.lastName }}</h1>
-          <p class="text-muted">Iscritto dal {{ m.joinedAt | date:'longDate' }}</p>
+          <h1 class="member-name">{{ m.firstName }} {{ m.lastName }}</h1>
+          <p class="member-joined">Iscritto dal {{ m.joinedAt | date:'longDate' }}</p>
         </div>
       </div>
-      <div class="flex gap-2">
+      <div class="header-actions">
         <app-button variant="secondary" size="sm">Modifica</app-button>
         <app-button variant="danger" size="sm">Elimina</app-button>
       </div>
     </div>
     } @else {
-    <div class="animate-pulse flex items-center gap-4">
-      <div class="w-16 h-16 rounded-full bg-gray-800"></div>
-      <div class="h-8 bg-gray-800 w-48 rounded"></div>
+    <div class="skeleton-loader">
+      <div class="skeleton-avatar"></div>
+      <div class="skeleton-text"></div>
     </div>
     }
   </div>
 
   @if (member(); as m) {
-  <div class="grid lg:grid-cols-3 gap-6">
+  <div class="content-grid">
     <!-- Main Info -->
-    <div class="lg:col-span-2 flex flex-col gap-6">
+    <div class="main-column">
 
       <!-- Subscription Status -->
       <app-card [hoverable]="false" [headerTemplate]="true">
-        <div card-header class="flex justify-between items-center">
-          <h3 class="font-bold text-lg">Stato Abbonamento</h3>
+        <div card-header class="card-header-content">
+          <h3 class="card-title-large">Stato Abbonamento</h3>
           @if (activeSubscription()) {
-          <span
-            class="px-3 py-1 rounded bg-green-900/40 text-green-400 border border-green-900 text-sm font-bold">ATTIVO</span>
+          <span class="badge badge-active">ATTIVO</span>
           } @else {
-          <span class="px-3 py-1 rounded bg-red-900/40 text-red-400 border border-red-900 text-sm font-bold">SCADUTO /
-            ASSENTE</span>
+          <span class="badge badge-expired">SCADUTO / ASSENTE</span>
           }
         </div>
 
-        <div class="flex flex-col gap-4">
+        <div class="subscription-content">
           @if (activeSubscription(); as sub) {
-          <div class="p-4 bg-gray-800/50 rounded border border-gray-700 relative overflow-hidden">
-            <div
-              class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-accent rotate-12 pointer-events-none">
-              P4P
-            </div>
-            <div class="relative z-10">
-              <div class="text-sm text-muted uppercase tracking-wider mb-1">Piano Attuale</div>
-              <div class="text-2xl font-bold text-white mb-2">{{ sub.name }}</div>
-              <div class="flex gap-6 text-sm">
+          <div class="subscription-card">
+            <div class="subscription-watermark">P4P</div>
+            <div class="subscription-details">
+              <div class="subscription-label">Piano Attuale</div>
+              <div class="subscription-name">{{ sub.name }}</div>
+              <div class="subscription-info">
                 <div>
-                  <span class="text-muted block">Prezzo</span>
-                  <span class="font-bold">{{ sub.price | currency:'EUR' }} / {{ sub.durationMonths }} mesi</span>
+                  <span class="info-label">Prezzo</span>
+                  <span class="info-value">{{ sub.price | currency:'EUR' }} / {{ sub.durationMonths }} mesi</span>
                 </div>
                 <div>
-                  <span class="text-muted block">Scadenza</span>
-                  <span class="font-bold text-white">{{ getExpiryDate(m) | date:'dd MMM yyyy' }}</span>
+                  <span class="info-label">Scadenza</span>
+                  <span class="info-value expiry">{{ getExpiryDate(m) | date:'dd MMM yyyy' }}</span>
                 </div>
               </div>
             </div>
           </div>
-          <div class="flex justify-end">
+          <div class="subscription-actions">
             <app-button size="sm">Rinnova Abbonamento</app-button>
           </div>
           } @else {
-          <div class="text-center py-8 bg-gray-800/30 rounded border border-dashed border-gray-700">
-            <p class="text-muted mb-4">L'utente non ha un abbonamento attivo.</p>
+          <div class="empty-subscription">
+            <p class="empty-message">L'utente non ha un abbonamento attivo.</p>
             <app-button>Assegna Abbonamento</app-button>
           </div>
           }
@@ -84,48 +78,143 @@
 
       <!-- Anagraphic Data -->
       <app-card title="Dati Personali">
-        <div class="grid md:grid-cols-2 gap-y-4 gap-x-8">
-          <div>
-            <span class="block text-xs text-muted uppercase">Email</span>
-            <a [href]="'mailto:' + m.email" class="text-accent hover:underline">{{ m.email }}</a>
+        <div class="data-grid">
+          <div class="data-item">
+            <span class="data-label">Email</span>
+            <a [href]="'mailto:' + m.email" class="data-value data-link">{{ m.email }}</a>
           </div>
-          <div>
-            <span class="block text-xs text-muted uppercase">Telefono</span>
-            <span class="text-white">{{ m.phone || 'Non specificato' }}</span>
+          <div class="data-item">
+            <span class="data-label">Telefono</span>
+            <span class="data-value">{{ m.phone || 'Non specificato' }}</span>
           </div>
-          <div>
-            <span class="block text-xs text-muted uppercase">Data di Nascita</span>
-            <span class="text-white">01 Gennaio 1990 (Mock)</span>
+          <div class="data-item">
+            <span class="data-label">Data di Nascita</span>
+            <span class="data-value">01 Gennaio 1990 (Mock)</span>
           </div>
-          <div>
-            <span class="block text-xs text-muted uppercase">Codice Fiscale</span>
-            <span class="text-white font-mono">RSSMRA90A01H501Z</span>
+          <div class="data-item">
+            <span class="data-label">Codice Fiscale</span>
+            <span class="data-value data-mono">RSSMRA90A01H501Z</span>
+          </div>
+        </div>
+      </app-card>
+
+      <!-- Performance & Analytics -->
+      <app-card title="Analisi Presenze">
+        <div class="analytics-grid">
+          <!-- Frequenza Mensile -->
+          <div class="analytics-card">
+            <div class="analytics-header">
+              <span class="analytics-label">Frequenza Mensile</span>
+              <span class="analytics-icon">📊</span>
+            </div>
+            <div class="chart-container">
+              <div class="bar-chart">
+                @for (month of monthlyAttendance; track month.month) {
+                  <div class="bar-wrapper">
+                    <div class="bar-column">
+                      <div class="bar" [style.height.%]="(month.count / maxAttendance) * 100">
+                        <span class="bar-value">{{ month.count }}</span>
+                      </div>
+                    </div>
+                    <span class="bar-label">{{ month.month }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Distribuzione Settimanale -->
+          <div class="analytics-card">
+            <div class="analytics-header">
+              <span class="analytics-label">Distribuzione Settimanale</span>
+              <span class="analytics-icon">📅</span>
+            </div>
+            <div class="weekly-grid">
+              @for (day of weeklyDistribution; track day.day) {
+                <div class="weekly-day" [class.active]="day.count > 0">
+                  <div class="weekly-bar">
+                    <div class="weekly-fill" [style.height.%]="(day.count / maxWeekly) * 100"></div>
+                  </div>
+                  <span class="weekly-label">{{ day.day }}</span>
+                  <span class="weekly-count">{{ day.count }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Progress Ring -->
+          <div class="analytics-card analytics-ring">
+            <div class="analytics-header">
+              <span class="analytics-label">Obiettivo Mensile</span>
+              <span class="analytics-icon">🎯</span>
+            </div>
+            <div class="progress-ring-container">
+              <svg class="progress-ring" viewBox="0 0 120 120">
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#E71D36;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#3066BE;stop-opacity:1" />
+                  </linearGradient>
+                </defs>
+                <circle class="progress-ring-bg" cx="60" cy="60" r="50"></circle>
+                <circle 
+                  class="progress-ring-fill" 
+                  cx="60" 
+                  cy="60" 
+                  r="50"
+                  [style.strokeDashoffset]="progressOffset"
+                ></circle>
+              </svg>
+              <div class="progress-center">
+                <span class="progress-percentage">{{ attendancePercentage }}%</span>
+                <span class="progress-subtitle">completato</span>
+              </div>
+            </div>
+            <div class="progress-info">
+              <span class="progress-current">{{ currentAttendance }} / {{ goalAttendance }} presenze</span>
+            </div>
+          </div>
+
+          <!-- Streak -->
+          <div class="analytics-card analytics-streak">
+            <div class="analytics-header">
+              <span class="analytics-label">Serie Attuale</span>
+              <span class="analytics-icon">🔥</span>
+            </div>
+            <div class="streak-display">
+              <div class="streak-number">{{ currentStreak }}</div>
+              <div class="streak-text">giorni consecutivi</div>
+            </div>
+            <div class="streak-best">
+              <span class="streak-best-label">Record personale:</span>
+              <span class="streak-best-value">{{ bestStreak }} giorni</span>
+            </div>
           </div>
         </div>
       </app-card>
     </div>
 
     <!-- Sidebar Info -->
-    <div class="flex flex-col gap-6">
+    <div class="sidebar-column">
       <app-card title="Statistiche Rapide">
-        <ul class="space-y-4">
-          <li class="flex justify-between items-center pb-3 border-b border-gray-700/50 last:border-0 last:pb-0">
-            <span class="text-sm text-muted">Presenze Totali</span>
-            <span class="font-bold">42</span>
+        <ul class="stats-list">
+          <li class="stats-item">
+            <span class="stats-label">Presenze Totali</span>
+            <span class="stats-value">42</span>
           </li>
-          <li class="flex justify-between items-center pb-3 border-b border-gray-700/50 last:border-0 last:pb-0">
-            <span class="text-sm text-muted">Presenze Mese</span>
-            <span class="font-bold">8</span>
+          <li class="stats-item">
+            <span class="stats-label">Presenze Mese</span>
+            <span class="stats-value">8</span>
           </li>
-          <li class="flex justify-between items-center pb-3 border-b border-gray-700/50 last:border-0 last:pb-0">
-            <span class="text-sm text-muted">Ultimo Ingresso</span>
-            <span class="font-bold text-xs">2 giorni fa</span>
+          <li class="stats-item">
+            <span class="stats-label">Ultimo Ingresso</span>
+            <span class="stats-value stats-small">2 giorni fa</span>
           </li>
         </ul>
       </app-card>
 
-      <app-card title="Ultimi Corsi" class="flex-1">
-        <div class="text-sm text-muted italic text-center py-4">
+      <app-card title="Ultimi Corsi">
+        <div class="empty-courses">
           Cronologia corsi non disponibile in MVP
         </div>
       </app-card>

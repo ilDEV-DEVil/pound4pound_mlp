@@ -1,3 +1,688 @@
+@use '../../../../styles/variables' as *;
+
+// Design Tokens
+$app-bg: #C7D6D5;
+$brand-red: #E71D36;
+$brand-blue: #3066BE;
+$brand-blue-dark: #255198;
+$brand-red-glow: rgba(231, 29, 54, 0.2);
+$brand-blue-glow: rgba(48, 102, 190, 0.2);
+$text-dark: #1A1D21;
+$text-subtle: #4A5568;
+$border-light: rgba(0, 0, 0, 0.08);
+
 .member-detail-container {
-    padding: 1.5rem
+  background: $app-bg;
+  min-height: 100vh;
+  padding: $space-8;
+}
+
+// Header Section
+.header-section {
+  margin-bottom: $space-8;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  color: $text-subtle;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  margin-bottom: $space-4;
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $brand-blue;
+    background: rgba($brand-blue, 0.1);
+    transform: translateX(-4px);
+  }
+}
+
+.member-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid $border-light;
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+}
+
+.member-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, $brand-red, $brand-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $text-2xl;
+  font-weight: $font-bold;
+  color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.member-name {
+  font-size: $text-3xl;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0 0 $space-1 0;
+}
+
+.member-joined {
+  color: $text-subtle;
+  font-size: $text-sm;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: $space-3;
+}
+
+// Skeleton Loader
+.skeleton-loader {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid $border-light;
+  border-radius: $radius-2xl;
+  padding: $space-6;
+}
+
+.skeleton-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: $radius-full;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.06) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-text {
+  height: 32px;
+  width: 200px;
+  border-radius: $radius-lg;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.06) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// Grid Layout
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.main-column {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+// Card Header
+.card-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $space-2;
+}
+
+.card-title-large {
+  font-size: $text-lg;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0;
+}
+
+// Badges
+.badge {
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  font-size: 11px;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid;
+}
+
+.badge-active {
+  background: rgba(#10b981, 0.1);
+  color: #10b981;
+  border-color: rgba(#10b981, 0.3);
+}
+
+.badge-expired {
+  background: rgba($brand-red, 0.1);
+  color: $brand-red;
+  border-color: rgba($brand-red, 0.3);
+}
+
+// Subscription Card
+.subscription-content {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.subscription-card {
+  padding: $space-6;
+  background: linear-gradient(135deg, rgba($brand-blue, 0.05), rgba($brand-red, 0.02));
+  border: 1px solid $border-light;
+  border-radius: $radius-xl;
+  position: relative;
+  overflow: hidden;
+}
+
+.subscription-watermark {
+  position: absolute;
+  top: $space-4;
+  right: $space-4;
+  font-size: 64px;
+  font-weight: $font-bold;
+  background: linear-gradient(135deg, $brand-red, $brand-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.1;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+.subscription-details {
+  position: relative;
+  z-index: 10;
+}
+
+.subscription-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-subtle;
+  font-weight: $font-bold;
+  margin-bottom: $space-1;
+}
+
+.subscription-name {
+  font-size: $text-2xl;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin-bottom: $space-4;
+}
+
+.subscription-info {
+  display: flex;
+  gap: $space-8;
+  font-size: $text-sm;
+}
+
+.info-label {
+  display: block;
+  color: $text-subtle;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.info-value {
+  font-weight: $font-bold;
+  color: $text-dark;
+  
+  &.expiry {
+    color: $brand-blue;
+  }
+}
+
+.subscription-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.empty-subscription {
+  text-align: center;
+  padding: $space-12 $space-6;
+  background: rgba(0, 0, 0, 0.02);
+  border: 2px dashed $border-light;
+  border-radius: $radius-xl;
+}
+
+.empty-message {
+  color: $text-subtle;
+  margin-bottom: $space-5;
+  font-size: $text-base;
+}
+
+// Data Grid
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $space-6;
+}
+
+.data-item {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.data-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-subtle;
+  font-weight: $font-bold;
+}
+
+.data-value {
+  color: $text-dark;
+  font-size: $text-base;
+  font-weight: $font-medium;
+  
+  &.data-link {
+    color: $brand-blue;
+    transition: all 0.2s;
+    
+    &:hover {
+      text-decoration: underline;
+      color: $brand-blue-dark;
+    }
+  }
+  
+  &.data-mono {
+    font-family: 'Courier New', monospace;
+    font-size: $text-sm;
+  }
+}
+
+// Stats List
+.stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stats-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid $border-light;
+  
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  &:not(:last-child) {
+    margin-bottom: $space-4;
+  }
+}
+
+.stats-label {
+  font-size: $text-sm;
+  color: $text-subtle;
+  font-weight: $font-medium;
+}
+
+.stats-value {
+  font-weight: $font-bold;
+  color: $text-dark;
+  font-size: $text-lg;
+  
+  &.stats-small {
+    font-size: $text-sm;
+  }
+}
+
+// Empty States
+.empty-courses {
+  text-align: center;
+  padding: $space-8 $space-4;
+  color: $text-subtle;
+  font-size: $text-sm;
+  font-style: italic;
+}
+
+// Analytics Section
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $space-5;
+}
+
+.analytics-card {
+  background: linear-gradient(135deg, rgba($brand-blue, 0.03), rgba($brand-red, 0.01));
+  border: 1px solid $border-light;
+  border-radius: $radius-xl;
+  padding: $space-5;
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $space-5;
+}
+
+.analytics-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-subtle;
+  font-weight: $font-bold;
+}
+
+.analytics-icon {
+  font-size: 24px;
+  opacity: 0.6;
+}
+
+// Bar Chart
+.chart-container {
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-chart {
+  display: flex;
+  gap: $space-3;
+  width: 100%;
+  height: 100%;
+  align-items: flex-end;
+}
+
+.bar-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+}
+
+.bar-column {
+  width: 100%;
+  height: 140px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bar {
+  width: 100%;
+  max-width: 40px;
+  background: linear-gradient(180deg, $brand-blue, $brand-blue-dark);
+  border-radius: $radius-md $radius-md 0 0;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 8px rgba($brand-blue, 0.2);
+
+  &:hover {
+    transform: scaleY(1.05);
+    box-shadow: 0 8px 16px rgba($brand-blue, 0.3);
+  }
+}
+
+.bar-value {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: $font-bold;
+  color: $text-dark;
+  background: white;
+  padding: 2px 6px;
+  border-radius: $radius-md;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bar-label {
+  font-size: 11px;
+  color: $text-subtle;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+}
+
+// Weekly Distribution
+.weekly-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: $space-2;
+}
+
+.weekly-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-1;
+}
+
+.weekly-bar {
+  width: 100%;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: $radius-lg;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.weekly-fill {
+  width: 100%;
+  background: linear-gradient(180deg, rgba($brand-red, 0.8), $brand-red);
+  border-radius: $radius-lg $radius-lg 0 0;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.weekly-day.active .weekly-fill {
+  background: linear-gradient(180deg, $brand-blue, $brand-blue-dark);
+}
+
+.weekly-label {
+  font-size: 10px;
+  font-weight: $font-bold;
+  color: $text-subtle;
+  text-transform: uppercase;
+}
+
+.weekly-count {
+  font-size: 11px;
+  font-weight: $font-bold;
+  color: $text-dark;
+}
+
+// Progress Ring
+.analytics-ring {
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-ring-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: $space-4 auto;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.06);
+  stroke-width: 8;
+}
+
+.progress-ring-fill {
+  fill: none;
+  stroke: url(#gradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 314.159;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.progress-percentage {
+  display: block;
+  font-size: $text-3xl;
+  font-weight: $font-bold;
+  color: $brand-blue;
+  line-height: 1;
+}
+
+.progress-subtitle {
+  display: block;
+  font-size: 10px;
+  color: $text-subtle;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.progress-info {
+  text-align: center;
+  padding-top: $space-3;
+  border-top: 1px solid $border-light;
+}
+
+.progress-current {
+  font-size: $text-sm;
+  font-weight: $font-bold;
+  color: $text-dark;
+}
+
+// Streak Card
+.analytics-streak {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.streak-display {
+  text-align: center;
+  margin: $space-4 0;
+}
+
+.streak-number {
+  font-size: 56px;
+  font-weight: $font-bold;
+  background: linear-gradient(135deg, $brand-red, $brand-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.streak-text {
+  font-size: $text-sm;
+  color: $text-subtle;
+  margin-top: $space-2;
+  font-weight: $font-medium;
+}
+
+.streak-best {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $space-3 $space-4;
+  background: rgba($brand-blue, 0.06);
+  border-radius: $radius-lg;
+  border: 1px solid rgba($brand-blue, 0.1);
+}
+
+.streak-best-label {
+  font-size: 11px;
+  color: $text-subtle;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: $font-bold;
+}
+
+.streak-best-value {
+  font-size: $text-base;
+  font-weight: $font-bold;
+  color: $brand-blue;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .member-detail-container {
+    padding: $space-4;
+  }
+  
+  .member-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-4;
+  }
+  
+  .header-actions {
+    width: 100%;
+    
+    app-button {
+      flex: 1;
+    }
+  }
+  
+  .subscription-info {
+    flex-direction: column;
+    gap: $space-4;
+  }
+  
+  .data-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
 }
