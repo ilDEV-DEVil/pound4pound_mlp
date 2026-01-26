@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { CardComponent, ButtonComponent, InputComponent } from '../../shared/components';
 import { MemberService } from '../../core/services/member.service';
 import { Member } from '../../core/models';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
 @Component({
@@ -50,7 +49,7 @@ export class MembersComponent {
       );
     }
 
-    // Status filter (naive impl based on subscriptionId presence for 'active')
+    // Status filter
     if (this.filterStatus === 'active') {
       result = result.filter(m => !!m.subscriptionId);
     } else if (this.filterStatus === 'expired') {
@@ -75,5 +74,17 @@ export class MembersComponent {
 
   openAddModal() {
     alert('Funzionalità Modale Aggiunta in arrivo nel prossimo step!');
+  }
+
+  get totalCount(): number {
+    return this.allMembers().length;
+  }
+
+  get activeCount(): number {
+    return this.allMembers().filter(m => !!m.subscriptionId).length;
+  }
+
+  get expiredCount(): number {
+    return this.allMembers().filter(m => !m.subscriptionId).length;
   }
 }
