@@ -1,297 +1,265 @@
-<div class="schedule-container h-full flex flex-col">
-  <!-- Header Section with Month/Year Selection -->
-  <header class="schedule-header">
-    <div class="header-top">
-      <div class="date-selectors">
-        <select [ngModel]="selectedMonth()" (ngModelChange)="selectedMonth.set(+$event); onMonthYearChange()"
-          class="month-select">
-          @for (monthName of monthNames; track monthName; let i = $index) {
-          <option [value]="i">{{ monthName }}</option>
-          }
-        </select>
-
-        <select [ngModel]="selectedYear()" (ngModelChange)="selectedYear.set(+$event); onMonthYearChange()"
-          class="year-select">
-          @for (year of years; track year) {
-          <option [value]="year">{{ year }}</option>
-          }
-        </select>
+<div class="schedule-container">
+  <!-- Header -->
+  <div class="schedule-header">
+    <div class="header-content">
+      <div>
+        <h1 class="page-title">Calendario Lezioni</h1>
+        <p class="page-subtitle">Organizza e visualizza il palinsesto settimanale</p>
       </div>
-
-      <div class="week-navigation">
-        <button class="today-btn" (click)="goToToday()">
-          Oggi
-        </button>
-        <button class="nav-btn" (click)="prevWeek()" aria-label="Settimana precedente">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M15 18l-6-6 6-6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-        <button class="nav-btn" (click)="nextWeek()" aria-label="Settimana successiva">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M9 18l6-6-6-6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- 7 Day Cards Strip -->
-    <div class="date-strip no-scrollbar">
-      @for (day of weekDays(); track day.date) {
-      <button class="date-card" [class.active]="selectedDate()?.date === day.date" (click)="selectDate(day)">
-        <span class="day-name">{{ day.dayName }}</span>
-        <span class="day-number">{{ day.dayNumber }}</span>
-        @if (day.isToday) {
-        <span class="today-dot"></span>
-        }
+      <button class="add-lesson-btn" (click)="openAddModal()">
+        <span class="btn-icon">➕</span>
+        <span class="btn-text">Nuova Lezione</span>
       </button>
-      }
     </div>
-  </header>
+  </div>
 
-  <!-- Main Content Layout (Daily Timeline) -->
-  <main class="schedule-content">
-    <div class="content-max-width">
-      @if (selectedDate(); as selected) {
-      <div class="day-brief animate-enter">
-        <div class="day-title">
-          <h2 class="full-date">{{ dayLabels[selected.fullDay] }} {{ selected.dayNumber }} {{
-            monthNames[selected.date.getMonth()] }}</h2>
-          <span class="current-time">Palinsesto odierno</span>
+  <!-- Calendar Controls -->
+  <div class="calendar-controls">
+    <div class="date-selectors">
+      <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthYearChange()" class="month-select">
+        @for (month of monthNames; track $index) {
+          <option [value]="$index">{{ month }}</option>
+        }
+      </select>
+      
+      <select [(ngModel)]="selectedYear" (ngModelChange)="onMonthYearChange()" class="year-select">
+        @for (year of years; track year) {
+          <option [value]="year">{{ year }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="week-navigation">
+      <button class="nav-btn" (click)="prevWeek()">
+        <span>←</span>
+      </button>
+      <button class="today-btn" (click)="goToToday()">
+        Oggi
+      </button>
+      <button class="nav-btn" (click)="nextWeek()">
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Week Days Grid -->
+  <div class="week-grid">
+    @for (day of weekDays(); track day.date.getTime()) {
+      <div 
+        class="day-card"
+        [class.today]="day.isToday"
+        [class.selected]="selectedDate()?.date?.getTime() === day.date.getTime()"
+        (click)="selectDate(day)"
+      >
+        <div class="day-header">
+          <span class="day-name">{{ day.dayName }}</span>
+          <span class="day-number">{{ day.dayNumber }}</span>
         </div>
-        <button class="add-btn" (click)="openAddModal()" aria-label="Aggiungi corso">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M12 5v14M5 12h14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Timeline List -->
-      <div class="timeline-list animate-enter-staggered">
-        @for (slot of dailySlots(); track slot.courseId + slot.timeStart) {
-        <div class="timeline-item">
-          <div class="time-marker">
-            <span class="marker-dot"></span>
-            <span class="marker-line"></span>
-          </div>
-
-          <div class="course-card" [class]="slot.colorClass" (click)="onSlotClick(slot)">
-            <div class="card-glass"></div>
-            <div class="card-content">
-              <div class="card-header">
-                <h3 class="course-name">{{ slot.name }}</h3>
-              </div>
-
-              <div class="card-footer">
-                <div class="footer-item">
-                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <circle cx="12" cy="12" r="10" stroke-width="2" />
-                    <path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                  <span>{{ slot.timeStart }} - {{ slot.timeEnd }}</span>
-                </div>
-                <div class="footer-item">
-                  <span class="instructor-tag">Istr. {{ slot.instructor }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        } @empty {
-        <div class="empty-state">
-          <div class="empty-icon">🎨</div>
-          <p>Nessun corso in programma per questo giorno</p>
-        </div>
+        @if (day.isToday) {
+          <div class="today-indicator">Oggi</div>
         }
       </div>
-      }
-    </div>
-  </main>
+    }
+  </div>
 
-  <!-- Lesson Detail Dialog -->
-  <dialog id="lesson-detail-dialog" class="lesson-dialog">
-    @if (selectedDetailSlot(); as slot) {
-    <div class="dialog-container">
-      <div class="dialog-header">
-        <div class="course-badge" [class]="slot.colorClass.split(' ')[0]">
-          {{ slot.name.charAt(0) }}
-        </div>
-        <div class="header-info">
-          <h3>{{ slot.name }}</h3>
-          <p>Palinsesto: {{ dayLabels[slot.day] }}</p>
-        </div>
-        <button type="button" (click)="closeDetailModal()" class="close-dialog" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
+  <!-- Daily Schedule -->
+  @if (selectedDate(); as selected) {
+    <div class="daily-schedule">
+      <div class="schedule-title-bar">
+        <h2 class="schedule-title">
+          <span class="title-icon">📅</span>
+          {{ dayLabels[selected.fullDay] }} {{ selected.dayNumber }} {{ monthNames[selected.date?.getMonth() ?? 0] }}
+        </h2>
+        <span class="schedule-subtitle">Palinsesto odierno</span>
       </div>
 
-      <div class="dialog-body">
-        <div class="detail-grid">
-          <div class="detail-item">
-            <div class="detail-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="12" r="10" stroke-width="2" />
-                <path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
+      <div class="lessons-container">
+        @for (slot of dailySlots(); track slot.courseId + slot.timeStart) {
+          <div class="lesson-slot" [class]="slot.colorClass" (click)="onSlotClick(slot)">
+            <div class="slot-time">
+              <span class="time-start">{{ slot.timeStart }}</span>
+              <span class="time-separator">-</span>
+              <span class="time-end">{{ slot.timeEnd }}</span>
             </div>
-            <div class="detail-info">
-              <span class="label">Orario</span>
-              <span class="value">{{ slot.timeStart }} - {{ slot.timeEnd }}</span>
-            </div>
-          </div>
 
-          <div class="detail-item">
-            <div class="detail-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-                <circle cx="12" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </div>
-            <div class="detail-info">
-              <span class="label">Istruttore</span>
-              <span class="value">{{ slot.instructor }}</span>
-            </div>
-          </div>
-
-          <div class="detail-item">
-            <div class="detail-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-                <circle cx="9" cy="7" r="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </div>
-            <div class="detail-info w-full">
-              <span class="label">Partecipanti</span>
-              <div class="participant-info">
-                <span class="value">{{ slot.membersCount }} / 20</span>
-                <div class="progress-bar">
-                  <div class="progress" [style.width.%]="(slot.membersCount / 20) * 100"></div>
-                </div>
+            <div class="slot-content">
+              <h3 class="slot-name">{{ slot.name }}</h3>
+              <div class="slot-instructor">
+                <span class="instructor-icon">👤</span>
+                <span>{{ slot.instructor }}</span>
               </div>
             </div>
+
+            <div class="slot-meta">
+              <div class="members-count">
+                <span class="count-icon">👥</span>
+                <span class="count-value">{{ slot.membersCount }}</span>
+              </div>
+              <div class="slot-arrow">→</div>
+            </div>
           </div>
-        </div>
-
-        <div class="notice-box">
-          <span class="icon">ℹ️</span>
-          <p>Puoi modificare o eliminare questa lezione se sei un amministratore.</p>
-        </div>
-      </div>
-
-      <div class="dialog-footer">
-        <div class="management-actions">
-          <button type="button" class="btn-edit" (click)="editLesson()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
-              <path
-                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            Modifica
-          </button>
-          <button type="button" class="btn-delete" (click)="deleteLesson()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-4 h-4">
-              <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            Elimina
-          </button>
-        </div>
-
-        <button class="btn-primary" (click)="confirmBooking()" [disabled]="bookingLoading()">
-          {{ bookingLoading() ? 'In corso...' : 'Prenota Posto' }}
-        </button>
+        } @empty {
+          <div class="empty-day">
+            <div class="empty-icon">📭</div>
+            <p class="empty-message">Nessun corso in programma per questo giorno</p>
+            <button class="empty-action-btn" (click)="openAddModal()">
+              Aggiungi Lezione
+            </button>
+          </div>
+        }
       </div>
     </div>
-    }
-  </dialog>
-
-  <!-- Add/Edit Lesson Modal -->
-  <dialog id="add-lesson-dialog" class="lesson-dialog">
-    <div class="dialog-container">
-      <div class="dialog-header">
-        <div class="course-badge brand-badge">
-          @if (isEditing()) {
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width: 20px;">
-            <path
-              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          } @else {
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width: 24px;">
-            <path d="M12 5v14M5 12h14" stroke-width="3" stroke-linecap="round" />
-          </svg>
-          }
-        </div>
-        <div class="header-info">
-          <h3>
-            {{ isEditing() ? 'Modifica Lezione' : 'Nuova Lezione' }}
-          </h3>
-          <p>
-            {{ isEditing() ? 'Aggiorna i dettagli della lezione' : 'Inserisci i dettagli del corso' }}
-          </p>
-        </div>
-        <button type="button" (click)="closeAddModal()" class="close-dialog" aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="dialog-body">
-        <div class="form-grid">
-          <div class="form-field">
-            <label>Nome Corso *</label>
-            <input type="text" [(ngModel)]="courseForm().name" placeholder="es. Boxe Principianti">
-          </div>
-
-          <div class="form-field">
-            <label>Istruttore *</label>
-            <input type="text" [(ngModel)]="courseForm().instructor" placeholder="Nome dell'istruttore">
-          </div>
-
-          <div class="form-row">
-            <div class="form-field">
-              <label>Sport</label>
-              <select [(ngModel)]="courseForm().sport">
-                @for (sport of sports; track sport) {
-                <option [value]="sport">{{ sport | titlecase }}</option>
-                }
-              </select>
-            </div>
-            <div class="form-field">
-              <label>Giorno</label>
-              <select [(ngModel)]="courseForm().day">
-                @for (day of (dayLabels | keyvalue); track day.key) {
-                <option [value]="day.key">{{ day.value }}</option>
-                }
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-field">
-              <label>Orario Inizio</label>
-              <input type="time" [(ngModel)]="courseForm().startTime">
-            </div>
-            <div class="form-field">
-              <label>Orario Fine</label>
-              <input type="time" [(ngModel)]="courseForm().endTime">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="dialog-footer">
-        <button type="button" class="btn-primary w-full" (click)="saveCourse()">
-          {{ isEditing() ? 'Salva Modifiche' : 'Crea Lezione' }}
-        </button>
-      </div>
-    </div>
-  </dialog>
+  }
 </div>
+
+<!-- Lesson Detail Modal -->
+<dialog id="lesson-detail-dialog" class="modal-dialog detail-modal">
+  @if (selectedDetailSlot(); as slot) {
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Dettagli Lezione</h2>
+        <button class="modal-close" (click)="closeDetailModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-card">
+          <div class="detail-badge" [class]="slot.colorClass">
+            <span class="badge-time">{{ slot.timeStart }} - {{ slot.timeEnd }}</span>
+          </div>
+
+          <h3 class="detail-name">{{ slot.name }}</h3>
+
+          <div class="detail-info-grid">
+            <div class="info-item">
+              <span class="info-label">Istruttore</span>
+              <span class="info-value">👤 {{ slot.instructor }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Giorno</span>
+              <span class="info-value">📅 {{ dayLabels[slot.day] }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Iscritti</span>
+              <span class="info-value">👥 {{ slot.membersCount }} persone</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-action-btn book-btn" (click)="confirmBooking()" [disabled]="bookingLoading()">
+          @if (bookingLoading()) {
+            <span>⏳ Prenotazione...</span>
+          } @else {
+            <span>✓ Prenota Lezione</span>
+          }
+        </button>
+        <button class="modal-action-btn edit-btn" (click)="editLesson()">
+          ✏️ Modifica
+        </button>
+        <button class="modal-action-btn delete-btn" (click)="deleteLesson()">
+          🗑️ Elimina
+        </button>
+      </div>
+    </div>
+  }
+</dialog>
+
+<!-- Add/Edit Lesson Modal -->
+<dialog id="add-lesson-dialog" class="modal-dialog form-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">
+        {{ isEditing() ? 'Modifica Lezione' : 'Nuova Lezione' }}
+      </h2>
+      <button class="modal-close" (click)="closeAddModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">NOME CORSO</label>
+          <input 
+            type="text" 
+            class="field-input"
+            placeholder="es. Boxe Principianti"
+            [ngModel]="courseForm().name"
+            (ngModelChange)="courseForm.set({...courseForm(), name: $event})"
+          />
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">ISTRUTTORE</label>
+          <input 
+            type="text" 
+            class="field-input"
+            placeholder="es. Marco Rossi"
+            [ngModel]="courseForm().instructor"
+            (ngModelChange)="courseForm.set({...courseForm(), instructor: $event})"
+          />
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">SPORT</label>
+          <select 
+            class="field-select"
+            [ngModel]="courseForm().sport"
+            (ngModelChange)="courseForm.set({...courseForm(), sport: $event})"
+          >
+            @for (sport of sports; track sport) {
+              <option [value]="sport">{{ sport.toUpperCase() }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">GIORNO</label>
+          <select 
+            class="field-select"
+            [ngModel]="courseForm().day"
+            (ngModelChange)="courseForm.set({...courseForm(), day: $event})"
+          >
+            <option value="monday">Lunedì</option>
+            <option value="tuesday">Martedì</option>
+            <option value="wednesday">Mercoledì</option>
+            <option value="thursday">Giovedì</option>
+            <option value="friday">Venerdì</option>
+            <option value="saturday">Sabato</option>
+            <option value="sunday">Domenica</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label class="field-label">ORA INIZIO</label>
+            <input 
+              type="time" 
+              class="field-input"
+              [ngModel]="courseForm().startTime"
+              (ngModelChange)="courseForm.set({...courseForm(), startTime: $event})"
+            />
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">ORA FINE</label>
+            <input 
+              type="time" 
+              class="field-input"
+              [ngModel]="courseForm().endTime"
+              (ngModelChange)="courseForm.set({...courseForm(), endTime: $event})"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="modal-action-btn secondary-btn" (click)="closeAddModal()">
+        Annulla
+      </button>
+      <button class="modal-action-btn save-btn" (click)="saveCourse()">
+        {{ isEditing() ? 'Salva Modifiche' : 'Crea Lezione' }}
+      </button>
+    </div>
+  </div>
+</dialog>
