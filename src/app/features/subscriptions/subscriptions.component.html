@@ -1,99 +1,171 @@
 <div class="subscriptions-container">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-        <div>
-            <h1 class="text-2xl font-bold mb-1">Piani e Abbonamenti</h1>
-            <p class="text-muted text-sm">Definisci le tipologie di abbonamento offerte</p>
-        </div>
-        <app-button (click)="openCreateMode()">
-            + Nuovo Piano
-        </app-button>
+  <!-- Header -->
+  <div class="subscriptions-header">
+    <div class="header-top">
+      <div>
+        <h1 class="page-title">Gestione Abbonamenti</h1>
+        <p class="page-subtitle">Crea e gestisci i piani di abbonamento della tua palestra</p>
+      </div>
+      <app-button (clicked)="openCreateMode()">
+        <span>+</span> Nuovo Piano
+      </app-button>
     </div>
+  </div>
 
-    <div class="grid lg:grid-cols-3 gap-6">
-        <!-- List of Plans -->
-        <div class="lg:col-span-2 grid gap-4">
-            @for (sub of subscriptions(); track sub.id) {
-            <app-card [hoverable]="true" class="group relative overflow-hidden">
-                <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center relative z-10">
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="font-bold text-lg text-white">{{ sub.name }}</h3>
-                            @if (sub.maxEntries) {
-                            <span class="text-[10px] bg-gray-700 px-2 py-0.5 rounded text-gray-300">Ingressi
-                                Limitati</span>
-                            } @else {
-                            <span class="text-[10px] bg-accent px-2 py-0.5 rounded text-black font-bold">Open</span>
-                            }
-                        </div>
-                        <p class="text-sm text-muted mb-2">{{ sub.description }}</p>
-                        <div class="text-xs text-gray-400">
-                            Durata: <span class="text-white font-bold">{{ sub.durationMonths }} mesi</span>
-                        </div>
-                    </div>
+  <!-- Create/Edit Form -->
+  @if (isCreating()) {
+    <div class="form-card">
+      <div class="form-header">
+        <h2 class="form-title">Crea Nuovo Abbonamento</h2>
+        <button class="close-btn" (click)="cancelCreate()">✕</button>
+      </div>
 
-                    <div class="text-right flex flex-col items-end">
-                        <span class="text-2xl font-bold text-accent">{{ sub.price | currency:'EUR' }}</span>
-                        <div class="flex gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button class="text-xs text-muted hover:text-white underline">Modifica</button>
-                            <button class="text-xs text-red-400 hover:text-red-300 underline"
-                                (click)="deleteSub(sub.id)">Elimina</button>
-                        </div>
-                    </div>
-                </div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="subscription-form">
+        <div class="form-grid">
+          <div class="form-field">
+            <app-input
+              label="NOME PIANO"
+              formControlName="name"
+              placeholder="es. Abbonamento Mensile"
+              [error]="getError('name')"
+            ></app-input>
+          </div>
 
-                <!-- Decorative bg element -->
-                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-accent/5 rounded-full blur-xl pointer-events-none">
-                </div>
-            </app-card>
-            } @empty {
-            <div class="p-8 text-center border border-dashed border-gray-700 rounded text-muted">
-                Nessun piano di abbonamento definito.
+          <div class="form-row">
+            <div class="form-field">
+              <app-input
+                label="PREZZO (€)"
+                type="number"
+                formControlName="price"
+                placeholder="50"
+                [error]="getError('price')"
+              ></app-input>
             </div>
+
+            <div class="form-field">
+              <app-input
+                label="DURATA (mesi)"
+                type="number"
+                formControlName="durationMonths"
+                placeholder="1"
+                [error]="getError('durationMonths')"
+              ></app-input>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">DESCRIZIONE</label>
+            <textarea
+              formControlName="description"
+              placeholder="Descrizione del piano (opzionale)"
+              rows="3"
+              class="textarea-field"
+            ></textarea>
+          </div>
+
+          <div class="checkbox-group">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" formControlName="isLimited" />
+              <span class="checkbox-label">Limita gli ingressi mensili</span>
+            </label>
+            
+            @if (form.get('isLimited')?.value) {
+              <div class="form-field" style="margin-top: 1rem;">
+                <app-input
+                  label="INGRESSI MASSIMI"
+                  type="number"
+                  formControlName="maxEntries"
+                  placeholder="10"
+                ></app-input>
+              </div>
             }
+          </div>
         </div>
 
-        <!-- Create/Edit Form (Sidebar) -->
-        @if (isCreating()) {
-        <div class="lg:col-span-1">
-            <app-card [headerTemplate]="true" title="Nuovo Piano">
-                <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
-                    <app-input label="Nome Piano" placeholder="Es. Open Semestrale" formControlName="name"
-                        [error]="getError('name')"></app-input>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <app-input label="Prezzo (€)" type="number" placeholder="0.00"
-                            formControlName="price"></app-input>
-
-                        <app-input label="Durata (Mesi)" type="number" placeholder="12"
-                            formControlName="durationMonths"></app-input>
-                    </div>
-
-                    <app-input label="Descrizione" placeholder="Include accesso sala pesi..."
-                        formControlName="description"></app-input>
-
-                    <div class="p-3 bg-gray-800/50 rounded border border-gray-700">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" formControlName="isLimited"
-                                class="w-4 h-4 rounded border-gray-600 text-accent focus:ring-accent bg-gray-700">
-                            <span class="text-sm">A ingressi limitati?</span>
-                        </label>
-
-                        @if (form.get('isLimited')?.value) {
-                        <div class="mt-3">
-                            <app-input label="Numero Ingressi" type="number" formControlName="maxEntries"></app-input>
-                        </div>
-                        }
-                    </div>
-
-                    <div class="flex gap-2 mt-2">
-                        <app-button type="button" variant="ghost" [fullWidth]="true"
-                            (click)="cancelCreate()">Annulla</app-button>
-                        <app-button type="submit" [loading]="loading" [fullWidth]="true" [disabled]="form.invalid">Crea
-                            Piano</app-button>
-                    </div>
-                </form>
-            </app-card>
+        <div class="form-actions">
+          <app-button variant="secondary" type="button" (clicked)="cancelCreate()">
+            Annulla
+          </app-button>
+          <app-button type="submit" [loading]="loading" [disabled]="form.invalid">
+            Crea Abbonamento
+          </app-button>
         </div>
-        }
+      </form>
     </div>
+  }
+
+  <!-- Subscriptions Grid -->
+  <div class="subscriptions-content">
+    @if (subscriptions().length > 0) {
+      <div class="subscriptions-grid">
+        @for (sub of subscriptions(); track sub.id) {
+          <div class="subscription-card">
+            <div class="card-header">
+              <div class="plan-badge">
+                <span class="badge-icon">💎</span>
+              </div>
+              <button class="delete-btn" (click)="deleteSub(sub.id)">
+                <span>🗑️</span>
+              </button>
+            </div>
+
+            <div class="card-body">
+              <h3 class="plan-name">{{ sub.name }}</h3>
+              
+              <div class="price-section">
+                <span class="price-amount">{{ sub.price | currency:'EUR' }}</span>
+                <span class="price-period">/ {{ sub.durationMonths }} {{ sub.durationMonths === 1 ? 'mese' : 'mesi' }}</span>
+              </div>
+
+              @if (sub.description) {
+                <p class="plan-description">{{ sub.description }}</p>
+              }
+
+              <div class="plan-features">
+                <div class="feature-item">
+                  <span class="feature-icon">📅</span>
+                  <span class="feature-text">Validità: {{ sub.durationMonths }} {{ sub.durationMonths === 1 ? 'mese' : 'mesi' }}</span>
+                </div>
+                @if (sub.maxEntries) {
+                  <div class="feature-item">
+                    <span class="feature-icon">🎫</span>
+                    <span class="feature-text">Max {{ sub.maxEntries }} ingressi/mese</span>
+                  </div>
+                } @else {
+                  <div class="feature-item unlimited">
+                    <span class="feature-icon">♾️</span>
+                    <span class="feature-text">Ingressi illimitati</span>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <div class="stats-row">
+                <div class="stat-item">
+                  <span class="stat-value">{{ getActiveMembers(sub.id) }}</span>
+                  <span class="stat-label">Iscritti attivi</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value">€ {{ getMonthlyRevenue(sub.id) }}</span>
+                  <span class="stat-label">Entrate/mese</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <div class="empty-icon">💳</div>
+        <h3 class="empty-title">Nessun piano abbonamento</h3>
+        <p class="empty-message">
+          Inizia creando il tuo primo piano di abbonamento per gli iscritti della palestra.
+        </p>
+        <app-button (clicked)="openCreateMode()">
+          Crea primo piano
+        </app-button>
+      </div>
+    }
+  </div>
 </div>
