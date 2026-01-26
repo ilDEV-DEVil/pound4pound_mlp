@@ -1,0 +1,96 @@
+<div class="main-layout" [class.sidebar-collapsed]="isSidebarCollapsed()">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.mobile-open]="isMobileMenuOpen()">
+    <!-- Logo & Brand -->
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <div class="logo-icon">🥊</div>
+        @if (!isSidebarCollapsed()) {
+          <div class="logo-text">
+            <span class="logo-title">Pound for Pound</span>
+            <span class="logo-subtitle">Management</span>
+          </div>
+        }
+      </div>
+      
+      <!-- Desktop Toggle -->
+      <button class="sidebar-toggle desktop-only" (click)="toggleSidebar()">
+        @if (isSidebarCollapsed()) {
+          <span>→</span>
+        } @else {
+          <span>←</span>
+        }
+      </button>
+    </div>
+
+    <!-- User Profile -->
+    <div class="user-profile">
+      <div class="user-avatar">
+        {{ userInitials() }}
+      </div>
+      @if (!isSidebarCollapsed()) {
+        <div class="user-info">
+          <div class="user-name">{{ currentUser()?.firstName }} {{ currentUser()?.lastName }}</div>
+          <div class="user-role">{{ currentUser()?.role === 'manager' ? 'Gestore' : 'Atleta' }}</div>
+        </div>
+      }
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+      @for (item of menuItems; track item.route) {
+        <a 
+          [routerLink]="item.route" 
+          routerLinkActive="active"
+          class="nav-item"
+          (click)="closeMobileMenu()"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          @if (!isSidebarCollapsed()) {
+            <div class="nav-content">
+              <span class="nav-label">{{ item.label }}</span>
+              <span class="nav-description">{{ item.description }}</span>
+            </div>
+          }
+        </a>
+      }
+    </nav>
+
+    <!-- Logout Button -->
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span class="logout-icon">🚪</span>
+        @if (!isSidebarCollapsed()) {
+          <span class="logout-text">Esci</span>
+        }
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mobile Overlay -->
+  @if (isMobileMenuOpen()) {
+    <div class="mobile-overlay" (click)="closeMobileMenu()"></div>
+  }
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+        <span class="hamburger-icon">☰</span>
+      </button>
+      <div class="mobile-logo">
+        <span class="mobile-logo-icon">🥊</span>
+        <span class="mobile-logo-text">Pound for Pound</span>
+      </div>
+      <div class="mobile-user">
+        <div class="mobile-avatar">{{ userInitials() }}</div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

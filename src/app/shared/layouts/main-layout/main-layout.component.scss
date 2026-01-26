@@ -1,0 +1,487 @@
+// Design Tokens
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+
+$radius-lg: 0.5rem;
+$radius-xl: 0.75rem;
+$radius-2xl: 1rem;
+$radius-full: 9999px;
+
+$app-bg: #C7D6D5;
+$brand-red: #E71D36;
+$brand-blue: #3066BE;
+$brand-blue-dark: #255198;
+$brand-red-glow: rgba(231, 29, 54, 0.2);
+$brand-blue-glow: rgba(48, 102, 190, 0.2);
+$text-dark: #1A1D21;
+$text-subtle: #4A5568;
+$border-light: rgba(0, 0, 0, 0.08);
+
+$sidebar-width: 280px;
+$sidebar-collapsed-width: 80px;
+$mobile-header-height: 64px;
+
+// Main Layout
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  background: $app-bg;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Sidebar
+.sidebar {
+  width: $sidebar-width;
+  background: white;
+  border-right: 1px solid $border-light;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.04);
+
+  @media (max-width: 768px) {
+    transform: translateX(-100%);
+    
+    &.mobile-open {
+      transform: translateX(0);
+    }
+  }
+}
+
+.sidebar-collapsed .sidebar {
+  width: $sidebar-collapsed-width;
+}
+
+// Sidebar Header
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-6;
+  border-bottom: 1px solid $border-light;
+  background: linear-gradient(135deg, rgba($brand-red, 0.05), rgba($brand-blue, 0.05));
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.logo-icon {
+  width: 48px;
+  height: 48px;
+  background: $brand-blue;
+  border-radius: $radius-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 4px 12px rgba($brand-blue, 0.3);
+  flex-shrink: 0;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.logo-title {
+  font-size: $text-lg;
+  font-weight: $font-bold;
+  color: $text-dark;
+  line-height: 1;
+}
+
+.logo-subtitle {
+  font-size: 11px;
+  font-weight: $font-semibold;
+  color: $text-subtle;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.sidebar-toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-lg;
+  background: rgba($brand-blue, 0.1);
+  border: none;
+  color: $brand-blue;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $brand-blue;
+    color: white;
+    transform: scale(1.1);
+  }
+}
+
+.desktop-only {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+// User Profile
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-5 $space-6;
+  border-bottom: 1px solid $border-light;
+  background: rgba(0, 0, 0, 0.01);
+}
+
+.sidebar-collapsed .user-profile {
+  justify-content: center;
+  padding: $space-5 $space-3;
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, $brand-red, $brand-blue); // ✓ Gradiente solo per avatar
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $text-base;
+  font-weight: $font-bold;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: $text-base;
+  font-weight: $font-bold;
+  color: $text-dark;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  font-size: $text-xs;
+  color: $text-subtle;
+  padding: 2px $space-2;
+  background: rgba($brand-blue, 0.1);
+  border-radius: $radius-lg;
+  display: inline-block;
+  margin-top: $space-1;
+}
+
+// Navigation Menu
+.nav-menu {
+  flex: 1;
+  padding: $space-4 $space-3;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: $radius-full;
+  }
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-4;
+  border-radius: $radius-xl;
+  color: $text-dark;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: $brand-blue;
+    transform: scaleY(0);
+    transition: transform 0.3s;
+  }
+
+  &:hover {
+    background: rgba($brand-blue, 0.05);
+    transform: translateX(4px);
+
+    &::before {
+      transform: scaleY(1);
+    }
+  }
+
+  &.active {
+    background: rgba($brand-blue, 0.1);
+    color: $brand-blue;
+    font-weight: $font-bold;
+    border: 2px solid rgba($brand-blue, 0.2);
+
+    &::before {
+      transform: scaleY(1);
+    }
+
+    .nav-icon {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.sidebar-collapsed .nav-item {
+  justify-content: center;
+  padding: $space-4 $space-2;
+}
+
+.nav-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.nav-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.nav-label {
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  line-height: 1.2;
+}
+
+.nav-description {
+  font-size: 11px;
+  color: $text-subtle;
+  font-weight: $font-medium;
+}
+
+// Sidebar Footer
+.sidebar-footer {
+  padding: $space-5 $space-6;
+  border-top: 1px solid $border-light;
+}
+
+.sidebar-collapsed .sidebar-footer {
+  padding: $space-5 $space-3;
+}
+
+.logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+  padding: $space-4;
+  background: white;
+  border: 2px solid rgba($brand-red, 0.2);
+  border-radius: $radius-xl;
+  color: $brand-red;
+  font-size: $text-base;
+  font-weight: $font-bold;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: $brand-red;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba($brand-red, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.sidebar-collapsed .logout-btn {
+  padding: $space-4 $space-2;
+}
+
+.logout-icon {
+  font-size: 20px;
+}
+
+// Mobile Overlay
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+  
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
+// Main Content
+.main-content {
+  flex: 1;
+  margin-left: $sidebar-width;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+.sidebar-collapsed .main-content {
+  margin-left: $sidebar-collapsed-width;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// Mobile Header
+.mobile-header {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-4 $space-5;
+  background: white;
+  border-bottom: 1px solid $border-light;
+  height: $mobile-header-height;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.mobile-menu-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-lg;
+  background: rgba($brand-blue, 0.1);
+  border: none;
+  color: $brand-blue;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:active {
+    transform: scale(0.95);
+    background: $brand-blue;
+    color: white;
+  }
+}
+
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex: 1;
+  justify-content: center;
+}
+
+.mobile-logo-icon {
+  font-size: 24px;
+}
+
+.mobile-logo-text {
+  font-size: $text-lg;
+  font-weight: $font-bold;
+  color: $text-dark;
+}
+
+.mobile-user {
+  width: 40px;
+}
+
+.mobile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-full;
+  background: linear-gradient(135deg, $brand-red, $brand-blue); // ✓ Gradiente solo per avatar
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $text-sm;
+  font-weight: $font-bold;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+// Page Content
+.page-content {
+  flex: 1;
+}
+
+// Animations
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.nav-item {
+  animation: slideIn 0.3s ease-out backwards;
+  
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
+}
