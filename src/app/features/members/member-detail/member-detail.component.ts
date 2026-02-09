@@ -22,8 +22,6 @@ interface DisciplineRecord {
   id: string;
   discipline: 'MMA' | 'Kickboxing' | 'Boxe' | 'Muay Thai';
   level: string;
-  weight: number;
-  height: number;
   record: {
     wins: number;
     losses: number;
@@ -60,7 +58,21 @@ export class MemberDetailComponent implements OnInit {
     email: ['', [Validators.required, Validators.email]],
     phone: [''],
     gender: ['M' as 'M' | 'F'],
-    birthDate: ['']
+    birthDate: [''],
+    weight: [75 as number, [Validators.required, Validators.min(1)]],
+    height: [180 as number, [Validators.required, Validators.min(1)]]
+  });
+
+  // Discipline management
+  isAddingDiscipline = signal(false);
+  isEditingDiscipline = signal(false);
+  editingDisciplineId = signal<string | null>(null);
+  disciplineForm = this.fb.group({
+    discipline: ['MMA' as 'MMA' | 'Kickboxing' | 'Boxe' | 'Muay Thai', Validators.required],
+    level: ['Principiante', Validators.required],
+    wins: [0, [Validators.required, Validators.min(0)]],
+    losses: [0, [Validators.required, Validators.min(0)]],
+    draws: [0, [Validators.required, Validators.min(0)]]
   });
 
   // Discipline Records - Dati dinamici per disciplina
@@ -69,8 +81,6 @@ export class MemberDetailComponent implements OnInit {
       id: '1',
       discipline: 'MMA',
       level: 'Intermedio',
-      weight: 75.5,
-      height: 180,
       record: {
         wins: 12,
         losses: 3,
@@ -81,8 +91,6 @@ export class MemberDetailComponent implements OnInit {
       id: '2',
       discipline: 'Kickboxing',
       level: 'Avanzato',
-      weight: 74.0,
-      height: 180,
       record: {
         wins: 8,
         losses: 2,
@@ -93,8 +101,6 @@ export class MemberDetailComponent implements OnInit {
       id: '3',
       discipline: 'Boxe',
       level: 'Principiante',
-      weight: 75.0,
-      height: 180,
       record: {
         wins: 3,
         losses: 1,
@@ -133,7 +139,9 @@ export class MemberDetailComponent implements OnInit {
   // Mock athlete data - in real app these would come from the Member model
   athleteData = {
     birthDate: new Date('1995-03-15'),
-    gender: 'M' as 'M' | 'F'
+    gender: 'M' as 'M' | 'F',
+    weight: 75.5,
+    height: 180
   };
 
   // Mock documents - in real app these would come from API
@@ -217,6 +225,9 @@ export class MemberDetailComponent implements OnInit {
 
   // Subscription renewal methods
   openRenewPanel() {
+    this.isEditingProfile.set(false);
+    this.isAddingDiscipline.set(false);
+    this.isEditingDiscipline.set(false);
     this.isRenewing.set(true);
   }
 
@@ -242,13 +253,17 @@ export class MemberDetailComponent implements OnInit {
     const m = this.member();
     if (!m) return;
     this.isRenewing.set(false);
+    this.isAddingDiscipline.set(false);
+    this.isEditingDiscipline.set(false);
     this.profileForm.patchValue({
       firstName: m.firstName,
       lastName: m.lastName,
       email: m.email,
       phone: m.phone || '',
       gender: this.athleteData.gender,
-      birthDate: this.formatDateForInput(this.athleteData.birthDate)
+      birthDate: this.formatDateForInput(this.athleteData.birthDate),
+      weight: this.athleteData.weight,
+      height: this.athleteData.height
     });
     this.isEditingProfile.set(true);
   }
@@ -279,6 +294,8 @@ export class MemberDetailComponent implements OnInit {
       if (val.birthDate) {
         this.athleteData.birthDate = new Date(val.birthDate);
       }
+      this.athleteData.weight = val.weight!;
+      this.athleteData.height = val.height!;
     });
   }
 
@@ -296,6 +313,93 @@ export class MemberDetailComponent implements OnInit {
     const disciplineId = select.value;
     const discipline = this.disciplines().find(d => d.id === disciplineId);
     this.selectedDiscipline.set(discipline);
+  }
+
+  openAddDiscipline() {
+    this.isRenewing.set(false);
+    this.isEditingProfile.set(false);
+    this.isAddingDiscipline.set(true);
+    this.isEditingDiscipline.set(false);
+    this.editingDisciplineId.set(null);
+    this.disciplineForm.reset({
+      discipline: 'MMA',
+      level: 'Principiante',
+      wins: 0,
+      losses: 0,
+      draws: 0
+    });
+  }
+
+  openEditDiscipline(disc: DisciplineRecord) {
+    this.isRenewing.set(false);
+    this.isEditingProfile.set(false);
+    this.isEditingDiscipline.set(true);
+    this.isAddingDiscipline.set(false);
+    this.editingDisciplineId.set(disc.id);
+    this.disciplineForm.patchValue({
+      discipline: disc.discipline,
+      level: disc.level,
+      wins: disc.record.wins,
+      losses: disc.record.losses,
+      draws: disc.record.draws
+    });
+  }
+
+  cancelDisciplineForm() {
+    this.isAddingDiscipline.set(false);
+    this.isEditingDiscipline.set(false);
+    this.editingDisciplineId.set(null);
+  }
+
+  saveDiscipline() {
+    if (this.disciplineForm.invalid) return;
+    const val = this.disciplineForm.value;
+    const current = [...this.disciplines()];
+
+    if (this.isEditingDiscipline() && this.editingDisciplineId()) {
+      // Edit existing
+      const idx = current.findIndex(d => d.id === this.editingDisciplineId());
+      if (idx !== -1) {
+        current[idx] = {
+          ...current[idx],
+          discipline: val.discipline as any,
+          level: val.level!,
+          record: {
+            wins: val.wins!,
+            losses: val.losses!,
+            draws: val.draws!
+          }
+        };
+        this.disciplines.set(current);
+        this.selectedDiscipline.set(current[idx]);
+      }
+    } else {
+      // Add new
+      const newDisc: DisciplineRecord = {
+        id: `disc-${Date.now()}`,
+        discipline: val.discipline as any,
+        level: val.level!,
+        record: {
+          wins: val.wins!,
+          losses: val.losses!,
+          draws: val.draws!
+        }
+      };
+      current.push(newDisc);
+      this.disciplines.set(current);
+      this.selectedDiscipline.set(newDisc);
+    }
+
+    this.cancelDisciplineForm();
+  }
+
+  deleteDiscipline(disc: DisciplineRecord) {
+    if (!confirm(`Eliminare la disciplina ${disc.discipline}?`)) return;
+    const updated = this.disciplines().filter(d => d.id !== disc.id);
+    this.disciplines.set(updated);
+    if (this.selectedDiscipline()?.id === disc.id) {
+      this.selectedDiscipline.set(updated.length > 0 ? updated[0] : undefined);
+    }
   }
 
   getDisciplineIcon(discipline: string): string {

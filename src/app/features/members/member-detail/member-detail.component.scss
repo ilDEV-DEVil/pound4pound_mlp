@@ -1704,3 +1704,88 @@ $border-light: rgba(0, 0, 0, 0.08);
     }
   }
 }
+
+// ============================================
+// Discipline Form & Actions
+// ============================================
+.discipline-actions {
+  display: flex;
+  gap: $space-2;
+  margin-top: auto;
+}
+
+.card-action-btn-delete {
+  padding: $space-3 $space-5;
+  border-radius: $radius-xl;
+  background: white;
+  color: $text-subtle;
+  font-weight: $font-bold;
+  font-size: $text-sm;
+  border: 2px solid $border-light;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: $brand-red;
+    background: rgba($brand-red, 0.05);
+    color: $brand-red;
+    transform: translateY(-2px);
+  }
+}
+
+.discipline-form-card {
+  animation: panelSlideDown 0.3s ease-out;
+  min-height: auto !important;
+}
+
+.discipline-form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.disc-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.disc-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+
+  &.disc-form-row-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.disc-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.disc-form-section-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $brand-blue;
+  font-weight: $font-bold;
+  padding: $space-3 0 0;
+  border-top: 2px solid $border-light;
+}
+
+@media (max-width: 768px) {
+  .discipline-actions {
+    flex-direction: column;
+  }
+
+  .disc-form-row {
+    grid-template-columns: 1fr;
+
+    &.disc-form-row-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+}

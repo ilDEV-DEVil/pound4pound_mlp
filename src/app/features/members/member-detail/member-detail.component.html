@@ -159,6 +159,15 @@
             <input type="date" formControlName="birthDate" class="profile-date-field" />
           </div>
         </div>
+
+        <div class="profile-form-row">
+          <div class="profile-form-field">
+            <app-input label="PESO (kg)" type="number" formControlName="weight" placeholder="75"></app-input>
+          </div>
+          <div class="profile-form-field">
+            <app-input label="ALTEZZA (cm)" type="number" formControlName="height" placeholder="180"></app-input>
+          </div>
+        </div>
       </div>
 
       <div class="profile-form-actions">
@@ -171,6 +180,65 @@
           } @else {
           💾 Salva Modifiche
           }
+        </button>
+      </div>
+    </form>
+  </div>
+  }
+
+  <!-- Discipline Add/Edit Panel -->
+  @if (isAddingDiscipline() || isEditingDiscipline()) {
+  <div class="renew-panel">
+    <div class="renew-header">
+      <h2 class="renew-title">{{ isEditingDiscipline() ? '✏️ Modifica Disciplina' : '➕ Nuova Disciplina' }}</h2>
+      <button class="close-btn" (click)="cancelDisciplineForm()" title="Chiudi">✕</button>
+    </div>
+
+    <p class="renew-subtitle">Gestisci i dettagli della disciplina e il record sportivo</p>
+
+    <form [formGroup]="disciplineForm" (ngSubmit)="saveDiscipline()" class="discipline-form">
+      <div class="disc-form-grid">
+        <div class="disc-form-row">
+          <div class="disc-form-field">
+            <label class="profile-field-label">DISCIPLINA</label>
+            <select formControlName="discipline" class="profile-select-field">
+              <option value="MMA">🥋 MMA</option>
+              <option value="Kickboxing">🦵 Kickboxing</option>
+              <option value="Boxe">🥊 Boxe</option>
+              <option value="Muay Thai">⚡ Muay Thai</option>
+            </select>
+          </div>
+          <div class="disc-form-field">
+            <label class="profile-field-label">LIVELLO</label>
+            <select formControlName="level" class="profile-select-field">
+              <option value="Principiante">Principiante</option>
+              <option value="Intermedio">Intermedio</option>
+              <option value="Avanzato">Avanzato</option>
+              <option value="Pro">Pro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="disc-form-section-label">RECORD (W - L - D)</div>
+        <div class="disc-form-row disc-form-row-3">
+          <div class="disc-form-field">
+            <app-input label="VITTORIE" type="number" formControlName="wins" placeholder="0"></app-input>
+          </div>
+          <div class="disc-form-field">
+            <app-input label="SCONFITTE" type="number" formControlName="losses" placeholder="0"></app-input>
+          </div>
+          <div class="disc-form-field">
+            <app-input label="PAREGGI" type="number" formControlName="draws" placeholder="0"></app-input>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-form-actions">
+        <button type="button" class="profile-cancel-btn" (click)="cancelDisciplineForm()">
+          Annulla
+        </button>
+        <button type="submit" class="profile-save-btn" [disabled]="disciplineForm.invalid">
+          {{ isEditingDiscipline() ? '💾 Salva Modifiche' : '➕ Aggiungi' }}
         </button>
       </div>
     </form>
@@ -224,8 +292,6 @@
             </div>
           </div>
         </div>
-
-        <button class="card-action-btn secondary" (click)="openRenewPanel()">🔄 Rinnova Abbonamento</button>
       </div>
       } @else {
       <div class="empty-state">
@@ -277,7 +343,7 @@
             <span class="discipline-name">{{ disciplines()[0].discipline }}</span>
           </div>
           }
-          <button class="header-btn" title="Aggiungi Match">➕</button>
+          <button class="header-btn" title="Aggiungi Disciplina" (click)="openAddDiscipline()">➕</button>
         </div>
 
       </div>
@@ -313,15 +379,15 @@
             <span class="data-icon">⚖️</span>
             <div class="data-content">
               <span class="data-label">Peso</span>
-              <span class="data-value">{{ discipline.weight }} kg</span>
+              <span class="data-value">{{ athleteData.weight }} kg</span>
             </div>
           </div>
 
           <div class="athlete-data-row">
-            <span class="data-icon">⚖️</span>
+            <span class="data-icon">📏</span>
             <div class="data-content">
               <span class="data-label">Altezza</span>
-              <span class="data-value">{{ discipline.height }} cm</span>
+              <span class="data-value">{{ athleteData.height }} cm</span>
             </div>
           </div>
 
@@ -353,16 +419,21 @@
           </div>
         </div>
 
-        <button class="card-action-btn secondary">📈 Vedi Storico {{ discipline.discipline }}</button>
+        <div class="discipline-actions">
+          <button class="card-action-btn secondary" (click)="openEditDiscipline(discipline)">✏️ Modifica {{
+            discipline.discipline }}</button>
+          <button class="card-action-btn-delete" (click)="deleteDiscipline(discipline)">🗑️ Elimina</button>
+        </div>
       </div>
       } @else {
       <div class="empty-state">
         <div class="empty-icon">🥊</div>
         <p class="empty-text">Nessuna disciplina registrata</p>
-        <button class="card-action-btn primary">➕ Aggiungi Disciplina</button>
+        <button class="card-action-btn primary" (click)="openAddDiscipline()">➕ Aggiungi Disciplina</button>
       </div>
       }
     </div>
+
 
     <!-- Card 3: Documenti -->
     <div class="grid-card documents-card">
@@ -410,7 +481,6 @@
     <div class="grid-card contacts-card">
       <div class="card-header">
         <h2 class="card-title">📞 Contatti</h2>
-        <button class="header-btn" title="Modifica">✏️</button>
       </div>
 
       <div class="contacts-content">
