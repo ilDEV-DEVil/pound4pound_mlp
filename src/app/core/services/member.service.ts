@@ -58,6 +58,19 @@ export class MemberService {
         return of(newMember).pipe(delay(600));
     }
 
+    updateMember(id: string, updates: Partial<Member>): Observable<Member | null> {
+        const members = this.storage.getItem<Member[]>('members') || [];
+        const index = members.findIndex(m => m.id === id);
+
+        if (index !== -1) {
+            members[index] = { ...members[index], ...updates };
+            this.storage.setItem('members', members);
+            return of(members[index]).pipe(delay(400));
+        }
+
+        return of(null).pipe(delay(400));
+    }
+
     // Helper to generate mock members
     private generateMockMembers(count: number): Member[] {
         const firstNames = ['Marco', 'Luca', 'Giulia', 'Sofia', 'Matteo', 'Alessandro', 'Francesca', 'Chiara'];

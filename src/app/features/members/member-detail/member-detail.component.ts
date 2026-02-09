@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MemberService } from '../../../core/services/member.service';
+import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Member, Subscription } from '../../../core/models';
 import { CardComponent, ButtonComponent } from '../../../shared/components';
 import { StorageService } from '../../../core/services/storage.service';
@@ -39,10 +40,14 @@ interface DisciplineRecord {
 export class MemberDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private memberService = inject(MemberService);
+  private subscriptionService = inject(SubscriptionService);
   private storage = inject(StorageService);
 
   member = signal<Member | undefined>(undefined);
   activeSubscription = signal<Subscription | undefined>(undefined);
+  availableSubscriptions = signal<Subscription[]>([]);
+  isRenewing = signal(false);
+  renewLoading = false;
 
   // Discipline Records - Dati dinamici per disciplina
   disciplines = signal<DisciplineRecord[]>([
@@ -167,6 +172,11 @@ export class MemberDetailComponent implements OnInit {
       }
     });
 
+    // Load available subscriptions for renewal
+    this.subscriptionService.getSubscriptions().subscribe(subs => {
+      this.availableSubscriptions.set(subs);
+    });
+
     // Chiudi dropdown quando si clicca fuori
     document.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
@@ -189,6 +199,28 @@ export class MemberDetailComponent implements OnInit {
     const subs = (this.storage.getItem('subscriptions') || []) as Subscription[];
     const sub = subs.find(s => s.id === subId);
     this.activeSubscription.set(sub);
+  }
+
+  // Subscription renewal methods
+  openRenewPanel() {
+    this.isRenewing.set(true);
+  }
+
+  cancelRenew() {
+    this.isRenewing.set(false);
+  }
+
+  assignPlan(sub: Subscription) {
+    const m = this.member();
+    if (!m) return;
+    this.renewLoading = true;
+    this.memberService.updateMember(m.id, { subscriptionId: sub.id }).subscribe(() => {
+      this.renewLoading = false;
+      this.isRenewing.set(false);
+      this.activeSubscription.set(sub);
+      // Update the member signal so the header reflects the change
+      this.member.set({ ...m, subscriptionId: sub.id });
+    });
   }
 
   // Discipline Methods

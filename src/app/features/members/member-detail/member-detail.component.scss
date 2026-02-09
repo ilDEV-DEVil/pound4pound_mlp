@@ -1342,3 +1342,238 @@ $border-light: rgba(0, 0, 0, 0.08);
     min-height: 350px;
   }
 }
+
+// ============================================
+// Subscription Renewal Panel
+// ============================================
+.renew-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  border: 1px solid $border-light;
+  border-radius: $radius-2xl;
+  padding: $space-8;
+  margin-bottom: $space-8;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  animation: panelSlideDown 0.3s ease-out;
+}
+
+@keyframes panelSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.renew-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $space-2;
+}
+
+.renew-title {
+  font-size: $text-2xl;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0;
+}
+
+.close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-full;
+  background: rgba(0, 0, 0, 0.04);
+  border: none;
+  color: $text-subtle;
+  font-size: $text-xl;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba($brand-red, 0.1);
+    color: $brand-red;
+    transform: rotate(90deg);
+  }
+}
+
+.renew-subtitle {
+  font-size: $text-base;
+  color: $text-subtle;
+  margin: 0 0 $space-6 0;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $space-5;
+}
+
+.plan-option {
+  background: white;
+  border: 2px solid $border-light;
+  border-radius: $radius-xl;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  &:hover {
+    border-color: rgba($brand-blue, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  &.current {
+    border-color: $brand-blue;
+    background: rgba($brand-blue, 0.02);
+    box-shadow: 0 0 0 3px rgba($brand-blue, 0.1);
+  }
+}
+
+.current-badge {
+  position: absolute;
+  top: -1px;
+  right: $space-4;
+  background: $brand-blue;
+  color: white;
+  font-size: 11px;
+  font-weight: $font-bold;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: $space-1 $space-3;
+  border-radius: 0 0 $radius-lg $radius-lg;
+}
+
+.plan-option-header {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.plan-icon {
+  font-size: 28px;
+}
+
+.plan-option-name {
+  font-size: $text-xl;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0;
+}
+
+.plan-option-price {
+  display: flex;
+  align-items: baseline;
+  gap: $space-2;
+}
+
+.plan-price-amount {
+  font-size: $text-2xl;
+  font-weight: $font-bold;
+  color: $brand-blue;
+}
+
+.plan-price-period {
+  font-size: $text-sm;
+  color: $text-subtle;
+  font-weight: $font-medium;
+}
+
+.plan-option-desc {
+  font-size: $text-sm;
+  color: $text-subtle;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.plan-option-features {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.plan-feature {
+  font-size: $text-sm;
+  color: $text-dark;
+  font-weight: $font-medium;
+
+  &.unlimited {
+    color: $brand-green;
+    font-weight: $font-bold;
+  }
+}
+
+.plan-select-btn {
+  width: 100%;
+  padding: $space-3 $space-5;
+  border-radius: $radius-xl;
+  background: $brand-blue;
+  color: white;
+  font-weight: $font-bold;
+  font-size: $text-sm;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: auto;
+
+  &:hover:not(:disabled) {
+    background: $brand-blue-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba($brand-blue, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &.current-plan {
+    background: transparent;
+    color: $brand-blue;
+    border: 2px solid $brand-blue;
+
+    &:hover:not(:disabled) {
+      background: $brand-blue;
+      color: white;
+    }
+  }
+}
+
+.empty-plans {
+  text-align: center;
+  padding: $space-8;
+}
+
+.empty-plans-icon {
+  font-size: 48px;
+  margin-bottom: $space-4;
+  opacity: 0.5;
+}
+
+.empty-plans-text {
+  font-size: $text-base;
+  color: $text-subtle;
+  margin: 0;
+  line-height: 1.6;
+}
+
+// Responsive for renewal panel
+@media (max-width: 768px) {
+  .renew-panel {
+    padding: $space-5;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .renew-title {
+    font-size: $text-xl;
+  }
+}

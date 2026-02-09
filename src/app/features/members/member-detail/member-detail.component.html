@@ -43,12 +43,12 @@
           </button>
         </div>
         @if (activeSubscription(); as sub) {
-        <button class="action-btn primary-btn">
+        <button class="action-btn primary-btn" (click)="openRenewPanel()">
           <span class="btn-icon">🔄</span>
           <span>Rinnova</span>
         </button>
         } @else {
-        <button class="action-btn primary-btn">
+        <button class="action-btn primary-btn" (click)="openRenewPanel()">
           <span class="btn-icon">➕</span>
           <span>Assegna Piano</span>
         </button>
@@ -57,6 +57,63 @@
 
     </div>
   </div>
+
+  <!-- Subscription Renewal / Assignment Panel -->
+  @if (isRenewing()) {
+  <div class="renew-panel">
+    <div class="renew-header">
+      <h2 class="renew-title">{{ activeSubscription() ? '🔄 Rinnova Abbonamento' : '➕ Assegna Piano' }}</h2>
+      <button class="close-btn" (click)="cancelRenew()">✕</button>
+    </div>
+
+    <p class="renew-subtitle">Seleziona il piano di abbonamento da assegnare a questo iscritto</p>
+
+    @if (availableSubscriptions().length > 0) {
+    <div class="plans-grid">
+      @for (sub of availableSubscriptions(); track sub.id) {
+      <div class="plan-option" [class.current]="activeSubscription()?.id === sub.id">
+        @if (activeSubscription()?.id === sub.id) {
+        <div class="current-badge">Piano Attuale</div>
+        }
+        <div class="plan-option-header">
+          <span class="plan-icon">💎</span>
+          <h3 class="plan-option-name">{{ sub.name }}</h3>
+        </div>
+        <div class="plan-option-price">
+          <span class="plan-price-amount">{{ sub.price | currency:'EUR' }}</span>
+          <span class="plan-price-period">/ {{ sub.durationMonths }} {{ sub.durationMonths === 1 ? 'mese' : 'mesi'
+            }}</span>
+        </div>
+        @if (sub.description) {
+        <p class="plan-option-desc">{{ sub.description }}</p>
+        }
+        <div class="plan-option-features">
+          <span class="plan-feature">📅 {{ sub.durationMonths }} {{ sub.durationMonths === 1 ? 'mese' : 'mesi' }}</span>
+          @if (sub.maxEntries) {
+          <span class="plan-feature">🎫 Max {{ sub.maxEntries }} ingressi/mese</span>
+          } @else {
+          <span class="plan-feature unlimited">♾️ Ingressi illimitati</span>
+          }
+        </div>
+        <button class="plan-select-btn" [class.current-plan]="activeSubscription()?.id === sub.id"
+          [disabled]="renewLoading" (click)="assignPlan(sub)">
+          @if (activeSubscription()?.id === sub.id) {
+          🔄 Rinnova questo piano
+          } @else {
+          ✓ Seleziona questo piano
+          }
+        </button>
+      </div>
+      }
+    </div>
+    } @else {
+    <div class="empty-plans">
+      <div class="empty-plans-icon">💳</div>
+      <p class="empty-plans-text">Nessun piano abbonamento disponibile.<br>Crea un piano nella sezione Abbonamenti.</p>
+    </div>
+    }
+  </div>
+  }
 
   <!-- Grid 2x2: Abbonamento | Record | Documenti | Contatti -->
   <div class="cards-grid">
@@ -106,7 +163,7 @@
           </div>
         </div>
 
-        <button class="card-action-btn secondary">🔄 Rinnova Abbonamento</button>
+        <button class="card-action-btn secondary" (click)="openRenewPanel()">🔄 Rinnova Abbonamento</button>
       </div>
       } @else {
       <div class="empty-state">
@@ -116,7 +173,7 @@
         </div>
         <div class="empty-icon">💳</div>
         <p class="empty-text">Nessun abbonamento attivo</p>
-        <button class="card-action-btn primary">➕ Assegna Piano</button>
+        <button class="card-action-btn primary" (click)="openRenewPanel()">➕ Assegna Piano</button>
       </div>
       }
     </div>
