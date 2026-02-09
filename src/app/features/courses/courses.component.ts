@@ -18,9 +18,19 @@ export class CoursesComponent {
 
   courses = signal<Course[]>([]);
   isCreating = signal(false);
+  editingCourse = signal<Course | null>(null);
   loading = false;
+  editLoading = false;
 
   form = this.fb.group({
+    name: ['', Validators.required],
+    sport: ['boxing' as Sport, Validators.required],
+    instructor: ['', Validators.required],
+    maxCapacity: [20, [Validators.required, Validators.min(1)]],
+    description: ['']
+  });
+
+  editForm = this.fb.group({
     name: ['', Validators.required],
     sport: ['boxing' as Sport, Validators.required],
     instructor: ['', Validators.required],
@@ -46,6 +56,40 @@ export class CoursesComponent {
 
   cancelCreate() {
     this.isCreating.set(false);
+  }
+
+  openEditMode(course: Course) {
+    this.isCreating.set(false);
+    this.editingCourse.set(course);
+    this.editForm.patchValue({
+      name: course.name,
+      sport: course.sport,
+      instructor: course.instructor,
+      maxCapacity: course.maxCapacity,
+      description: course.description || ''
+    });
+  }
+
+  cancelEdit() {
+    this.editingCourse.set(null);
+  }
+
+  onEditSubmit() {
+    const course = this.editingCourse();
+    if (this.editForm.invalid || !course) return;
+    this.editLoading = true;
+    const val = this.editForm.value;
+    this.courseService.updateCourse(course.id, {
+      name: val.name!,
+      sport: val.sport as Sport,
+      instructor: val.instructor!,
+      maxCapacity: val.maxCapacity!,
+      description: val.description || ''
+    }).subscribe(() => {
+      this.editLoading = false;
+      this.editingCourse.set(null);
+      this.refresh();
+    });
   }
 
   onSubmit() {
