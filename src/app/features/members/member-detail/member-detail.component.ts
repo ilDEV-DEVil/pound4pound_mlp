@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MemberService } from '../../../core/services/member.service';
 import { SubscriptionService } from '../../../core/services/subscription.service';
 import { Member, Subscription } from '../../../core/models';
-import { CardComponent, ButtonComponent } from '../../../shared/components';
+import { CardComponent, ButtonComponent, InputComponent } from '../../../shared/components';
 import { StorageService } from '../../../core/services/storage.service';
 
 interface Document {
@@ -33,7 +34,7 @@ interface DisciplineRecord {
 @Component({
   selector: 'app-member-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, CardComponent, ButtonComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, CardComponent, ButtonComponent, InputComponent],
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.scss'
 })
@@ -42,12 +43,25 @@ export class MemberDetailComponent implements OnInit {
   private memberService = inject(MemberService);
   private subscriptionService = inject(SubscriptionService);
   private storage = inject(StorageService);
+  private fb = inject(FormBuilder);
 
   member = signal<Member | undefined>(undefined);
   activeSubscription = signal<Subscription | undefined>(undefined);
   availableSubscriptions = signal<Subscription[]>([]);
   isRenewing = signal(false);
   renewLoading = false;
+
+  // Edit Profile
+  isEditingProfile = signal(false);
+  editProfileLoading = false;
+  profileForm = this.fb.group({
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone: [''],
+    gender: ['M' as 'M' | 'F'],
+    birthDate: ['']
+  });
 
   // Discipline Records - Dati dinamici per disciplina
   disciplines = signal<DisciplineRecord[]>([
@@ -221,6 +235,59 @@ export class MemberDetailComponent implements OnInit {
       // Update the member signal so the header reflects the change
       this.member.set({ ...m, subscriptionId: sub.id });
     });
+  }
+
+  // Profile editing methods
+  openEditProfile() {
+    const m = this.member();
+    if (!m) return;
+    this.isRenewing.set(false);
+    this.profileForm.patchValue({
+      firstName: m.firstName,
+      lastName: m.lastName,
+      email: m.email,
+      phone: m.phone || '',
+      gender: this.athleteData.gender,
+      birthDate: this.formatDateForInput(this.athleteData.birthDate)
+    });
+    this.isEditingProfile.set(true);
+  }
+
+  cancelEditProfile() {
+    this.isEditingProfile.set(false);
+  }
+
+  onProfileSubmit() {
+    const m = this.member();
+    if (!m || this.profileForm.invalid) return;
+    this.editProfileLoading = true;
+    const val = this.profileForm.value;
+
+    this.memberService.updateMember(m.id, {
+      firstName: val.firstName!,
+      lastName: val.lastName!,
+      email: val.email!,
+      phone: val.phone || undefined
+    }).subscribe(updated => {
+      this.editProfileLoading = false;
+      this.isEditingProfile.set(false);
+      if (updated) {
+        this.member.set(updated);
+      }
+      // Update mock athlete data locally
+      this.athleteData.gender = val.gender as 'M' | 'F';
+      if (val.birthDate) {
+        this.athleteData.birthDate = new Date(val.birthDate);
+      }
+    });
+  }
+
+  private formatDateForInput(date: Date): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   // Discipline Methods

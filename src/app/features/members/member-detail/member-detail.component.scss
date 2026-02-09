@@ -1362,6 +1362,7 @@ $border-light: rgba(0, 0, 0, 0.08);
     opacity: 0;
     transform: translateY(-16px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1575,5 +1576,131 @@ $border-light: rgba(0, 0, 0, 0.08);
 
   .renew-title {
     font-size: $text-xl;
+  }
+}
+
+// ============================================
+// Profile Edit Form
+// ============================================
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.profile-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.profile-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+}
+
+.profile-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.profile-field-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-subtle;
+  font-weight: $font-bold;
+}
+
+.profile-select-field,
+.profile-date-field {
+  width: 100%;
+  padding: $space-3 $space-4;
+  background: white;
+  border: 2px solid $border-light;
+  border-radius: $radius-xl;
+  color: $text-dark;
+  font-size: $text-base;
+  font-weight: $font-medium;
+  cursor: pointer;
+  transition: all 0.3s;
+  outline: none;
+  font-family: inherit;
+
+  &:hover {
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+
+  &:focus {
+    border-color: $brand-blue;
+    box-shadow: 0 0 0 3px rgba($brand-blue, 0.15);
+  }
+}
+
+.profile-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-3;
+  padding-top: $space-4;
+  border-top: 1px solid $border-light;
+}
+
+.profile-cancel-btn {
+  padding: $space-3 $space-6;
+  border-radius: $radius-xl;
+  background: white;
+  color: $text-dark;
+  font-weight: $font-bold;
+  font-size: $text-sm;
+  border: 2px solid $border-light;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    border-color: $brand-red;
+    color: $brand-red;
+    background: rgba($brand-red, 0.03);
+    transform: translateY(-2px);
+  }
+}
+
+.profile-save-btn {
+  padding: $space-3 $space-6;
+  border-radius: $radius-xl;
+  background: $brand-blue;
+  color: white;
+  font-weight: $font-bold;
+  font-size: $text-sm;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover:not(:disabled) {
+    background: $brand-blue-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba($brand-blue, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-form-actions {
+    flex-direction: column;
+
+    .profile-cancel-btn,
+    .profile-save-btn {
+      width: 100%;
+      text-align: center;
+    }
   }
 }

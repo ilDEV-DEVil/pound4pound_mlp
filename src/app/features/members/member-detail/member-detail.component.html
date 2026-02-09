@@ -33,7 +33,7 @@
 
       <div class="header-actions">
         <div class="actions-row">
-          <button class="action-btn secondary-btn">
+          <button class="action-btn secondary-btn" (click)="openEditProfile()">
             <span class="btn-icon">✏️</span>
             <span>Modifica Profilo</span>
           </button>
@@ -112,6 +112,68 @@
       <p class="empty-plans-text">Nessun piano abbonamento disponibile.<br>Crea un piano nella sezione Abbonamenti.</p>
     </div>
     }
+  </div>
+  }
+
+  <!-- Edit Profile Panel -->
+  @if (isEditingProfile()) {
+  <div class="renew-panel">
+    <div class="renew-header">
+      <h2 class="renew-title">✏️ Modifica Profilo</h2>
+      <button class="close-btn" (click)="cancelEditProfile()">✕</button>
+    </div>
+
+    <p class="renew-subtitle">Modifica i dati personali dell'iscritto</p>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onProfileSubmit()" class="profile-form">
+      <div class="profile-form-grid">
+        <div class="profile-form-row">
+          <div class="profile-form-field">
+            <app-input label="NOME" formControlName="firstName" placeholder="es. Marco"></app-input>
+          </div>
+          <div class="profile-form-field">
+            <app-input label="COGNOME" formControlName="lastName" placeholder="es. Rossi"></app-input>
+          </div>
+        </div>
+
+        <div class="profile-form-row">
+          <div class="profile-form-field">
+            <app-input label="EMAIL" type="email" formControlName="email"
+              placeholder="es. marco&#64;email.com"></app-input>
+          </div>
+          <div class="profile-form-field">
+            <app-input label="TELEFONO" formControlName="phone" placeholder="es. 320 1234567"></app-input>
+          </div>
+        </div>
+
+        <div class="profile-form-row">
+          <div class="profile-form-field">
+            <label class="profile-field-label">SESSO</label>
+            <select formControlName="gender" class="profile-select-field">
+              <option value="M">♂️ Maschio</option>
+              <option value="F">♀️ Femmina</option>
+            </select>
+          </div>
+          <div class="profile-form-field">
+            <label class="profile-field-label">DATA DI NASCITA</label>
+            <input type="date" formControlName="birthDate" class="profile-date-field" />
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-form-actions">
+        <button type="button" class="profile-cancel-btn" (click)="cancelEditProfile()">
+          Annulla
+        </button>
+        <button type="submit" class="profile-save-btn" [disabled]="profileForm.invalid || editProfileLoading">
+          @if (editProfileLoading) {
+          Salvataggio...
+          } @else {
+          💾 Salva Modifiche
+          }
+        </button>
+      </div>
+    </form>
   </div>
   }
 
