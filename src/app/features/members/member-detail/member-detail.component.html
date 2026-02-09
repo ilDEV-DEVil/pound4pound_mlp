@@ -9,7 +9,7 @@
     <div class="header-card">
       <div class="avatar-section">
         <div class="member-avatar">{{ getInitials(m) }}</div>
-        <button class="edit-avatar-btn">📷</button>
+        <button class="edit-avatar-btn" (click)="notImplementedYet('Modifica avatar')">📷</button>
       </div>
 
       <div class="header-info">
@@ -37,7 +37,7 @@
             <span class="btn-icon">✏️</span>
             <span>Modifica Profilo</span>
           </button>
-          <button class="action-btn secondary-btn">
+          <button class="action-btn secondary-btn" (click)="notImplementedYet('Invio messaggi')">
             <span class="btn-icon">💬</span>
             <span>Messaggio</span>
           </button>
@@ -524,7 +524,8 @@
           </div>
         </div>
 
-        <button class="card-action-btn secondary">💬 Invia Messaggio</button>
+        <button class="card-action-btn secondary" (click)="notImplementedYet('Invio messaggi')">💬 Invia
+          Messaggio</button>
       </div>
     </div>
   </div>

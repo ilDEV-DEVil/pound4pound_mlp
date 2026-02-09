@@ -468,18 +468,19 @@ export class MemberDetailComponent implements OnInit {
   }
 
   uploadDocument() {
-    // TODO: Implement document upload
-    console.log('Upload document');
+    this.notImplementedYet('Caricamento documenti');
   }
 
   downloadDocument(doc: Document) {
-    // TODO: Implement document download
-    console.log('Download document:', doc.name);
+    this.notImplementedYet('Download documenti');
   }
 
   deleteDocument(doc: Document) {
-    // TODO: Implement document deletion
-    console.log('Delete document:', doc.name);
+    this.notImplementedYet('Eliminazione documenti');
+  }
+
+  notImplementedYet(feature: string) {
+    alert(`${feature} sarà una funzionalità che verrà introdotta a breve.`);
   }
 
   // Analytics Methods
