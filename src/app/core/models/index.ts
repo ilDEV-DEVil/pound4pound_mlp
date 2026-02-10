@@ -97,3 +97,32 @@ export interface GymAnnouncement {
   content: string;
   createdAt: Date;
 }
+
+export interface Instructor {
+  id: string;
+  gymId: string;
+  firstName: string;
+  lastName: string;
+  bio?: string;
+  specialties: Sport[];
+  avatar: string | null;
+  phone?: string;
+  email?: string;
+  socialLinks?: {
+    instagram?: string;
+    facebook?: string;
+  };
+}
+
+export type NotificationType = 'info' | 'success' | 'warning' | 'error';
+
+export interface AppNotification {
+  id: string;
+  title: string;
+  message: string;
+  type: NotificationType;
+  timestamp: Date;
+  isRead: boolean;
+  link?: string;
+}
+

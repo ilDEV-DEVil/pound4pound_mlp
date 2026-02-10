@@ -1,0 +1,125 @@
+<div class="instructors-container">
+    <div class="instructors-header">
+        <div class="header-top">
+            <div class="title-group">
+                <h1 class="page-title">Maestri</h1>
+                <p class="page-subtitle">Gestisci il team degli insegnanti della palestra</p>
+            </div>
+            <button class="add-btn" (click)="toggleCreating()">
+                {{ isCreating() ? '✕ Chiudi' : '➕ Aggiungi Maestro' }}
+            </button>
+        </div>
+    </div>
+
+    @if (isCreating() || editingInstructor()) {
+    <div class="form-card">
+        <div class="form-header">
+            <h2 class="form-title">{{ editingInstructor() ? 'Modifica Maestro' : 'Nuovo Maestro' }}</h2>
+            <button class="close-btn" (click)="cancelEdit()">✕</button>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="instructor-form">
+            <div class="form-grid">
+                <div class="form-row">
+                    <div class="form-field">
+                        <label class="field-label">Nome</label>
+                        <input type="text" formControlName="firstName" class="input-field" placeholder="Es. Marco">
+                    </div>
+                    <div class="form-field">
+                        <label class="field-label">Cognome</label>
+                        <input type="text" formControlName="lastName" class="input-field" placeholder="Es. Rossi">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label class="field-label">Email</label>
+                        <input type="email" formControlName="email" class="input-field" placeholder="email@esempio.com">
+                    </div>
+                    <div class="form-field">
+                        <label class="field-label">Telefono</label>
+                        <input type="text" formControlName="phone" class="input-field"
+                            placeholder="Es. +39 333 4455666">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label">Bio / Esperienza</label>
+                    <textarea formControlName="bio" class="textarea-field" rows="3"
+                        placeholder="Breve descrizione del maestro..."></textarea>
+                </div>
+
+                <div class="form-field">
+                    <label class="field-label">Specialità (Seleziona più discipline)</label>
+                    <div class="sports-selector">
+                        @for (sport of availableSports; track sport) {
+                        <button type="button" class="sport-chip" [class.selected]="isSportSelected(sport)"
+                            (click)="toggleSport(sport)">
+                            <span class="chip-icon">{{ getSportIcon(sport) }}</span>
+                            <span class="chip-label">{{ getSportLabel(sport) }}</span>
+                        </button>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" (click)="cancelEdit()">Annulla</button>
+                <button type="submit" class="submit-btn" [disabled]="form.invalid || loading()">
+                    {{ loading() ? 'Salvataggio...' : (editingInstructor() ? '💾 Salva Modifiche' : '✅ Crea Maestro') }}
+                </button>
+            </div>
+        </form>
+    </div>
+    }
+
+    <div class="instructors-grid">
+        @for (instructor of instructors(); track instructor.id) {
+        <div class="instructor-card">
+            <div class="card-header">
+                <div class="instructor-avatar">
+                    {{ getInitials(instructor) }}
+                </div>
+                <div class="card-actions">
+                    <button class="icon-btn edit-btn" (click)="onEdit(instructor)" title="Modifica">✏️</button>
+                    <button class="icon-btn delete-btn" (click)="onDelete(instructor.id)" title="Elimina">🗑️</button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <h3 class="instructor-name">{{ instructor.firstName }} {{ instructor.lastName }}</h3>
+                <p class="instructor-bio">{{ instructor.bio || 'Nessuna bio disponibile' }}</p>
+
+                <div class="specialties-list">
+                    @for (sport of instructor.specialties; track sport) {
+                    <span class="specialty-badge" [class]="sport">
+                        {{ getSportIcon(sport) }} {{ getSportLabel(sport) }}
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <div class="card-footer">
+                @if (instructor.email) {
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <span class="contact-text">{{ instructor.email }}</span>
+                </div>
+                }
+                @if (instructor.socialLinks?.instagram) {
+                <div class="contact-item">
+                    <span class="contact-icon">📸</span>
+                    <span class="contact-text">{{ instructor.socialLinks?.instagram }}</span>
+                </div>
+                }
+            </div>
+        </div>
+        } @empty {
+        <div class="empty-state">
+            <div class="empty-icon">🥋</div>
+            <h3 class="empty-title">Nessun maestro trovato</h3>
+            <p class="empty-message">Inizia aggiungendo il primo insegnante al tuo team.</p>
+        </div>
+        }
+    </div>
+</div>

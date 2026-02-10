@@ -2,6 +2,8 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { AppNotification } from '../../../core/models';
 
 @Component({
   selector: 'app-main-layout',
@@ -13,9 +15,14 @@ import { AuthService } from '../../../core/services/auth.service';
 export class MainLayoutComponent {
   authService = inject(AuthService);
   currentUser = this.authService.currentUser;
-  
+
   isSidebarCollapsed = signal(false);
   isMobileMenuOpen = signal(false);
+  isNotificationsOpen = signal(false);
+
+  notificationService = inject(NotificationService);
+  notifications = this.notificationService.allNotifications;
+  unreadCount = this.notificationService.unreadCount;
 
   userInitials = computed(() => {
     const user = this.currentUser();
@@ -24,39 +31,45 @@ export class MainLayoutComponent {
   });
 
   menuItems = [
-    { 
-      icon: '📊', 
-      label: 'Dashboard', 
+    {
+      icon: '📊',
+      label: 'Dashboard',
       route: '/app/dashboard',
       description: 'Panoramica generale'
     },
-    { 
-      icon: '👥', 
-      label: 'Iscritti', 
+    {
+      icon: '👥',
+      label: 'Iscritti',
       route: '/app/members',
       description: 'Gestione membri'
     },
-    { 
-      icon: '🥊', 
-      label: 'Corsi', 
+    {
+      icon: '🥊',
+      label: 'Corsi',
       route: '/app/courses',
       description: 'Corsi disponibili'
     },
-    { 
-      icon: '📅', 
-      label: 'Calendario', 
+    {
+      icon: '🥋',
+      label: 'Maestri',
+      route: '/app/instructors',
+      description: 'Gestione team'
+    },
+    {
+      icon: '📅',
+      label: 'Calendario',
       route: '/app/schedule',
       description: 'Pianificazione lezioni'
     },
-    { 
-      icon: '💳', 
-      label: 'Abbonamenti', 
+    {
+      icon: '💳',
+      label: 'Abbonamenti',
       route: '/app/subscriptions',
       description: 'Piani e prezzi'
     },
-    { 
-      icon: '⚙️', 
-      label: 'Impostazioni', 
+    {
+      icon: '⚙️',
+      label: 'Impostazioni',
       route: '/app/settings',
       description: 'Configurazione'
     }
@@ -72,6 +85,22 @@ export class MainLayoutComponent {
 
   closeMobileMenu() {
     this.isMobileMenuOpen.set(false);
+  }
+
+  toggleNotifications() {
+    this.isNotificationsOpen.update(v => !v);
+  }
+
+  markAsRead(notification: AppNotification) {
+    this.notificationService.markAsRead(notification.id);
+  }
+
+  markAllAsRead() {
+    this.notificationService.markAllAsRead();
+  }
+
+  deleteNotification(notification: AppNotification) {
+    this.notificationService.deleteNotification(notification.id);
   }
 
   logout() {
