@@ -2,8 +2,8 @@
   @if (member(); as m) {
   <!-- Header con Avatar e Info Base -->
   <div class="member-header">
-    <button class="back-btn" routerLink="/app/members">
-      ← Torna agli Iscritti
+    <button class="back-btn" [routerLink]="sourcePage() === 'schedule' ? '/app/schedule' : '/app/members'">
+      ← {{ sourcePage() === 'schedule' ? 'Torna al Calendario' : 'Torna agli Iscritti' }}
     </button>
 
     <div class="header-card">

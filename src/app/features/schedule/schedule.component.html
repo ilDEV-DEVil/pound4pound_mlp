@@ -18,13 +18,13 @@
     <div class="date-selectors">
       <select [(ngModel)]="selectedMonth" (ngModelChange)="onMonthYearChange()" class="month-select">
         @for (month of monthNames; track $index) {
-          <option [value]="$index">{{ month }}</option>
+        <option [value]="$index">{{ month }}</option>
         }
       </select>
-      
+
       <select [(ngModel)]="selectedYear" (ngModelChange)="onMonthYearChange()" class="year-select">
         @for (year of years; track year) {
-          <option [value]="year">{{ year }}</option>
+        <option [value]="year">{{ year }}</option>
         }
       </select>
     </div>
@@ -45,123 +45,123 @@
   <!-- Week Days Grid -->
   <div class="week-grid">
     @for (day of weekDays(); track day.date.getTime()) {
-      <div 
-        class="day-card"
-        [class.today]="day.isToday"
-        [class.selected]="selectedDate()?.date?.getTime() === day.date.getTime()"
-        (click)="selectDate(day)"
-      >
-        <div class="day-header">
-          <span class="day-name">{{ day.dayName }}</span>
-          <span class="day-number">{{ day.dayNumber }}</span>
-        </div>
-        @if (day.isToday) {
-          <div class="today-indicator">Oggi</div>
-        }
+    <div class="day-card" [class.today]="day.isToday"
+      [class.selected]="selectedDate()?.date?.getTime() === day.date.getTime()" (click)="selectDate(day)">
+      <div class="day-header">
+        <span class="day-name">{{ day.dayName }}</span>
+        <span class="day-number">{{ day.dayNumber }}</span>
       </div>
+      @if (day.isToday) {
+      <div class="today-indicator">Oggi</div>
+      }
+    </div>
     }
   </div>
 
   <!-- Daily Schedule -->
   @if (selectedDate(); as selected) {
-    <div class="daily-schedule">
-      <div class="schedule-title-bar">
-        <h2 class="schedule-title">
-          <span class="title-icon">📅</span>
-          {{ dayLabels[selected.fullDay] }} {{ selected.dayNumber }} {{ monthNames[selected.date?.getMonth() ?? 0] }}
-        </h2>
-        <span class="schedule-subtitle">Palinsesto odierno</span>
-      </div>
-
-      <div class="lessons-container">
-        @for (slot of dailySlots(); track slot.courseId + slot.timeStart) {
-          <div class="lesson-slot" [class]="slot.colorClass" (click)="onSlotClick(slot)">
-            <div class="slot-time">
-              <span class="time-start">{{ slot.timeStart }}</span>
-              <span class="time-separator">-</span>
-              <span class="time-end">{{ slot.timeEnd }}</span>
-            </div>
-
-            <div class="slot-content">
-              <h3 class="slot-name">{{ slot.name }}</h3>
-              <div class="slot-instructor">
-                <span class="instructor-icon">👤</span>
-                <span>{{ slot.instructor }}</span>
-              </div>
-            </div>
-
-            <div class="slot-meta">
-              <div class="members-count">
-                <span class="count-icon">👥</span>
-                <span class="count-value">{{ slot.membersCount }}</span>
-              </div>
-              <div class="slot-arrow">→</div>
-            </div>
-          </div>
-        } @empty {
-          <div class="empty-day">
-            <div class="empty-icon">📭</div>
-            <p class="empty-message">Nessun corso in programma per questo giorno</p>
-            <button class="empty-action-btn" (click)="openAddModal()">
-              Aggiungi Lezione
-            </button>
-          </div>
-        }
-      </div>
+  <div class="daily-schedule">
+    <div class="schedule-title-bar">
+      <h2 class="schedule-title">
+        <span class="title-icon">📅</span>
+        {{ dayLabels[selected.fullDay] }} {{ selected.dayNumber }} {{ monthNames[selected.date.getMonth() ?? 0] }}
+      </h2>
+      <span class="schedule-subtitle">Palinsesto odierno</span>
     </div>
+
+    <div class="lessons-container">
+      @for (slot of dailySlots(); track slot.courseId + slot.timeStart) {
+      <div class="lesson-slot" [class]="slot.colorClass" (click)="onSlotClick(slot)">
+        <div class="slot-time">
+          <span class="time-start">{{ slot.timeStart }}</span>
+          <span class="time-separator">-</span>
+          <span class="time-end">{{ slot.timeEnd }}</span>
+        </div>
+
+        <div class="slot-content">
+          <h3 class="slot-name">{{ slot.name }}</h3>
+          <div class="slot-instructor">
+            <span class="instructor-icon">👤</span>
+            <span>{{ slot.instructor }}</span>
+          </div>
+        </div>
+
+        <div class="slot-meta">
+          <div class="members-count">
+            <span class="count-icon">👥</span>
+            <span class="count-value">{{ slot.membersCount }}</span>
+          </div>
+          <div class="slot-arrow">→</div>
+        </div>
+      </div>
+      } @empty {
+      <div class="empty-day">
+        <div class="empty-icon">📭</div>
+        <p class="empty-message">Nessun corso in programma per questo giorno</p>
+        <button class="empty-action-btn" (click)="openAddModal()">
+          Aggiungi Lezione
+        </button>
+      </div>
+      }
+    </div>
+  </div>
   }
 </div>
 
 <!-- Lesson Detail Modal -->
 <dialog id="lesson-detail-dialog" class="modal-dialog detail-modal">
   @if (selectedDetailSlot(); as slot) {
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">Dettagli Lezione</h2>
-        <button class="modal-close" (click)="closeDetailModal()">✕</button>
-      </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">Dettagli Lezione</h2>
+      <button class="modal-close" (click)="closeDetailModal()">✕</button>
+    </div>
 
-      <div class="modal-body">
-        <div class="detail-card">
-          <div class="detail-badge" [class]="slot.colorClass">
-            <span class="badge-time">{{ slot.timeStart }} - {{ slot.timeEnd }}</span>
+    <div class="modal-body">
+      <div class="detail-card">
+        <div class="detail-badge" [class]="slot.colorClass">
+          <span class="badge-time">📅 {{ dayLabels[slot.day] }} {{ slot.timeStart }} - {{ slot.timeEnd }}</span>
+        </div>
+
+        <h3 class="detail-name">{{ slot.name }}</h3>
+
+        <div class="detail-info-grid">
+          <div class="info-item">
+            <span class="info-label">Istruttore</span>
+            <span class="info-value">👤 {{ slot.instructor }}</span>
           </div>
+        </div>
 
-          <h3 class="detail-name">{{ slot.name }}</h3>
-
-          <div class="detail-info-grid">
-            <div class="info-item">
-              <span class="info-label">Istruttore</span>
-              <span class="info-value">👤 {{ slot.instructor }}</span>
+        <div class="members-section">
+          <h4 class="members-title">Iscritti alla lezione ({{ slot.membersCount }})</h4>
+          <div class="members-list-scroll">
+            @for (member of slot.members; track member.id) {
+            <div class="member-chip" (click)="navigateToMember(member.id)" style="cursor: pointer;">
+              <span class="member-avatar-mini">{{ member.firstName.charAt(0) }}</span>
+              <span class="member-name-mini">{{ member.firstName }} {{ member.lastName }}</span>
             </div>
-            <div class="info-item">
-              <span class="info-label">Giorno</span>
-              <span class="info-value">📅 {{ dayLabels[slot.day] }}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Iscritti</span>
-              <span class="info-value">👥 {{ slot.membersCount }} persone</span>
-            </div>
+            }
           </div>
         </div>
       </div>
-
-      <div class="modal-footer">
-        <button class="modal-action-btn book-btn" (click)="confirmBooking()" [disabled]="bookingLoading()">
-          @if (bookingLoading()) {
-            <span>⏳ Prenotazione...</span>
-          } @else {
-            <span>✓ Prenota Lezione</span>
-          }
-        </button>
-        <button class="modal-action-btn edit-btn" (click)="editLesson()">
-          ✏️ Modifica
-        </button>
-        <button class="modal-action-btn delete-btn" (click)="deleteLesson()">
-          🗑️ Elimina
-        </button>
-      </div>
     </div>
+
+    <div class="modal-footer">
+      <button class="modal-action-btn book-btn" (click)="confirmBooking()" [disabled]="bookingLoading()">
+        @if (bookingLoading()) {
+        <span>⏳ Prenotazione...</span>
+        } @else {
+        <span>✓ Prenota Lezione</span>
+        }
+      </button>
+      <button class="modal-action-btn edit-btn" (click)="editLesson()">
+        ✏️ Modifica
+      </button>
+      <button class="modal-action-btn delete-btn" (click)="deleteLesson()">
+        🗑️ Elimina
+      </button>
+    </div>
+  </div>
   }
 </dialog>
 
@@ -179,46 +179,30 @@
       <div class="form-grid">
         <div class="form-field">
           <label class="field-label">NOME CORSO</label>
-          <input 
-            type="text" 
-            class="field-input"
-            placeholder="es. Boxe Principianti"
-            [ngModel]="courseForm().name"
-            (ngModelChange)="courseForm.set({...courseForm(), name: $event})"
-          />
+          <input type="text" class="field-input" placeholder="es. Boxe Principianti" [ngModel]="courseForm().name"
+            (ngModelChange)="courseForm.set({...courseForm(), name: $event})" />
         </div>
 
         <div class="form-field">
           <label class="field-label">ISTRUTTORE</label>
-          <input 
-            type="text" 
-            class="field-input"
-            placeholder="es. Marco Rossi"
-            [ngModel]="courseForm().instructor"
-            (ngModelChange)="courseForm.set({...courseForm(), instructor: $event})"
-          />
+          <input type="text" class="field-input" placeholder="es. Marco Rossi" [ngModel]="courseForm().instructor"
+            (ngModelChange)="courseForm.set({...courseForm(), instructor: $event})" />
         </div>
 
         <div class="form-field">
           <label class="field-label">SPORT</label>
-          <select 
-            class="field-select"
-            [ngModel]="courseForm().sport"
-            (ngModelChange)="courseForm.set({...courseForm(), sport: $event})"
-          >
+          <select class="field-select" [ngModel]="courseForm().sport"
+            (ngModelChange)="courseForm.set({...courseForm(), sport: $event})">
             @for (sport of sports; track sport) {
-              <option [value]="sport">{{ sport.toUpperCase() }}</option>
+            <option [value]="sport">{{ sport.toUpperCase() }}</option>
             }
           </select>
         </div>
 
         <div class="form-field">
           <label class="field-label">GIORNO</label>
-          <select 
-            class="field-select"
-            [ngModel]="courseForm().day"
-            (ngModelChange)="courseForm.set({...courseForm(), day: $event})"
-          >
+          <select class="field-select" [ngModel]="courseForm().day"
+            (ngModelChange)="courseForm.set({...courseForm(), day: $event})">
             <option value="monday">Lunedì</option>
             <option value="tuesday">Martedì</option>
             <option value="wednesday">Mercoledì</option>
@@ -232,22 +216,14 @@
         <div class="form-row">
           <div class="form-field">
             <label class="field-label">ORA INIZIO</label>
-            <input 
-              type="time" 
-              class="field-input"
-              [ngModel]="courseForm().startTime"
-              (ngModelChange)="courseForm.set({...courseForm(), startTime: $event})"
-            />
+            <input type="time" class="field-input" [ngModel]="courseForm().startTime"
+              (ngModelChange)="courseForm.set({...courseForm(), startTime: $event})" />
           </div>
 
           <div class="form-field">
             <label class="field-label">ORA FINE</label>
-            <input 
-              type="time" 
-              class="field-input"
-              [ngModel]="courseForm().endTime"
-              (ngModelChange)="courseForm.set({...courseForm(), endTime: $event})"
-            />
+            <input type="time" class="field-input" [ngModel]="courseForm().endTime"
+              (ngModelChange)="courseForm.set({...courseForm(), endTime: $event})" />
           </div>
         </div>
       </div>

@@ -48,6 +48,7 @@ export class MemberDetailComponent implements OnInit {
   availableSubscriptions = signal<Subscription[]>([]);
   isRenewing = signal(false);
   renewLoading = false;
+  sourcePage = signal<string | null>(null);
 
   // Edit Profile
   isEditingProfile = signal(false);
@@ -197,6 +198,10 @@ export class MemberDetailComponent implements OnInit {
     // Load available subscriptions for renewal
     this.subscriptionService.getSubscriptions().subscribe(subs => {
       this.availableSubscriptions.set(subs);
+    });
+
+    this.route.queryParams.subscribe(params => {
+      this.sourcePage.set(params['from'] || null);
     });
 
     // Chiudi dropdown quando si clicca fuori

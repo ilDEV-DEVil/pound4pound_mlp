@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Course, DayOfWeek, Sport } from '../../core/models';
+import { Course, DayOfWeek, Member, Sport } from '../../core/models';
 import { CourseService } from '../../core/services/course.service';
+import { MemberService } from '../../core/services/member.service';
+import { Router } from '@angular/router';
 
 interface CalendarSlot {
   courseId: string;
@@ -13,6 +15,7 @@ interface CalendarSlot {
   day: DayOfWeek;
   colorClass: string;
   membersCount: number;
+  members: Member[];
 }
 
 interface DayInfo {
@@ -32,8 +35,11 @@ interface DayInfo {
 })
 export class ScheduleComponent {
   private courseService = inject(CourseService);
+  private memberService = inject(MemberService);
+  private router = inject(Router);
 
   courses = signal<Course[]>([]);
+  allMembers = signal<Member[]>([]);
 
   // Date Management
   currentDate = new Date();
@@ -169,6 +175,10 @@ export class ScheduleComponent {
     this.courseService.getCourses().subscribe(courses => {
       this.courses.set(courses);
     });
+
+    this.memberService.getMembers().subscribe(members => {
+      this.allMembers.set(members);
+    });
   }
 
   selectDate(day: DayInfo) {
@@ -188,6 +198,13 @@ export class ScheduleComponent {
       course.schedule
         .filter(s => s.day === day)
         .forEach(s => {
+          const membersList = this.allMembers();
+          const mCount = Math.min(Math.floor(Math.random() * 8) + 3, membersList.length);
+
+          // Prendi N membri casuali
+          const shuffled = [...membersList].sort(() => 0.5 - Math.random());
+          const slotMembers = shuffled.slice(0, mCount);
+
           slots.push({
             courseId: course.id,
             name: course.name,
@@ -196,7 +213,8 @@ export class ScheduleComponent {
             timeEnd: s.endTime,
             day: s.day,
             colorClass: color,
-            membersCount: Math.floor(Math.random() * 12) + 4
+            membersCount: mCount,
+            members: slotMembers
           });
         });
     });
@@ -221,6 +239,13 @@ export class ScheduleComponent {
       dialog.close();
     }
     this.selectedDetailSlot.set(null);
+  }
+
+  navigateToMember(memberId: string) {
+    this.closeDetailModal();
+    this.router.navigate(['/app/members', memberId], {
+      queryParams: { from: 'schedule' }
+    });
   }
 
   editLesson() {
