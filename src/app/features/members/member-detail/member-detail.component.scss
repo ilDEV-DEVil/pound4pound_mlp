@@ -200,6 +200,47 @@ $border-light: rgba(0, 0, 0, 0.08);
   white-space: nowrap;
 }
 
+.member-disciplines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-1;
+}
+
+.discipline-badge {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-1 $space-4;
+  background: rgba($brand-blue, 0.1);
+  border: 1px solid rgba($brand-blue, 0.2);
+  border-radius: $radius-full;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &:hover {
+    background: rgba($brand-blue, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba($brand-blue, 0.1);
+  }
+}
+
+.badge-icon {
+  font-size: 16px;
+}
+
+.badge-text {
+  font-size: 11px;
+  font-weight: $font-bold;
+  color: $brand-blue;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 // Header Actions
 .header-actions {
   display: flex;
@@ -562,6 +603,21 @@ $border-light: rgba(0, 0, 0, 0.08);
     gap: $space-5;
     flex: 1;
   }
+}
+
+.sub-disciplines-section {
+  margin-top: $space-5;
+  padding-top: $space-5;
+  border-top: 2px dashed $border-light;
+}
+
+.sub-disciplines-title {
+  font-size: $text-xs;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  color: $text-subtle;
+  letter-spacing: 0.1em;
+  margin: 0 0 $space-3 0;
 }
 
 .sub-status-badge {

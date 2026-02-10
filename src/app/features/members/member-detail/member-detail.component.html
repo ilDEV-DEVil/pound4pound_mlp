@@ -29,6 +29,8 @@
             <span class="meta-text">Iscritto il {{ m.joinedAt | date:'dd/MM/yyyy' }}</span>
           </span>
         </div>
+
+
       </div>
 
       <div class="header-actions">
@@ -290,6 +292,19 @@
               <span class="detail-label">Scadenza</span>
               <span class="detail-value expiry">{{ getExpiryDate(m) | date:'dd MMM yyyy' }}</span>
             </div>
+          </div>
+        </div>
+
+        <div class="sub-disciplines-section">
+          <h3 class="sub-disciplines-title">Discipline Attive</h3>
+          <div class="member-disciplines">
+            @for (disc of disciplines(); track disc.id) {
+            <span class="discipline-badge clickable" (click)="navigateToCourses(disc.discipline)"
+              title="Vedi corsi di {{ disc.discipline }}">
+              <span class="badge-icon">{{ getDisciplineIcon(disc.discipline) }}</span>
+              <span class="badge-text">{{ disc.discipline }}</span>
+            </span>
+            }
           </div>
         </div>
       </div>

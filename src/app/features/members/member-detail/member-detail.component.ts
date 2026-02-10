@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MemberService } from '../../../core/services/member.service';
 import { SubscriptionService } from '../../../core/services/subscription.service';
@@ -42,6 +42,7 @@ export class MemberDetailComponent implements OnInit {
   private subscriptionService = inject(SubscriptionService);
   private storage = inject(StorageService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   member = signal<Member | undefined>(undefined);
   activeSubscription = signal<Subscription | undefined>(undefined);
@@ -415,6 +416,17 @@ export class MemberDetailComponent implements OnInit {
       case 'Muay Thai': return '⚡';
       default: return '🥊';
     }
+  }
+
+  navigateToCourses(discipline: string) {
+    const mapping: Record<string, string> = {
+      'MMA': 'mma',
+      'Kickboxing': 'kickboxing',
+      'Boxe': 'boxing',
+      'Muay Thai': 'muaythai'
+    };
+    const sport = mapping[discipline];
+    this.router.navigate(['/app/courses'], { queryParams: { sport } });
   }
 
   getTotalFightsByDiscipline(record: { wins: number; losses: number; draws: number; }): number {
