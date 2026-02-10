@@ -7,7 +7,8 @@
           Benvenuto, {{ currentUser()?.firstName || 'Utente' }}! 👋
         </h1>
         <p class="subtitle">
-          {{ currentUser()?.role === 'manager' ? 'Ecco cosa sta succedendo nella tua palestra.' : 'Pronto per il prossimo allenamento?' }}
+          {{ currentUser()?.role === 'manager' ? 'Ecco cosa sta succedendo nella tua palestra.' : 'Pronto per il
+          prossimo allenamento?' }}
         </p>
       </div>
       <div class="user-avatar">
@@ -15,30 +16,26 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Quick Actions (solo per Manager) -->
   @if (currentUser()?.role === 'manager') {
-    <div class="quick-actions-section">
-      <h2 class="section-title">Azioni Rapide</h2>
-      <div class="quick-actions">
-        <button class="action-btn blue">
-          <div class="action-icon">➕</div>
-          <span class="action-label">Nuovo Iscritto</span>
-        </button>
-        <button class="action-btn red">
-          <div class="action-icon">🥊</div>
-          <span class="action-label">Nuova Lezione</span>
-        </button>
-        <button class="action-btn blue">
-          <div class="action-icon">💳</div>
-          <span class="action-label">Registra Pagamento</span>
-        </button>
-        <button class="action-btn red">
-          <div class="action-icon">📊</div>
-          <span class="action-label">Report Mensile</span>
-        </button>
-      </div>
+  <div class="quick-actions-section">
+    <h2 class="section-title">Azioni Rapide</h2>
+    <div class="quick-actions">
+      <button class="action-btn blue" [routerLink]="['/app/members']">
+        <div class="action-icon">➕</div>
+        <span class="action-label">Nuovo Iscritto</span>
+      </button>
+      <button class="action-btn red" [routerLink]="['/app/schedule']" [queryParams]="{ action: 'add' }">
+        <div class="action-icon">🥊</div>
+        <span class="action-label">Nuova Lezione</span>
+      </button>
+      <button class="action-btn blue" [routerLink]="['/app/subscriptions']">
+        <div class="action-icon">💳</div>
+        <span class="action-label">Rinnova Abbonamento</span>
+      </button>
     </div>
+  </div>
   }
 
   <!-- Prossime Lezioni -->
@@ -49,31 +46,31 @@
     </div>
 
     @if (todayCourses.length > 0) {
-      <div class="lessons-list">
-        @for (course of todayCourses; track course.id) {
-          <div class="lesson-card" [class]="getLessonClass($index)">
-            <div class="lesson-time">{{ course.startTime }}</div>
-            <div class="lesson-info">
-              <div class="lesson-name">{{ course.name }}</div>
-              <div class="lesson-instructor">
-                <span class="instructor-icon">👤</span>
-                {{ course.instructor }}
-              </div>
-            </div>
-            <div class="lesson-capacity">
-              <div class="capacity-bar">
-                <div class="capacity-fill" [style.width.%]="getCapacityPercentage(course)"></div>
-              </div>
-              <span class="capacity-text">{{ course.enrolledMembers.length }} / {{ course.maxCapacity }}</span>
-            </div>
+    <div class="lessons-list">
+      @for (course of todayCourses; track course.id) {
+      <div class="lesson-card" [class]="getLessonClass($index)">
+        <div class="lesson-time">{{ course.startTime }}</div>
+        <div class="lesson-info">
+          <div class="lesson-name">{{ course.name }}</div>
+          <div class="lesson-instructor">
+            <span class="instructor-icon">👤</span>
+            {{ course.instructor }}
           </div>
-        }
+        </div>
+        <div class="lesson-capacity">
+          <div class="capacity-bar">
+            <div class="capacity-fill" [style.width.%]="getCapacityPercentage(course)"></div>
+          </div>
+          <span class="capacity-text">{{ course.enrolledMembers.length }} / {{ course.maxCapacity }}</span>
+        </div>
       </div>
+      }
+    </div>
     } @else {
-      <div class="empty-lessons">
-        <div class="empty-icon">📅</div>
-        <p class="empty-text">Nessun corso programmato per oggi.</p>
-      </div>
+    <div class="empty-lessons">
+      <div class="empty-icon">📅</div>
+      <p class="empty-text">Nessun corso programmato per oggi.</p>
+    </div>
     }
   </div>
 
@@ -109,7 +106,7 @@
     </div>
   </div>
 
-  
+
   <!-- Stats Grid -->
   <div class="stats-grid">
     <div class="stat-card">

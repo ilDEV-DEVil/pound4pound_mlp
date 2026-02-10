@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Course, DayOfWeek, Member, Sport } from '../../core/models';
 import { CourseService } from '../../core/services/course.service';
 import { MemberService } from '../../core/services/member.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 interface CalendarSlot {
   courseId: string;
@@ -37,6 +37,7 @@ export class ScheduleComponent {
   private courseService = inject(CourseService);
   private memberService = inject(MemberService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   courses = signal<Course[]>([]);
   allMembers = signal<Member[]>([]);
@@ -91,6 +92,17 @@ export class ScheduleComponent {
   constructor() {
     this.generateWeek();
     this.refresh();
+    this.handleQueryParams();
+  }
+
+  private handleQueryParams() {
+    this.route.queryParams.subscribe(params => {
+      if (params['action'] === 'add') {
+        // Piccola pausa per assicurarsi che il DOM sia pronto se necessario,
+        // ma showModal dovrebbe funzionare se il dialogo è nel template
+        setTimeout(() => this.openAddModal(), 100);
+      }
+    });
   }
 
   onMonthYearChange() {

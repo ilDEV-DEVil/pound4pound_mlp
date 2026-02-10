@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { CardComponent, ButtonComponent } from '../../shared/components';
 
@@ -15,7 +16,7 @@ interface Course {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CardComponent, ButtonComponent],
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
