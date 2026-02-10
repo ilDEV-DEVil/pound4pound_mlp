@@ -1,11 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CardComponent, ButtonComponent, InputComponent, ModalComponent } from '../../shared/components';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { MemberService } from '../../core/services/member.service';
 import { Member, Subscription } from '../../core/models';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-members',
@@ -14,10 +14,11 @@ import { Router } from '@angular/router';
   templateUrl: './members.component.html',
   styleUrl: './members.component.scss'
 })
-export class MembersComponent {
+export class MembersComponent implements OnInit {
   private memberService = inject(MemberService);
   private subscriptionService = inject(SubscriptionService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
 
   // State
@@ -41,6 +42,20 @@ export class MembersComponent {
 
   constructor() {
     this.refresh();
+  }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['action'] === 'add') {
+        this.openAddModal();
+        // Clear query params to prevent reopening if the user refreshes
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { action: null },
+          queryParamsHandling: 'merge'
+        });
+      }
+    });
   }
 
   refresh() {
