@@ -123,10 +123,12 @@
           <span class="badge-time">📅 {{ dayLabels[slot.day] }} {{ slot.timeStart }} - {{ slot.timeEnd }}</span>
         </div>
 
-        <h3 class="detail-name">{{ slot.name }}</h3>
+        <h3 class="detail-name clickable" (click)="navigateToCourse(slot.courseId)" title="Vai alla pagina del corso">
+          {{ slot.name }}
+        </h3>
 
         <div class="detail-info-grid">
-          <div class="info-item">
+          <div class="info-item clickable" (click)="navigateToInstructors()" title="Vai alla pagina dei maestri">
             <span class="info-label">Istruttore</span>
             <span class="info-value">👤 {{ slot.instructor }}</span>
           </div>

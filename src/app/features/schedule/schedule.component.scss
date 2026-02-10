@@ -648,6 +648,16 @@ $border-light: rgba(0, 0, 0, 0.08);
   color: $text-dark;
   margin: 0;
   text-align: center;
+  transition: all 0.2s;
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      color: $brand-blue;
+      text-decoration: underline;
+    }
+  }
 }
 
 .detail-info-grid {
@@ -664,6 +674,17 @@ $border-light: rgba(0, 0, 0, 0.08);
   background: rgba(0, 0, 0, 0.02);
   border-radius: $radius-lg;
   border-left: 4px solid $brand-blue;
+  transition: all 0.2s;
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      background: rgba($brand-blue, 0.05);
+      border-left-color: $brand-blue-dark;
+      transform: translateX(4px);
+    }
+  }
 }
 
 .info-item:nth-child(even) {

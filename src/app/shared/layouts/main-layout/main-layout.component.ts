@@ -13,7 +13,7 @@ import { AuthService } from '../../../core/services/auth.service';
 export class MainLayoutComponent {
   authService = inject(AuthService);
   currentUser = this.authService.currentUser;
-  
+
   isSidebarCollapsed = signal(false);
   isMobileMenuOpen = signal(false);
 
@@ -24,39 +24,45 @@ export class MainLayoutComponent {
   });
 
   menuItems = [
-    { 
-      icon: '📊', 
-      label: 'Dashboard', 
+    {
+      icon: '📊',
+      label: 'Dashboard',
       route: '/app/dashboard',
       description: 'Panoramica generale'
     },
-    { 
-      icon: '👥', 
-      label: 'Iscritti', 
+    {
+      icon: '👥',
+      label: 'Iscritti',
       route: '/app/members',
       description: 'Gestione membri'
     },
-    { 
-      icon: '🥊', 
-      label: 'Corsi', 
+    {
+      icon: '🥊',
+      label: 'Corsi',
       route: '/app/courses',
       description: 'Corsi disponibili'
     },
-    { 
-      icon: '📅', 
-      label: 'Calendario', 
+    {
+      icon: '🥋',
+      label: 'Maestri',
+      route: '/app/instructors',
+      description: 'Gestione team'
+    },
+    {
+      icon: '📅',
+      label: 'Calendario',
       route: '/app/schedule',
       description: 'Pianificazione lezioni'
     },
-    { 
-      icon: '💳', 
-      label: 'Abbonamenti', 
+    {
+      icon: '💳',
+      label: 'Abbonamenti',
       route: '/app/subscriptions',
       description: 'Piani e prezzi'
     },
-    { 
-      icon: '⚙️', 
-      label: 'Impostazioni', 
+    {
+      icon: '⚙️',
+      label: 'Impostazioni',
       route: '/app/settings',
       description: 'Configurazione'
     }

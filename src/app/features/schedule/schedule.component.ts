@@ -248,6 +248,18 @@ export class ScheduleComponent {
     });
   }
 
+  navigateToInstructors() {
+    this.closeDetailModal();
+    this.router.navigate(['/app/instructors']);
+  }
+
+  navigateToCourse(courseId: string) {
+    this.closeDetailModal();
+    this.router.navigate(['/app/courses'], {
+      queryParams: { id: courseId }
+    });
+  }
+
   editLesson() {
     const slot = this.selectedDetailSlot();
     if (!slot) return;

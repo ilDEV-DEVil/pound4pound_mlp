@@ -1,0 +1,481 @@
+// Design Tokens
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+$space-12: 3rem;
+$space-16: 4rem;
+
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+$text-3xl: 1.875rem;
+
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+
+$radius-lg: 0.5rem;
+$radius-xl: 0.75rem;
+$radius-2xl: 1rem;
+$radius-full: 9999px;
+
+$app-bg: #C7D6D5;
+$brand-red: #E71D36;
+$brand-blue: #3066BE;
+$brand-blue-dark: #255198;
+$brand-blue-glow: rgba(48, 102, 190, 0.2);
+$text-dark: #1A1D21;
+$text-subtle: #4A5568;
+$border-light: rgba(0, 0, 0, 0.08);
+
+// Sport Colors
+$boxing-color: #dc2626;
+$kickboxing-color: #ea580c;
+$mma-color: #7c3aed;
+$muaythai-color: #0891b2;
+$bjj-color: #059669;
+
+.instructors-container {
+    background: $app-bg;
+    min-height: 100vh;
+    padding: $space-8;
+}
+
+// Header
+.instructors-header {
+    margin-bottom: $space-8;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid $border-light;
+    border-radius: $radius-2xl;
+    padding: $space-6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.page-title {
+    font-size: $text-3xl;
+    font-weight: $font-bold;
+    color: $text-dark;
+    margin: 0 0 $space-1 0;
+}
+
+.page-subtitle {
+    font-size: $text-base;
+    color: $text-subtle;
+    margin: 0;
+}
+
+.add-btn {
+    padding: $space-3 $space-6;
+    background: $brand-blue;
+    color: white;
+    border: none;
+    border-radius: $radius-xl;
+    font-weight: $font-bold;
+    font-size: $text-sm;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba($brand-blue, 0.3);
+
+    &:hover {
+        background: $brand-blue-dark;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba($brand-blue, 0.4);
+    }
+}
+
+// Form Card
+.form-card {
+    background: white;
+    border: 1px solid $border-light;
+    border-radius: $radius-2xl;
+    padding: $space-6;
+    margin-bottom: $space-12;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $space-6;
+    padding-bottom: $space-4;
+    border-bottom: 2px solid $border-light;
+}
+
+.form-title {
+    font-size: $text-2xl;
+    font-weight: $font-bold;
+    color: $text-dark;
+    margin: 0;
+}
+
+.close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-full;
+    background: rgba(0, 0, 0, 0.04);
+    border: none;
+    color: $text-subtle;
+    font-size: $text-xl;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background: rgba($brand-red, 0.1);
+        color: $brand-red;
+        transform: rotate(90deg);
+    }
+}
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: $space-6;
+    margin-bottom: $space-8;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-6;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.field-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: $text-subtle;
+    font-weight: $font-bold;
+}
+
+.input-field,
+.textarea-field {
+    padding: $space-3 $space-4;
+    background: white;
+    border: 2px solid $border-light;
+    border-radius: $radius-xl;
+    color: $text-dark;
+    font-size: $text-base;
+    transition: all 0.3s;
+    outline: none;
+
+    &:focus {
+        border-color: $brand-blue;
+        box-shadow: 0 0 0 3px $brand-blue-glow;
+    }
+}
+
+// Sports Selector
+.sports-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-3;
+}
+
+.sport-chip {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2 $space-4;
+    background: white;
+    border: 2px solid $border-light;
+    border-radius: $radius-full;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: $text-subtle;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        border-color: $brand-blue;
+        color: $brand-blue;
+        background: rgba($brand-blue, 0.02);
+    }
+
+    &.selected {
+        background: $brand-blue;
+        border-color: $brand-blue;
+        color: white;
+        box-shadow: 0 4px 8px rgba($brand-blue, 0.3);
+    }
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $space-4;
+    padding-top: $space-6;
+    border-top: 2px solid $border-light;
+}
+
+.cancel-btn {
+    padding: $space-3 $space-6;
+    background: transparent;
+    color: $text-subtle;
+    border: 2px solid $border-light;
+    border-radius: $radius-xl;
+    font-weight: $font-bold;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: $text-dark;
+    }
+}
+
+.submit-btn {
+    padding: $space-3 $space-8;
+    background: $brand-blue;
+    color: white;
+    border: none;
+    border-radius: $radius-xl;
+    font-weight: $font-bold;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover:not(:disabled) {
+        background: $brand-blue-dark;
+        transform: translateY(-2px);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+// Instructors Grid
+.instructors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: $space-8;
+}
+
+.instructor-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: $radius-2xl;
+    padding: $space-6;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        background: white;
+    }
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $space-5;
+}
+
+.instructor-avatar {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, $brand-blue, $brand-blue-dark);
+    color: white;
+    border-radius: $radius-xl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $text-2xl;
+    font-weight: $font-bold;
+    box-shadow: 0 8px 16px rgba($brand-blue, 0.2);
+}
+
+.card-actions {
+    display: flex;
+    gap: $space-1;
+}
+
+.icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-lg;
+    border: 1px solid $border-light;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background: $border-light;
+        transform: scale(1.1);
+    }
+
+    &.edit-btn:hover {
+        color: $brand-blue;
+        border-color: $brand-blue;
+    }
+
+    &.delete-btn:hover {
+        color: $brand-red;
+        border-color: $brand-red;
+    }
+}
+
+.instructor-name {
+    font-size: $text-xl;
+    font-weight: $font-bold;
+    color: $text-dark;
+    margin: 0 0 $space-2 0;
+}
+
+.instructor-bio {
+    font-size: $text-sm;
+    color: $text-subtle;
+    line-height: 1.6;
+    margin-bottom: $space-6;
+    flex: 1;
+}
+
+.specialties-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-bottom: $space-6;
+}
+
+.specialty-badge {
+    padding: $space-1 $space-3;
+    border-radius: $radius-full;
+    font-size: 11px;
+    font-weight: $font-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    &.boxing {
+        background: rgba($boxing-color, 0.1);
+        color: $boxing-color;
+    }
+
+    &.kickboxing {
+        background: rgba($kickboxing-color, 0.1);
+        color: $kickboxing-color;
+    }
+
+    &.mma {
+        background: rgba($mma-color, 0.1);
+        color: $mma-color;
+    }
+
+    &.muaythai {
+        background: rgba($muaythai-color, 0.1);
+        color: $muaythai-color;
+    }
+
+    &.bjj {
+        background: rgba($bjj-color, 0.1);
+        color: $bjj-color;
+    }
+}
+
+.card-footer {
+    padding-top: $space-5;
+    border-top: 1px solid $border-light;
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    font-size: $text-sm;
+    color: $text-subtle;
+}
+
+.contact-icon {
+    font-size: 16px;
+}
+
+// Empty State
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: $space-16 $space-8;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: $radius-2xl;
+    border: 2px dashed $border-light;
+}
+
+.empty-icon {
+    font-size: $space-12;
+    margin-bottom: $space-4;
+    opacity: 0.5;
+}
+
+.empty-title {
+    font-size: $text-2xl;
+    font-weight: $font-bold;
+    color: $text-dark;
+    margin: 0 0 $space-2 0;
+}
+
+.empty-message {
+    color: $text-subtle;
+}
+
+@media (max-width: 768px) {
+    .instructors-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .header-top {
+        flex-direction: column;
+        gap: $space-4;
+        text-align: center;
+    }
+
+    .add-btn {
+        width: 100%;
+    }
+}

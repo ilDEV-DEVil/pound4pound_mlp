@@ -97,3 +97,20 @@ export interface GymAnnouncement {
   content: string;
   createdAt: Date;
 }
+
+export interface Instructor {
+  id: string;
+  gymId: string;
+  firstName: string;
+  lastName: string;
+  bio?: string;
+  specialties: Sport[];
+  avatar: string | null;
+  phone?: string;
+  email?: string;
+  socialLinks?: {
+    instagram?: string;
+    facebook?: string;
+  };
+}
+
