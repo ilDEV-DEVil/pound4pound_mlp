@@ -27,6 +27,10 @@
                     <span class="tab-label">Attivi</span>
                     <span class="tab-count">{{ activeCount }}</span>
                 </button>
+                <button class="filter-tab" [class.active]="filterStatus === 'expiring'" (click)="setFilter('expiring')">
+                    <span class="tab-label">In Scadenza</span>
+                    <span class="tab-count">{{ expiringCount }}</span>
+                </button>
                 <button class="filter-tab" [class.active]="filterStatus === 'expired'" (click)="setFilter('expired')">
                     <span class="tab-label">Scaduti</span>
                     <span class="tab-count">{{ expiredCount }}</span>
@@ -46,10 +50,22 @@
                         {{ getInitials(member) }}
                     </div>
                     <div class="member-status">
-                        @if (member.subscriptionId) {
+                        @switch (getSubscriptionStatus(member)) {
+                        @case ('active') {
                         <span class="status-badge active">Attivo</span>
-                        } @else {
-                        <span class="status-badge expired">Scaduto</span>
+                        }
+                        @case ('expiring') {
+                        <span class="status-badge expiring"
+                            style="background-color: rgba(255, 193, 7, 0.15); color: #FFC107; border: 1px solid rgba(255, 193, 7, 0.3);">In
+                            Scadenza</span>
+                        }
+                        @case ('expired') {
+                        <span class="status-badge expired"
+                            style="background-color: rgba(239, 83, 80, 0.15); color: #EF5350; border: 1px solid rgba(239, 83, 80, 0.3);">Scaduto</span>
+                        }
+                        @case ('inactive') {
+                        <span class="status-badge inactive">Inattivo</span>
+                        }
                         }
                     </div>
                 </div>

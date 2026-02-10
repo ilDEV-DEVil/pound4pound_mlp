@@ -7,7 +7,7 @@
           Benvenuto, {{ currentUser()?.firstName || 'Utente' }}! 👋
         </h1>
         <p class="subtitle">
-          {{ currentUser()?.role === 'manager' ? 'Ecco cosa sta succedendo nella tua palestra.' : 'Pronto per il
+          {{ currentUser()?.role === 'manager' ? `Ecco cosa sta succedendo nella ${currentUser()?.gymName}` : 'Pronto per il
           prossimo allenamento?' }}
         </p>
       </div>
@@ -53,7 +53,7 @@
         <div class="lesson-info">
           <div class="lesson-name">{{ course.name }}</div>
           <div class="lesson-instructor">
-            <span class="instructor-icon">👤</span>
+            <span class="instructor-icon">🥋</span>
             {{ course.instructor }}
           </div>
         </div>

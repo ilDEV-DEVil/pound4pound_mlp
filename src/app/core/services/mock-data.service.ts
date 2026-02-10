@@ -25,9 +25,10 @@ export class MockDataService {
                 id: 'user-001',
                 email: 'marco@fightclub.it',
                 firstName: 'Marco',
-                lastName: 'Rossi',
+                lastName: 'Pavone',
                 role: 'manager',
                 gymId: 'gym-001',
+                gymName: 'Honbu Dojo Team Pavone',
                 avatar: null,
                 createdAt: new Date('2024-01-01')
             },
@@ -52,12 +53,12 @@ export class MockDataService {
                 price: 80,
                 durationMonths: 1,
                 gymId: 'gym-001',
-                description: 'Accesso illimitato a tutti i corsi per un mese'
+                description: 'Accesso illimitato ad 1 corso per 1 mese + Accesso libero in sala pesi'
             },
             {
                 id: 'sub-002',
                 name: 'Open Trimestrale',
-                price: 220,
+                price: 240,
                 durationMonths: 3,
                 gymId: 'gym-001',
                 description: 'Accesso illimitato con sconto trimestrale'
@@ -65,7 +66,7 @@ export class MockDataService {
             {
                 id: 'sub-003',
                 name: 'Open Annuale',
-                price: 800,
+                price: 960,
                 durationMonths: 12,
                 gymId: 'gym-001',
                 description: 'Massimo risparmio, accesso completo'

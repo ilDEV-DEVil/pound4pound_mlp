@@ -12,6 +12,7 @@ export interface User {
   lastName: string;
   role: UserRole;
   gymId: string | null;
+  gymName?: string | null;
   avatar: string | null;
   phone?: string;
   birthDate?: string;
