@@ -6,6 +6,8 @@ $space-4: 1rem;
 $space-5: 1.25rem;
 $space-6: 1.5rem;
 $space-8: 2rem;
+$space-10: 2.5rem;
+$space-12: 3rem;
 
 $text-xs: 0.75rem;
 $text-sm: 0.875rem;
@@ -62,7 +64,7 @@ $mobile-header-height: 64px;
 
   @media (max-width: 768px) {
     transform: translateX(-100%);
-    
+
     &.mobile-open {
       transform: translateX(0);
     }
@@ -358,7 +360,7 @@ $mobile-header-height: 64px;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   z-index: 99;
-  
+
   @media (min-width: 769px) {
     display: none;
   }
@@ -372,6 +374,7 @@ $mobile-header-height: 64px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative; // Necessario per il posizionamento dei dropdown figli
 
   @media (max-width: 768px) {
     margin-left: 0;
@@ -441,6 +444,12 @@ $mobile-header-height: 64px;
   color: $text-dark;
 }
 
+.mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
 .mobile-user {
   width: 40px;
 }
@@ -459,6 +468,275 @@ $mobile-header-height: 64px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+// Desktop Header
+.desktop-header {
+  height: 72px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid $border-light;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-8;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.header-search {
+  flex: 1;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+}
+
+.notif-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: $radius-xl;
+  background: white;
+  border: 2px solid $border-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 20px;
+  color: $text-dark;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: $brand-blue;
+    color: $brand-blue;
+    box-shadow: 0 8px 16px rgba($brand-blue, 0.1);
+  }
+
+  &.active {
+    background: $brand-blue;
+    color: white;
+    border-color: $brand-blue;
+    box-shadow: 0 8px 16px rgba($brand-blue, 0.25);
+  }
+}
+
+.notif-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: $brand-red;
+  color: white;
+  font-size: 10px;
+  font-weight: $font-bold;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba($brand-red, 0.3);
+}
+
+.notif-dropdown {
+  position: absolute;
+  top: 72px;
+  right: $space-8;
+  width: 380px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(24px);
+  border-radius: $radius-2xl;
+  border: 1px solid $border-light;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.12);
+  z-index: 9999;
+  overflow: hidden;
+  animation: dropdownIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: $space-2;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    top: $mobile-header-height + 10px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    z-index: 10000;
+  }
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.notif-header {
+  padding: $space-4 $space-5;
+  border-bottom: 1px solid $border-light;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.notif-title {
+  font-size: $text-base;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin: 0;
+}
+
+.mark-all-btn {
+  font-size: 11px;
+  font-weight: $font-semibold;
+  color: $brand-blue;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.notif-list {
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.notif-item {
+  display: flex;
+  gap: $space-4;
+  padding: $space-4 $space-5;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba($brand-blue, 0.02);
+
+    .notif-delete-btn {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  &.unread {
+    background: rgba($brand-blue, 0.04);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: $brand-blue;
+    }
+  }
+
+  &.success .notif-item-icon {
+    color: #10b981;
+  }
+
+  &.warning .notif-item-icon {
+    color: #ea580c;
+  }
+
+  &.error .notif-item-icon {
+    color: $brand-red;
+  }
+
+  &.info .notif-item-icon {
+    color: $brand-blue;
+  }
+}
+
+.notif-item-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notif-content-wrapper {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.notif-item-title {
+  font-size: $text-sm;
+  font-weight: $font-bold;
+  color: $text-dark;
+  margin-bottom: 2px;
+}
+
+.notif-item-message {
+  font-size: 13px;
+  color: $text-subtle;
+  line-height: 1.4;
+  margin-bottom: $space-1;
+}
+
+.notif-item-time {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: $font-medium;
+}
+
+.notif-delete-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: $radius-lg;
+  border: none;
+  background: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba($brand-red, 0.1);
+    color: $brand-red;
+  }
+}
+
+.notif-empty {
+  padding: $space-10 $space-6;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  color: #94a3b8;
+
+  .empty-icon {
+    font-size: 40px;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+  }
+}
+
 // Page Content
 .page-content {
   flex: 1;
@@ -470,6 +748,7 @@ $mobile-header-height: 64px;
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -478,7 +757,7 @@ $mobile-header-height: 64px;
 
 .nav-item {
   animation: slideIn 0.3s ease-out backwards;
-  
+
   @for $i from 1 through 10 {
     &:nth-child(#{$i}) {
       animation-delay: #{$i * 0.05}s;

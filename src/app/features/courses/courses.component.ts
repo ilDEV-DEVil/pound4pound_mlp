@@ -8,7 +8,7 @@ import { Course, Sport } from '../../core/models';
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CardComponent, ButtonComponent, InputComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, InputComponent],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss'
 })

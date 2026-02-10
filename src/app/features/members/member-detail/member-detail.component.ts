@@ -32,7 +32,7 @@ interface DisciplineRecord {
 @Component({
   selector: 'app-member-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, CardComponent, ButtonComponent, InputComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, InputComponent],
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.scss'
 })

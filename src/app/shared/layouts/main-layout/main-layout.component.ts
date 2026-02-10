@@ -2,6 +2,8 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { AppNotification } from '../../../core/models';
 
 @Component({
   selector: 'app-main-layout',
@@ -16,6 +18,11 @@ export class MainLayoutComponent {
 
   isSidebarCollapsed = signal(false);
   isMobileMenuOpen = signal(false);
+  isNotificationsOpen = signal(false);
+
+  notificationService = inject(NotificationService);
+  notifications = this.notificationService.allNotifications;
+  unreadCount = this.notificationService.unreadCount;
 
   userInitials = computed(() => {
     const user = this.currentUser();
@@ -78,6 +85,22 @@ export class MainLayoutComponent {
 
   closeMobileMenu() {
     this.isMobileMenuOpen.set(false);
+  }
+
+  toggleNotifications() {
+    this.isNotificationsOpen.update(v => !v);
+  }
+
+  markAsRead(notification: AppNotification) {
+    this.notificationService.markAsRead(notification.id);
+  }
+
+  markAllAsRead() {
+    this.notificationService.markAllAsRead();
+  }
+
+  deleteNotification(notification: AppNotification) {
+    this.notificationService.deleteNotification(notification.id);
   }
 
   logout() {
