@@ -99,4 +99,35 @@
         </div>
         }
     </div>
+
+    <!-- Modal Nuovo Iscritto -->
+    <app-modal [isOpen]="isModalOpen()" title="Nuovo Iscritto" confirmLabel="Aggiungi" [loading]="isSubmitting()"
+        (close)="closeModal()" (confirm)="onAddMember()">
+
+        <form [formGroup]="memberForm" class="member-form">
+            <div class="form-row">
+                <div class="form-group flex-1">
+                    <label>Nome</label>
+                    <app-input placeholder="Es. Marco" formControlName="firstName"
+                        [error]="memberForm.get('firstName')?.touched && memberForm.get('firstName')?.invalid ? 'Il nome è obbligatorio' : undefined"></app-input>
+                </div>
+                <div class="form-group flex-1">
+                    <label>Cognome</label>
+                    <app-input placeholder="Es. Rossi" formControlName="lastName"
+                        [error]="memberForm.get('lastName')?.touched && memberForm.get('lastName')?.invalid ? 'Il cognome è obbligatorio' : undefined"></app-input>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <app-input type="email" placeholder="email@esempio.com" formControlName="email"
+                    [error]="memberForm.get('email')?.touched && memberForm.get('email')?.invalid ? 'Inserisci un\'email valida' : undefined"></app-input>
+            </div>
+
+            <div class="form-group">
+                <label>Telefono</label>
+                <app-input placeholder="333 1234567" formControlName="phone"></app-input>
+            </div>
+        </form>
+    </app-modal>
 </div>
