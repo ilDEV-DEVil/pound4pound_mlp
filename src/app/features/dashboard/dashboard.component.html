@@ -42,7 +42,7 @@
   <div class="upcoming-section">
     <div class="section-header">
       <h2 class="section-title">Prossime Lezioni di Oggi</h2>
-      <a href="/app/schedule" class="view-all-btn">Vedi tutte →</a>
+      <a [routerLink]="['/app/schedule']" class="view-all-btn">Vedi tutte →</a>
     </div>
 
     @if (todayCourses.length > 0) {
