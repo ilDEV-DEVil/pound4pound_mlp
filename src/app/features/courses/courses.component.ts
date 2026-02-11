@@ -110,6 +110,14 @@ export class CoursesComponent {
     });
   }
 
+  deleteCourse(course: Course) {
+    if (confirm(`Sei sicuro di voler eliminare il corso "${course.name}"?`)) {
+      this.courseService.deleteCourse(course.id).subscribe(() => {
+        this.refresh();
+      });
+    }
+  }
+
   getSportIcon(sport: Sport): string {
     const icons: Record<Sport, string> = {
       boxing: '🥊',
