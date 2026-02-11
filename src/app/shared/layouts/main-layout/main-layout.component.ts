@@ -1,9 +1,9 @@
-import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, computed, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AppNotification } from '../../../core/models';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { AppNotification } from '../../../core/models';
 
 @Component({
   selector: 'app-main-layout',
@@ -98,6 +98,21 @@ export class MainLayoutComponent {
 
   closeUserMenu() {
     this.isUserMenuOpen.set(false);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    // Check if the click occurred outside the trigger buttons and the dropdowns themselves
+    const isClickInsideActions = target.closest('.header-actions');
+    const isClickInsideNotifDropdown = target.closest('.notif-dropdown');
+    const isClickInsideUserDropdown = target.closest('.user-dropdown');
+
+    if (!isClickInsideActions && !isClickInsideNotifDropdown && !isClickInsideUserDropdown) {
+      this.isNotificationsOpen.set(false);
+      this.isUserMenuOpen.set(false);
+    }
   }
 
   markAsRead(notification: AppNotification) {

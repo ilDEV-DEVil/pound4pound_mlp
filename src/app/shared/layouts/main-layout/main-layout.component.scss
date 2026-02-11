@@ -38,6 +38,7 @@ $border-light: rgba(0, 0, 0, 0.08);
 $sidebar-width: 280px;
 $sidebar-collapsed-width: 80px;
 $mobile-header-height: 64px;
+$desktop-header-height: 80px;
 
 // Main Layout
 .main-layout {
@@ -80,7 +81,8 @@ $mobile-header-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $space-6;
+  padding: 0 $space-6;
+  height: $desktop-header-height;
   border-bottom: 1px solid $border-light;
   background: linear-gradient(135deg, rgba($brand-red, 0.05), rgba($brand-blue, 0.05));
 }
@@ -458,7 +460,7 @@ $mobile-header-height: 64px;
 
 // Desktop Header
 .desktop-header {
-  height: 72px;
+  height: $desktop-header-height;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid $border-light;
@@ -522,7 +524,7 @@ $mobile-header-height: 64px;
 
 .user-dropdown {
   position: absolute;
-  top: 72px;
+  top: $desktop-header-height;
   right: $space-8;
   width: 320px;
   background: rgba(255, 255, 255, 0.98);
@@ -732,7 +734,7 @@ $mobile-header-height: 64px;
 
 .notif-dropdown {
   position: absolute;
-  top: 72px;
+  top: $desktop-header-height;
   right: $space-8;
   width: 380px;
   background: rgba(255, 255, 255, 0.98);
