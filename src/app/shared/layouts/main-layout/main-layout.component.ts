@@ -105,7 +105,7 @@ export class MainLayoutComponent {
     const target = event.target as HTMLElement;
 
     // Check if the click occurred outside the trigger buttons and the dropdowns themselves
-    const isClickInsideActions = target.closest('.header-actions');
+    const isClickInsideActions = target.closest('.header-actions') || target.closest('.mobile-actions');
     const isClickInsideNotifDropdown = target.closest('.notif-dropdown');
     const isClickInsideUserDropdown = target.closest('.user-dropdown');
 
