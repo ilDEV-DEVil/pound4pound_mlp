@@ -96,6 +96,7 @@ $bjj-color: #059669;
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -455,6 +456,13 @@ $bjj-color: #059669;
     color: $brand-red;
     transform: translateY(-2px);
   }
+
+  &.delete:hover {
+    border-color: #dc2626;
+    background: rgba(220, 38, 38, 0.05);
+    color: #dc2626;
+    transform: translateY(-2px);
+  }
 }
 
 // Empty State
@@ -525,6 +533,7 @@ $bjj-color: #059669;
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

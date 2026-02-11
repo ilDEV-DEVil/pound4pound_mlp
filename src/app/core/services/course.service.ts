@@ -79,6 +79,19 @@ export class CourseService {
         return of(null).pipe(delay(500));
     }
 
+    deleteCourse(id: string): Observable<boolean> {
+        const courses = this.storage.getItem<Course[]>('courses') || [];
+        const normalizedId = id.replace('course-', 'c-');
+        const filteredCourses = courses.filter(c => c.id !== id && c.id !== normalizedId);
+
+        if (filteredCourses.length !== courses.length) {
+            this.storage.setItem('courses', filteredCourses);
+            return of(true).pipe(delay(500));
+        }
+
+        return of(false).pipe(delay(500));
+    }
+
     bookClass(courseId: string, day: string, timeStart: string): Observable<boolean> {
         // Mock booking - in real app would create a Session record
         return of(true).pipe(delay(800));

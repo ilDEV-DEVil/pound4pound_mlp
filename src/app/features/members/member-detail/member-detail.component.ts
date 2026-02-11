@@ -484,6 +484,47 @@ export class MemberDetailComponent implements OnInit {
     }
   }
 
+  getSubscriptionStatus(member: Member): 'active' | 'expiring' | 'expired' {
+    const expiry = this.getExpiryDate(member);
+    const today = new Date();
+
+    // Reset hours to compare dates only
+    today.setHours(0, 0, 0, 0);
+    const expiryDate = new Date(expiry);
+    expiryDate.setHours(0, 0, 0, 0);
+
+    if (today > expiryDate) {
+      return 'expired';
+    }
+
+    const oneWeekInMs = 7 * 24 * 60 * 60 * 1000;
+    if (expiryDate.getTime() - today.getTime() <= oneWeekInMs) {
+      return 'expiring';
+    }
+
+    return 'active';
+  }
+
+  isDeeplyExpired(member: Member): boolean {
+    if (!this.activeSubscription()) return false;
+
+    const expiry = this.getExpiryDate(member);
+    const limitDate = new Date(expiry);
+    limitDate.setDate(limitDate.getDate() + 14); // 2 weeks tolerance
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    limitDate.setHours(0, 0, 0, 0);
+
+    return today > limitDate;
+  }
+
+  getVisibleSubscription(): Subscription | undefined {
+    const m = this.member();
+    if (!m) return undefined;
+    return this.isDeeplyExpired(m) ? undefined : this.activeSubscription();
+  }
+
   uploadDocument() {
     this.notImplementedYet('Caricamento documenti');
   }

@@ -452,3 +452,48 @@
     white-space: nowrap;
     border-width: 0;
 }
+
+// -----------------------------------------------------
+// Added Utilities for Modal and Layout (Tailwind-like)
+// -----------------------------------------------------
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.z-50 {
+    z-index: 50;
+}
+
+.bg-black-60 {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+}
+
+.max-w-md {
+    max-width: 28rem;
+}
+
+.shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.animate-in {
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

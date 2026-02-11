@@ -638,9 +638,9 @@ $border-light: rgba(0, 0, 0, 0.08);
   }
 
   &.inactive {
-    background: rgba($brand-red, 0.1);
-    color: $brand-red;
-    border: 2px solid rgba($brand-red, 0.3);
+    background: rgba($text-subtle, 0.1);
+    color: $text-subtle;
+    border: 2px solid rgba($text-subtle, 0.3);
   }
 }
 
@@ -663,7 +663,66 @@ $border-light: rgba(0, 0, 0, 0.08);
   &.highlight-row {
     border-color: rgba($brand-red, 0.3);
     background: rgba($brand-red, 0.02);
+    transition: all 0.3s ease;
+
+    &.active {
+      border-color: rgba($brand-green, 0.4);
+      background: rgba($brand-green, 0.05);
+
+      .status-text-inline {
+        color: $brand-green;
+        background: rgba($brand-green, 0.1);
+      }
+
+      .detail-value.expiry {
+        color: $brand-green;
+      }
+    }
+
+    &.expiring {
+      border-color: rgba(#FFC107, 0.5);
+      background: rgba(#FFC107, 0.08);
+
+      .status-text-inline {
+        color: #B28900;
+        background: rgba(#FFC107, 0.15);
+      }
+
+      .detail-value.expiry {
+        color: #B28900;
+      }
+    }
+
+    &.expired {
+      border-color: rgba($brand-red, 0.5);
+      background: rgba($brand-red, 0.08);
+
+      .status-text-inline {
+        color: $brand-red;
+        background: rgba($brand-red, 0.15);
+      }
+
+      .detail-value.expiry {
+        color: $brand-red;
+      }
+    }
   }
+}
+
+.expiry-container {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-top: 2px;
+}
+
+.status-text-inline {
+  font-size: 10px;
+  font-weight: $font-bold;
+  padding: 2px 8px;
+  border-radius: $radius-full;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .detail-icon {

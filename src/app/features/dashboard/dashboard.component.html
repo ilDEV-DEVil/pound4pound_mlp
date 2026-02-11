@@ -4,15 +4,8 @@
     <div class="welcome-section">
       <div>
         <h1 class="greeting">
-          Benvenuto, {{ currentUser()?.firstName || 'Utente' }}! 👋
+          Benvenuto nella <i> {{ currentUser()?.gymName }} </i>! 👋
         </h1>
-        <p class="subtitle">
-          {{ currentUser()?.role === 'manager' ? 'Ecco cosa sta succedendo nella tua palestra.' : 'Pronto per il
-          prossimo allenamento?' }}
-        </p>
-      </div>
-      <div class="user-avatar">
-        {{ currentUser()?.firstName?.charAt(0) || 'U' }}{{ currentUser()?.lastName?.charAt(0) || '' }}
       </div>
     </div>
   </div>
@@ -22,7 +15,7 @@
   <div class="quick-actions-section">
     <h2 class="section-title">Azioni Rapide</h2>
     <div class="quick-actions">
-      <button class="action-btn blue" [routerLink]="['/app/members']">
+      <button class="action-btn blue" [routerLink]="['/app/members']" [queryParams]="{ action: 'add' }">
         <div class="action-icon">➕</div>
         <span class="action-label">Nuovo Iscritto</span>
       </button>
@@ -53,7 +46,7 @@
         <div class="lesson-info">
           <div class="lesson-name">{{ course.name }}</div>
           <div class="lesson-instructor">
-            <span class="instructor-icon">👤</span>
+            <span class="instructor-icon">🥋</span>
             {{ course.instructor }}
           </div>
         </div>

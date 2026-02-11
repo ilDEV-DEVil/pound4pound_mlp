@@ -44,7 +44,7 @@
             <span>Messaggio</span>
           </button>
         </div>
-        @if (activeSubscription(); as sub) {
+        @if (getVisibleSubscription(); as sub) {
         <button class="action-btn primary-btn" (click)="openRenewPanel()">
           <span class="btn-icon">🔄</span>
           <span>Rinnova</span>
@@ -64,7 +64,7 @@
   @if (isRenewing()) {
   <div class="renew-panel">
     <div class="renew-header">
-      <h2 class="renew-title">{{ activeSubscription() ? '🔄 Rinnova Abbonamento' : '➕ Assegna Piano' }}</h2>
+      <h2 class="renew-title">{{ getVisibleSubscription() ? '🔄 Rinnova Abbonamento' : '➕ Assegna Piano' }}</h2>
       <button class="close-btn" (click)="cancelRenew()">✕</button>
     </div>
 
@@ -73,8 +73,8 @@
     @if (availableSubscriptions().length > 0) {
     <div class="plans-grid">
       @for (sub of availableSubscriptions(); track sub.id) {
-      <div class="plan-option" [class.current]="activeSubscription()?.id === sub.id">
-        @if (activeSubscription()?.id === sub.id) {
+      <div class="plan-option" [class.current]="getVisibleSubscription()?.id === sub.id">
+        @if (getVisibleSubscription()?.id === sub.id) {
         <div class="current-badge">Piano Attuale</div>
         }
         <div class="plan-option-header">
@@ -97,9 +97,9 @@
           <span class="plan-feature unlimited">♾️ Ingressi illimitati</span>
           }
         </div>
-        <button class="plan-select-btn" [class.current-plan]="activeSubscription()?.id === sub.id"
+        <button class="plan-select-btn" [class.current-plan]="getVisibleSubscription()?.id === sub.id"
           [disabled]="renewLoading" (click)="assignPlan(sub)">
-          @if (activeSubscription()?.id === sub.id) {
+          @if (getVisibleSubscription()?.id === sub.id) {
           🔄 Rinnova questo piano
           } @else {
           ✓ Seleziona questo piano
@@ -213,9 +213,12 @@
           <div class="disc-form-field">
             <label class="profile-field-label">LIVELLO</label>
             <select formControlName="level" class="profile-select-field">
-              <option value="Principiante">Principiante</option>
-              <option value="Intermedio">Intermedio</option>
-              <option value="Avanzato">Avanzato</option>
+              <option value="Principiante">Amatore</option>
+              <option value="Intermedio">Agonista light contact</option>
+              <option value="ClasseN">Agonista full contact classe N</option>
+              <option value="ClasseC">Agonista full contact classe C</option>
+              <option value="ClasseB">Agonista full contact classe B</option>
+              <option value="ClasseA">Agonista full contact classe A</option>
               <option value="Pro">Pro</option>
             </select>
           </div>
@@ -254,13 +257,8 @@
       <div class="card-header">
         <h2 class="card-title">💳 Abbonamento</h2>
       </div>
-      @if (activeSubscription(); as sub) {
+      @if (getVisibleSubscription(); as sub) {
       <div class="subscription-content">
-        <div class="sub-status-badge active">
-          <span class="status-icon">✓</span>
-          <span class="status-text">ATTIVO</span>
-        </div>
-
         <div class="sub-details">
           <div class="sub-detail-row">
             <span class="detail-icon">📋</span>
@@ -286,26 +284,35 @@
             </div>
           </div>
 
-          <div class="sub-detail-row highlight-row">
+          <div class="sub-detail-row highlight-row" [class]="getSubscriptionStatus(m)">
             <span class="detail-icon">📅</span>
             <div class="detail-content">
               <span class="detail-label">Scadenza</span>
-              <span class="detail-value expiry">{{ getExpiryDate(m) | date:'dd MMM yyyy' }}</span>
+              <div class="expiry-container">
+                <span class="status-text-inline">
+                  @switch (getSubscriptionStatus(m)) {
+                  @case ('active') { ATTIVO }
+                  @case ('expiring') { IN SCADENZA }
+                  @case ('expired') { SCADUTO }
+                  }
+                </span>
+                <span class="detail-value expiry">{{ getExpiryDate(m) | date:'dd MMM yyyy' }}</span>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="sub-disciplines-section">
-          <h3 class="sub-disciplines-title">Discipline Attive</h3>
-          <div class="member-disciplines">
-            @for (disc of disciplines(); track disc.id) {
-            <span class="discipline-badge clickable" (click)="navigateToCourses(disc.discipline)"
-              title="Vedi corsi di {{ disc.discipline }}">
-              <span class="badge-icon">{{ getDisciplineIcon(disc.discipline) }}</span>
-              <span class="badge-text">{{ disc.discipline }}</span>
-            </span>
-            }
-          </div>
+      <div class="sub-disciplines-section">
+        <h3 class="sub-disciplines-title">Discipline Attive</h3>
+        <div class="member-disciplines">
+          @for (disc of disciplines(); track disc.id) {
+          <span class="discipline-badge clickable" (click)="navigateToCourses(disc.discipline)"
+            title="Vedi corsi di {{ disc.discipline }}">
+            <span class="badge-icon">{{ getDisciplineIcon(disc.discipline) }}</span>
+            <span class="badge-text">{{ disc.discipline }}</span>
+          </span>
+          }
         </div>
       </div>
       } @else {
