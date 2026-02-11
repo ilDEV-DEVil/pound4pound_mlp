@@ -4,13 +4,8 @@
     <div class="welcome-section">
       <div>
         <h1 class="greeting">
-          Benvenuto, {{ currentUser()?.firstName || 'Utente' }}! 👋
+          Benvenuto nella <i> {{ currentUser()?.gymName }} </i>! 👋
         </h1>
-        <p class="subtitle">
-          {{ currentUser()?.role === 'manager' ? `Ecco cosa sta succedendo nella ${currentUser()?.gymName}` : 'Pronto
-          per il
-          prossimo allenamento?' }}
-        </p>
       </div>
       <div class="user-avatar">
         {{ currentUser()?.firstName?.charAt(0) || 'U' }}{{ currentUser()?.lastName?.charAt(0) || '' }}

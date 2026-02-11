@@ -19,6 +19,7 @@ export class MainLayoutComponent {
   isSidebarCollapsed = signal(false);
   isMobileMenuOpen = signal(false);
   isNotificationsOpen = signal(false);
+  isUserMenuOpen = signal(false);
 
   notificationService = inject(NotificationService);
   notifications = this.notificationService.allNotifications;
@@ -66,12 +67,6 @@ export class MainLayoutComponent {
       label: 'Abbonamenti',
       route: '/app/subscriptions',
       description: 'Piani e prezzi'
-    },
-    {
-      icon: '⚙️',
-      label: 'Impostazioni',
-      route: '/app/settings',
-      description: 'Configurazione'
     }
   ];
 
@@ -88,7 +83,21 @@ export class MainLayoutComponent {
   }
 
   toggleNotifications() {
+    if (!this.isNotificationsOpen()) {
+      this.isUserMenuOpen.set(false);
+    }
     this.isNotificationsOpen.update(v => !v);
+  }
+
+  toggleUserMenu() {
+    if (!this.isUserMenuOpen()) {
+      this.isNotificationsOpen.set(false);
+    }
+    this.isUserMenuOpen.update(v => !v);
+  }
+
+  closeUserMenu() {
+    this.isUserMenuOpen.set(false);
   }
 
   markAsRead(notification: AppNotification) {

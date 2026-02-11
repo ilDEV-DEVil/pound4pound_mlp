@@ -23,18 +23,6 @@
       </button>
     </div>
 
-    <!-- User Profile -->
-    <div class="user-profile">
-      <div class="user-avatar">
-        {{ userInitials() }}
-      </div>
-      @if (!isSidebarCollapsed()) {
-      <div class="user-info">
-        <div class="user-name">{{ currentUser()?.firstName }} {{ currentUser()?.lastName }}</div>
-        <div class="user-role">{{ currentUser()?.role === 'manager' ? 'Gestore' : 'Atleta' }}</div>
-      </div>
-      }
-    </div>
 
     <!-- Navigation Menu -->
     <nav class="nav-menu">
@@ -51,15 +39,6 @@
       }
     </nav>
 
-    <!-- Logout Button -->
-    <div class="sidebar-footer">
-      <button class="logout-btn" (click)="logout()">
-        <span class="logout-icon">🚪</span>
-        @if (!isSidebarCollapsed()) {
-        <span class="logout-text">Esci</span>
-        }
-      </button>
-    </div>
   </aside>
 
   <!-- Mobile Overlay -->
@@ -101,8 +80,49 @@
           <span class="notif-badge">{{ unreadCount() }}</span>
           }
         </button>
+
+        <div class="header-user" (click)="toggleUserMenu()" [class.active]="isUserMenuOpen()">
+          <div class="user-avatar header-avatar">
+            {{ userInitials() }}
+          </div>
+          <div class="user-info header-info">
+            <div class="user-name">{{ currentUser()?.firstName }} {{ currentUser()?.lastName }}</div>
+            <div class="user-role">{{ currentUser()?.role === 'manager' ? 'Gestore' : 'Atleta' }}</div>
+          </div>
+          <span class="dropdown-icon" [class.rotate]="isUserMenuOpen()">▼</span>
+        </div>
       </div>
     </header>
+
+    <!-- User Menu Dropdown -->
+    @if (isUserMenuOpen()) {
+    <div class="user-dropdown">
+      <div class="user-dropdown-header">
+        <div class="dropdown-avatar">{{ userInitials() }}</div>
+        <div class="dropdown-user-info">
+          <div class="dropdown-name">{{ currentUser()?.firstName }} {{ currentUser()?.lastName }}</div>
+          <div class="dropdown-email">{{ currentUser()?.email }}</div>
+        </div>
+      </div>
+      <div class="user-dropdown-content">
+        <a routerLink="/app/settings" class="dropdown-item" (click)="closeUserMenu()">
+          <span class="item-icon">⚙️</span>
+          <div class="item-text">
+            <span class="item-label">Impostazioni</span>
+            <span class="item-desc">Gestisci il tuo profilo e preferenze</span>
+          </div>
+        </a>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item logout" (click)="logout(); closeUserMenu()">
+          <span class="item-icon">🚪</span>
+          <div class="item-text">
+            <span class="item-label">Esci</span>
+            <span class="item-desc">Termina la sessione corrente</span>
+          </div>
+        </button>
+      </div>
+    </div>
+    }
 
     <!-- Notifications Dropdown (Global) -->
     @if (isNotificationsOpen()) {
