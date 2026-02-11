@@ -456,6 +456,17 @@ $desktop-header-height: 80px;
   font-weight: $font-bold;
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px $brand-blue;
+  }
 }
 
 // Desktop Header
@@ -538,7 +549,12 @@ $desktop-header-height: 80px;
   margin-top: $space-2;
 
   @media (max-width: 768px) {
-    display: none; // Su mobile usiamo il layout mobile già esistente se necessario
+    position: fixed;
+    top: $mobile-header-height + 10px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    z-index: 10000;
   }
 }
 

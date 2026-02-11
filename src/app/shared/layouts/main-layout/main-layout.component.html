@@ -58,13 +58,15 @@
         <span class="mobile-logo-text">Pound for Pound</span>
       </div>
       <div class="mobile-actions">
-        <button class="notif-btn" (click)="toggleNotifications()">
+        <button class="notif-btn" (click)="toggleNotifications()" [class.active]="isNotificationsOpen()">
           <span class="notif-icon">🔔</span>
           @if (unreadCount() > 0) {
           <span class="notif-badge">{{ unreadCount() }}</span>
           }
         </button>
-        <div class="mobile-avatar">{{ userInitials() }}</div>
+        <div class="mobile-avatar" (click)="toggleUserMenu()" [class.active]="isUserMenuOpen()">
+          {{ userInitials() }}
+        </div>
       </div>
     </header>
 
