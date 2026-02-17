@@ -103,62 +103,86 @@ export class CourseService {
             {
                 id: 'c-001',
                 gymId: 'gym-001',
-                name: 'Boxe Principianti',
-                description: 'Corso base per imparare i fondamenti della nobile arte.',
-                instructor: 'Marco Rossi',
+                name: 'Boxe',
+                description: 'Corso base  per imparare i fondamenti della nobile arte.',
+                instructor: 'Marco Pavone',
                 sport: 'boxing',
                 maxCapacity: 20,
                 enrolledMembers: [],
                 schedule: [
-                    { day: 'monday', startTime: '18:00', endTime: '19:00' },
-                    { day: 'wednesday', startTime: '18:00', endTime: '19:00' },
-                    { day: 'friday', startTime: '18:00', endTime: '19:00' }
+                    { day: 'monday', startTime: '19:00', endTime: '20:00' },
+                    { day: 'tuesday', startTime: '12:30', endTime: '13:30' },
+                    { day: 'wednesday', startTime: '20:00', endTime: '21:00' },
+                    { day: 'friday', startTime: '12:30', endTime: '13:30' },
+                    { day: 'friday', startTime: '19:00', endTime: '20:00' }
                 ]
             },
             {
                 id: 'c-002',
                 gymId: 'gym-001',
-                name: 'MMA Pro',
+                name: 'MMA & Grappling',
                 description: 'Allenamento avanzato per competizioni.',
-                instructor: 'Giulia Neri',
+                instructor: 'José Yepez',
                 sport: 'mma',
                 maxCapacity: 12,
                 enrolledMembers: [],
                 schedule: [
-                    { day: 'tuesday', startTime: '19:30', endTime: '21:00' },
-                    { day: 'thursday', startTime: '19:30', endTime: '21:00' }
+                    { day: 'tuesday', startTime: '20:00', endTime: '21:00' },
+                    { day: 'thursday', startTime: '20:00', endTime: '21:00' },
+                    { day: 'friday', startTime: '19:00', endTime: '20:00' }
                 ]
             },
             {
                 id: 'c-003',
                 gymId: 'gym-001',
-                name: 'Muay Thai',
+                name: 'Kickboxing',
                 description: 'L\'arte delle 8 armi.',
-                instructor: 'Andrea Verdi',
-                sport: 'muaythai',
+                instructor: 'Marco Pavone',
+                sport: 'kickboxing',
                 maxCapacity: 15,
                 enrolledMembers: [],
                 schedule: [
-                    { day: 'monday', startTime: '19:00', endTime: '20:30' },
-                    { day: 'wednesday', startTime: '19:00', endTime: '20:30' },
-                    { day: 'friday', startTime: '19:00', endTime: '20:30' }
+                    { day: 'monday', startTime: '20:00', endTime: '21:00' },
+                    { day: 'tuesday', startTime: '12:30', endTime: '13:30' },
+                    { day: 'tuesday', startTime: '19:00', endTime: '20:00' },
+                    { day: 'thursday', startTime: '19:00', endTime: '20:00' },
+                    { day: 'friday', startTime: '12:30', endTime: '13:30' },
+                    { day: 'friday', startTime: '19:00', endTime: '20:00' }
                 ]
             },
             {
                 id: 'c-004',
                 gymId: 'gym-001',
-                name: 'Grappling / BJJ no-gi',
-                description: 'Lotta a terra senza kimono.',
-                instructor: 'Simone Bianchi',
-                sport: 'bjj',
+                name: 'Fit & Kick',
+                description: 'Preparazione agli sport da combattimento senza contatto.',
+                instructor: 'Nicholas Profili',
+                sport: 'kickboxing',
                 maxCapacity: 15,
                 enrolledMembers: [],
                 schedule: [
-                    { day: 'tuesday', startTime: '18:00', endTime: '19:30' },
+                    { day: 'tuesday', startTime: '12:30', endTime: '13:30' },
+                    { day: 'tuesday', startTime: '18:00', endTime: '19:00' },
                     { day: 'thursday', startTime: '18:00', endTime: '19:30' },
-                    { day: 'saturday', startTime: '10:30', endTime: '12:00' }
+                    { day: 'friday', startTime: '12:30', endTime: '13:30' }
                 ]
-            }
+            },
+            {
+                id: 'c-005',
+                gymId: 'gym-001',
+                name: 'Allenamento funzionale',
+                description: 'Allenamento funzionale per migliorare le capacità di movimento.',
+                instructor: 'Nicholas Profili',
+                sport: 'funzionale',
+                maxCapacity: 15,
+                enrolledMembers: [],
+                schedule: [
+                    { day: 'monday', startTime: '12:30', endTime: '13:30' },
+                    { day: 'monday', startTime: '18:00', endTime: '19:00' },
+                    { day: 'wednesday', startTime: '19:00', endTime: '20:00' },
+                    { day: 'thursday', startTime: '12:30', endTime: '13:30' },
+                    { day: 'friday', startTime: '18:00', endTime: '19:00' }
+                ]
+            },
         ];
     }
 }

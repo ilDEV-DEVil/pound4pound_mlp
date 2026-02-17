@@ -1,7 +1,7 @@
 // Core Models for Pound for Pound
 
-export type UserRole = 'manager' | 'athlete';
-export type Sport = 'boxing' | 'kickboxing' | 'mma' | 'muaythai' | 'bjj';
+export type UserRole = 'manager' | 'athlete' | 'instructor';
+export type Sport = 'boxing' | 'kickboxing' | 'mma' | 'muaythai' | 'bjj' | 'funzionale';
 export type SubscriptionStatus = 'active' | 'expiring' | 'expired' | 'pending';
 export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
