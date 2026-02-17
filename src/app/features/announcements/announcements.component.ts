@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ViewChild, ElementRef, AfterViewChecked, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AnnouncementService } from '../../core/services/announcement.service';
@@ -13,11 +13,21 @@ import { Announcement, AnnouncementTag, User } from '../../core/models';
     styleUrl: './announcements.component.scss'
 })
 export class AnnouncementsComponent implements OnInit {
+    @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
     private announcementService = inject(AnnouncementService);
     private authService = inject(AuthService);
 
     announcements = signal<Announcement[]>([]);
     currentUser = this.authService.currentUser;
+
+    constructor() {
+        // Automatically scroll to bottom when announcements change
+        effect(() => {
+            if (this.announcements().length > 0) {
+                setTimeout(() => this.scrollToBottom(), 100);
+            }
+        });
+    }
 
     newMessage = signal('');
     selectedTags = signal<AnnouncementTag[]>([]);
@@ -111,5 +121,12 @@ export class AnnouncementsComponent implements OnInit {
     formatDate(date: any): string {
         const d = new Date(date);
         return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' - ' + d.toLocaleDateString();
+    }
+
+    private scrollToBottom(): void {
+        try {
+            const element = this.scrollContainer.nativeElement;
+            element.scrollTop = element.scrollHeight;
+        } catch (err) { }
     }
 }

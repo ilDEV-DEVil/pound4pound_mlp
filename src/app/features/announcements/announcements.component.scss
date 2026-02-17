@@ -213,12 +213,14 @@ $border-light: rgba(0, 0, 0, 0.08);
 
 .messages-container {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding: vars.$space-6;
     display: flex;
     flex-direction: column;
     gap: vars.$space-4;
     z-index: 1;
+    scroll-behavior: smooth;
 
     .no-messages {
         display: flex;
@@ -419,6 +421,11 @@ $border-light: rgba(0, 0, 0, 0.08);
             resize: none;
             font-family: inherit;
             font-size: vars.$text-sm;
+            color: $text-dark;
+
+            &::placeholder {
+                color: rgba($text-dark, 0.4);
+            }
 
             &:focus {
                 outline: none;

@@ -27,9 +27,9 @@ export class AnnouncementService {
 
     getAnnouncements(): Observable<Announcement[]> {
         const announcements = this.storage.getItem<Announcement[]>('announcements') || [];
-        // Sort by date descending (latest first)
+        // Sort by date ascending (oldest first, newest at the bottom)
         const sorted = [...announcements].sort((a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
         return of(sorted).pipe(delay(400));
     }
