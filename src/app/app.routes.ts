@@ -79,6 +79,10 @@ export const routes: Routes = [
                 path: 'instructors',
                 loadComponent: () => import('./features/instructors/instructors.component').then(m => m.InstructorsComponent)
             },
+            {
+                path: 'announcements',
+                loadComponent: () => import('./features/announcements/announcements.component').then(m => m.AnnouncementsComponent)
+            },
             // Placeholders for other routes to prevent errors until created
             { path: '**', redirectTo: 'dashboard' }
         ]

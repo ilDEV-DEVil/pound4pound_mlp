@@ -41,6 +41,16 @@ export class MockDataService {
                 gymId: 'gym-001',
                 avatar: null,
                 createdAt: new Date('2024-01-15')
+            },
+            {
+                id: 'user-003',
+                email: 'nicholas@profili.it',
+                firstName: 'Nicholas',
+                lastName: 'Profili',
+                role: 'instructor',
+                gymId: 'gym-001',
+                avatar: null,
+                createdAt: new Date('2024-02-01')
             }
         ];
     }

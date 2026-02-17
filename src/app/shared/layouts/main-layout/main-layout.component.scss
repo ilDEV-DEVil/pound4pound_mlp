@@ -363,11 +363,13 @@ $desktop-header-height: 80px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
   position: relative; // Necessario per il posizionamento dei dropdown figli
 
   @media (max-width: 768px) {
     margin-left: 0;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 }
 
@@ -945,6 +947,9 @@ $desktop-header-height: 80px;
 // Page Content
 .page-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 // Animations

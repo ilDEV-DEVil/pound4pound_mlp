@@ -22,11 +22,11 @@ export class InstructorService {
                     id: 'inst-1',
                     gymId: 'gym-001',
                     firstName: 'Marco',
-                    lastName: 'Rossi',
+                    lastName: 'Pavone',
                     bio: 'Campione regionale di Kickboxing con oltre 10 anni di esperienza nell\'insegnamento.',
                     specialties: ['kickboxing', 'boxing'],
                     avatar: null,
-                    email: 'marco.rossi@example.com',
+                    email: 'marco.pavone@example.com',
                     socialLinks: { instagram: '@marcorossi_fight' }
                 },
                 {

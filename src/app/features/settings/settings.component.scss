@@ -1,3 +1,4 @@
+@use 'sass:color';
 // Design Tokens inline (standalone)
 $space-1: 0.25rem;
 $space-2: 0.5rem;
@@ -192,6 +193,7 @@ $border-light: rgba(0, 0, 0, 0.08);
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -378,7 +380,7 @@ $border-light: rgba(0, 0, 0, 0.08);
     width: 0;
     height: 0;
 
-    &:checked + .toggle-slider {
+    &:checked+.toggle-slider {
       background: $brand-blue;
 
       &::before {
@@ -499,7 +501,7 @@ $border-light: rgba(0, 0, 0, 0.08);
     box-shadow: 0 4px 12px rgba($brand-red, 0.3);
 
     &:hover {
-      background: darken($brand-red, 8%);
+      background: color.adjust($brand-red, $lightness: -8%);
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba($brand-red, 0.4);
     }
