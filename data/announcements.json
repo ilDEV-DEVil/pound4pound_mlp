@@ -1,0 +1,44 @@
+[
+    {
+        "id": "ann-1",
+        "gymId": "gym-001",
+        "authorId": "user-001",
+        "authorName": "Marco Pavone",
+        "authorRole": "manager",
+        "authorAvatar": null,
+        "content": "Ciao a tutti! Vi ricordo che Sabato 22 Febbraio terremo un seminario speciale di MMA con un ospite d'eccezione. Non mancate!",
+        "tags": [
+            "comunicazioni importanti",
+            "mma"
+        ],
+        "createdAt": "2025-02-15T10:00:00.000Z"
+    },
+    {
+        "id": "ann-2",
+        "gymId": "gym-001",
+        "authorId": "user-002",
+        "authorName": "José Yepez",
+        "authorRole": "manager",
+        "authorAvatar": null,
+        "content": "Nuovi guantoni da boxe disponibili in reception! Prezzo speciale per i membri del club.",
+        "tags": [
+            "pubblicità",
+            "boxe"
+        ],
+        "createdAt": "2025-02-16T14:30:00.000Z"
+    },
+    {
+        "id": "ann-3",
+        "gymId": "gym-001",
+        "authorId": "user-001",
+        "authorName": "Marco Pavone",
+        "authorRole": "manager",
+        "authorAvatar": null,
+        "content": "Attenzione: la lezione di Kickboxing di oggi pomeriggio è posticipata alle 19:30.",
+        "tags": [
+            "comunicazioni importanti",
+            "kickboxing"
+        ],
+        "createdAt": "2025-02-17T09:15:00.000Z"
+    }
+]
