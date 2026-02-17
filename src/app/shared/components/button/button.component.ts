@@ -22,6 +22,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
     </button>
   `,
   styles: [`
+    @use 'sass:color';
     @use '../../../../styles/variables' as *;
     
     // Design Tokens (coerenti con l'intero sistema)
@@ -150,7 +151,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
       box-shadow: 0 6px 15px rgba($brand-red, 0.25);
       
       &:hover:not(:disabled) {
-        background: darken($brand-red, 8%);
+        background: color.adjust($brand-red, $lightness: -8%);
         box-shadow: 0 10px 25px rgba($brand-red, 0.35);
         transform: translateY(-2px);
       }

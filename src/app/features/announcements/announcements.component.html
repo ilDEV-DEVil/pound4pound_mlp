@@ -1,0 +1,99 @@
+<!-- Sidebar for Filters -->
+<div class="filters-sidebar">
+    <div class="sidebar-header">
+        <h2>🏷️ Filtri</h2>
+        <p>Scegli gli argomenti</p>
+    </div>
+
+    <div class="tags-list">
+        <button *ngFor="let tag of availableTags" (click)="toggleFilterTag(tag)"
+            [class.active]="filterTags().includes(tag)" class="tag-filter-btn">
+            <span class="tag-icon">#</span>
+            {{ tag }}
+        </button>
+
+        <button *ngIf="filterTags().length > 0" (click)="clearFilters()" class="clear-filters-btn">
+            Rimuovi filtri
+        </button>
+    </div>
+</div>
+
+<!-- Chat Area -->
+<div class="chat-area">
+    <!-- Mobile Filters (horizontal scroll on mobile) -->
+    <div class="mobile-filters-bar">
+        <button *ngFor="let tag of availableTags" (click)="toggleFilterTag(tag)"
+            [class.active]="filterTags().includes(tag)" class="mobile-tag-chip">
+            #{{ tag }}
+        </button>
+        <button *ngIf="filterTags().length > 0" (click)="clearFilters()" class="clear-mobile-tags">
+            ✕
+        </button>
+    </div>
+
+    <div class="chat-header">
+        <div class="header-info">
+            <h3>Bacheca Social</h3>
+            <p>{{ filteredAnnouncements().length }} messaggi trovati</p>
+        </div>
+    </div>
+
+    <!-- Messages Container -->
+    <div class="messages-container" #scrollContainer>
+        <div *ngIf="filteredAnnouncements().length === 0" class="no-messages">
+            <div class="empty-state">
+                <span class="empty-icon">📭</span>
+                <p>Nessun avviso presente con questi filtri.</p>
+            </div>
+        </div>
+
+        <div *ngFor="let ann of filteredAnnouncements()" class="message-wrapper"
+            [class.own-message]="ann.authorId === currentUser()?.id">
+            <div class="message-bubble">
+                <div class="message-header">
+                    <span class="author-name">{{ ann.authorName }}</span>
+                    <span class="author-role" [class]="ann.authorRole">{{ ann.authorRole }}</span>
+                </div>
+
+                <div class="message-content">
+                    {{ ann.content }}
+                </div>
+
+                <div class="message-footer">
+                    <div class="message-tags">
+                        <span *ngFor="let tag of ann.tags" class="message-tag">#{{ tag }}</span>
+                    </div>
+                    <div class="message-meta">
+                        <span class="time">{{ formatDate(ann.createdAt) }}</span>
+                        <button *ngIf="ann.authorId === currentUser()?.id" (click)="deleteAnnouncement(ann.id)"
+                            class="delete-btn">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Area (Only for Managers/Instructors) -->
+    <div class="input-area" *ngIf="canPost()">
+        <div class="tag-selector">
+            <p>Seleziona Tag:</p>
+            <div class="selector-tags">
+                <button *ngFor="let tag of availableTags" (click)="toggleNewMessageTag(tag)"
+                    [class.selected]="selectedTags().includes(tag)" class="selector-tag-btn">
+                    {{ tag }}
+                </button>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <textarea [(ngModel)]="newMessage" placeholder="Scrivi un nuovo avviso..."
+                (keydown.enter)="$event.preventDefault(); sendMessage()"></textarea>
+            <button [disabled]="!newMessage().trim()" (click)="sendMessage()" class="send-btn">
+                <span>Invia</span>
+                <span class="send-icon">🚀</span>
+            </button>
+        </div>
+    </div>
+</div>

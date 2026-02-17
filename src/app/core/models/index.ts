@@ -91,11 +91,17 @@ export interface Notification {
   createdAt: Date;
 }
 
-export interface GymAnnouncement {
+export type AnnouncementTag = 'comunicazioni importanti' | 'boxe' | 'mma' | 'pubblicità' | 'kickboxing' | 'muaythai' | 'bjj' | 'funzionale';
+
+export interface Announcement {
   id: string;
   gymId: string;
-  title: string;
+  authorId: string;
+  authorName: string;
+  authorRole: UserRole;
+  authorAvatar: string | null;
   content: string;
+  tags: AnnouncementTag[];
   createdAt: Date;
 }
 

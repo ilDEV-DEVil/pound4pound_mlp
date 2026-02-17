@@ -1,3 +1,4 @@
+@use 'sass:color';
 // Design Tokens inline (standalone)
 $space-1: 0.25rem;
 $space-2: 0.5rem;
@@ -150,7 +151,7 @@ $border-light: rgba(0, 0, 0, 0.08);
   align-items: center;
   justify-content: center;
   font-size: $text-xl;
-  
+
   &.blue {
     background: rgba($brand-blue, 0.1);
     color: $brand-blue;
@@ -187,7 +188,7 @@ $border-light: rgba(0, 0, 0, 0.08);
 
   &.positive {
     color: #10b981;
-    
+
     span {
       font-weight: $font-bold;
     }
@@ -325,7 +326,7 @@ $border-light: rgba(0, 0, 0, 0.08);
 }
 
 .course-red .capacity-fill {
-  background: linear-gradient(90deg, $brand-red, darken($brand-red, 10%));
+  background: linear-gradient(90deg, $brand-red, color.adjust($brand-red, $lightness: -10%));
 }
 
 .capacity-text {
@@ -386,12 +387,12 @@ $border-light: rgba(0, 0, 0, 0.08);
   align-items: center;
   justify-content: center;
   font-size: $text-lg;
-  
+
   &.warning {
     background: rgba(#f59e0b, 0.1);
     color: #f59e0b;
   }
-  
+
   &.info {
     background: rgba($brand-blue, 0.1);
     color: $brand-blue;
@@ -476,11 +477,11 @@ $border-light: rgba(0, 0, 0, 0.08);
   border: 1px solid $border-light;
   border-radius: $radius-lg;
   padding: $space-5;
-  
+
   &.important {
     border-left: 4px solid $brand-red;
   }
-  
+
   &.reminder {
     border-left: 4px solid $brand-blue;
   }

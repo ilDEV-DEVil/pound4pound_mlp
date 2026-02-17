@@ -30,7 +30,7 @@ export class InstructorsComponent {
         specialties: [[] as Sport[]]
     });
 
-    availableSports: Sport[] = ['boxing', 'kickboxing', 'mma', 'muaythai', 'bjj'];
+    availableSports: Sport[] = ['boxing', 'kickboxing', 'mma', 'muaythai', 'bjj', 'funzionale'];
 
     constructor() {
         this.refresh();
@@ -118,7 +118,8 @@ export class InstructorsComponent {
             kickboxing: '🦶',
             mma: '🤼',
             muaythai: '🥋',
-            bjj: '🐍'
+            bjj: '🐍',
+            funzionale: '🏋️'
         };
         return icons[sport] || '❓';
     }
@@ -129,7 +130,8 @@ export class InstructorsComponent {
             kickboxing: 'Kickboxing',
             mma: 'MMA',
             muaythai: 'Muay Thai',
-            bjj: 'BJJ'
+            bjj: 'BJJ',
+            funzionale: 'Funzionale'
         };
         return labels[sport] || sport;
     }

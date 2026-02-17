@@ -1,3 +1,4 @@
+@use 'sass:color';
 // Design Tokens inline (standalone)
 $space-1: 0.25rem;
 $space-2: 0.5rem;
@@ -312,23 +313,23 @@ $bjj-color: #059669;
 }
 
 .sport-boxing .sport-badge {
-  background: linear-gradient(135deg, $boxing-color, darken($boxing-color, 10%));
+  background: linear-gradient(135deg, $boxing-color, color.adjust($boxing-color, $lightness: -10%));
 }
 
 .sport-kickboxing .sport-badge {
-  background: linear-gradient(135deg, $kickboxing-color, darken($kickboxing-color, 10%));
+  background: linear-gradient(135deg, $kickboxing-color, color.adjust($kickboxing-color, $lightness: -10%));
 }
 
 .sport-mma .sport-badge {
-  background: linear-gradient(135deg, $mma-color, darken($mma-color, 10%));
+  background: linear-gradient(135deg, $mma-color, color.adjust($mma-color, $lightness: -10%));
 }
 
 .sport-muaythai .sport-badge {
-  background: linear-gradient(135deg, $muaythai-color, darken($muaythai-color, 10%));
+  background: linear-gradient(135deg, $muaythai-color, color.adjust($muaythai-color, $lightness: -10%));
 }
 
 .sport-bjj .sport-badge {
-  background: linear-gradient(135deg, $bjj-color, darken($bjj-color, 10%));
+  background: linear-gradient(135deg, $bjj-color, color.adjust($bjj-color, $lightness: -10%));
 }
 
 .course-card:hover .sport-badge {

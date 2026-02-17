@@ -1,3 +1,4 @@
+@use 'sass:color';
 // Design Tokens inline (standalone)
 $space-1: 0.25rem;
 $space-2: 0.5rem;
@@ -528,7 +529,7 @@ $border-light: rgba(0, 0, 0, 0.08);
   transition: all 0.3s;
 
   &:hover {
-    background: darken($brand-red, 8%);
+    background: color.adjust($brand-red, $lightness: -8%);
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba($brand-red, 0.3);
   }
@@ -856,7 +857,7 @@ $border-light: rgba(0, 0, 0, 0.08);
     border-color: #10b981;
 
     &:hover:not(:disabled) {
-      background: darken(#10b981, 8%);
+      background: color.adjust(#10b981, $lightness: -8%);
       transform: translateY(-2px);
       box-shadow: 0 8px 16px rgba(#10b981, 0.3);
     }

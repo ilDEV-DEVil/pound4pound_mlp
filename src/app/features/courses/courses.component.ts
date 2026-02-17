@@ -124,7 +124,8 @@ export class CoursesComponent {
       kickboxing: '🦶',
       mma: '🤼',
       muaythai: '🥋',
-      bjj: '🐍'
+      bjj: '🐍',
+      funzionale: '🏋️'
     };
     return icons[sport] || '❓';
   }
@@ -135,7 +136,8 @@ export class CoursesComponent {
       kickboxing: 'Kickboxing',
       mma: 'MMA',
       muaythai: 'Muay Thai',
-      bjj: 'BJJ'
+      bjj: 'BJJ',
+      funzionale: 'Funzionale'
     };
     return labels[sport] || sport;
   }

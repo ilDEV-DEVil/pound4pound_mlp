@@ -39,6 +39,12 @@ export class MainLayoutComponent {
       description: 'Panoramica generale'
     },
     {
+      icon: '📢',
+      label: 'Avvisi',
+      route: '/app/announcements',
+      description: 'Comunicazioni ufficiali'
+    },
+    {
       icon: '👥',
       label: 'Iscritti',
       route: '/app/members',
