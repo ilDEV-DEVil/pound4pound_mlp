@@ -1,0 +1,109 @@
+{
+  "configVersion": 1,
+  "timestamp": 1771983829849,
+  "index": "/pound4pound_mlp/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/pound4pound_mlp/chunk-3ZOQ6N7W.js",
+        "/pound4pound_mlp/chunk-4CZ4LWRZ.js",
+        "/pound4pound_mlp/chunk-4MDKAZGF.js",
+        "/pound4pound_mlp/chunk-4ZLBL4VD.js",
+        "/pound4pound_mlp/chunk-5N7AHLXD.js",
+        "/pound4pound_mlp/chunk-CQNTKEGM.js",
+        "/pound4pound_mlp/chunk-CXIZINNY.js",
+        "/pound4pound_mlp/chunk-DWYHMJK4.js",
+        "/pound4pound_mlp/chunk-DXLWVYKU.js",
+        "/pound4pound_mlp/chunk-EHI5X62I.js",
+        "/pound4pound_mlp/chunk-EXIJBO3X.js",
+        "/pound4pound_mlp/chunk-GTXAY3VU.js",
+        "/pound4pound_mlp/chunk-HJZQYVKL.js",
+        "/pound4pound_mlp/chunk-HLKVJLQN.js",
+        "/pound4pound_mlp/chunk-HSO6H6TR.js",
+        "/pound4pound_mlp/chunk-JGFETACD.js",
+        "/pound4pound_mlp/chunk-JQ3AV4TQ.js",
+        "/pound4pound_mlp/chunk-OX7H37VQ.js",
+        "/pound4pound_mlp/chunk-PARHH72V.js",
+        "/pound4pound_mlp/chunk-Q3YCDHW2.js",
+        "/pound4pound_mlp/chunk-Q7IXXYS3.js",
+        "/pound4pound_mlp/chunk-UE5MJFQH.js",
+        "/pound4pound_mlp/chunk-X6GVPDOY.js",
+        "/pound4pound_mlp/favicon.ico",
+        "/pound4pound_mlp/index.html",
+        "/pound4pound_mlp/main-3MBKLDBT.js",
+        "/pound4pound_mlp/manifest.webmanifest",
+        "/pound4pound_mlp/styles-5ZZWNIZX.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/pound4pound_mlp/assets/icons/p4p_dojo_logo_pwa.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/pound4pound_mlp/assets/icons/p4p_dojo_logo_pwa.png": "7a73ae10ee5f7e887cac327a434d978c011a2458",
+    "/pound4pound_mlp/chunk-3ZOQ6N7W.js": "1dd2fec8d4d32909cd568765f8e7e55b0e62c1fb",
+    "/pound4pound_mlp/chunk-4CZ4LWRZ.js": "d859f2f2231518561efab4aef00de88e0062d6c5",
+    "/pound4pound_mlp/chunk-4MDKAZGF.js": "23a5344ef6522e8060714dda786f882bb9463b8f",
+    "/pound4pound_mlp/chunk-4ZLBL4VD.js": "6165ce96620335566f3cc6b60c72193153cd8ad3",
+    "/pound4pound_mlp/chunk-5N7AHLXD.js": "df1e5c401077fea414778d8690e98051ff165941",
+    "/pound4pound_mlp/chunk-CQNTKEGM.js": "45fa4a249b01680f52f9b32e89ec9ce99e6041dd",
+    "/pound4pound_mlp/chunk-CXIZINNY.js": "231b086d57e8adcd0ee8b6e44ede84f93d945f40",
+    "/pound4pound_mlp/chunk-DWYHMJK4.js": "ee42a33d0ec80cefc576a0a9ec5005b7db8b6870",
+    "/pound4pound_mlp/chunk-DXLWVYKU.js": "96cb53348356d7961adb119b85d2afdd5bee867a",
+    "/pound4pound_mlp/chunk-EHI5X62I.js": "792d9f7999522f4fd528c88849615d3add0b786d",
+    "/pound4pound_mlp/chunk-EXIJBO3X.js": "87e2184c1339cc247a55bba86efbc4a29f04bc42",
+    "/pound4pound_mlp/chunk-GTXAY3VU.js": "cbaf4acc1b60590f911a01cd8f2af31d2a8d7e04",
+    "/pound4pound_mlp/chunk-HJZQYVKL.js": "1c9b9214bbda1b7d0b2851deff25aeb34433aa40",
+    "/pound4pound_mlp/chunk-HLKVJLQN.js": "6aacd256f87c7aa55a1b23711ac1f2b4e850d8c2",
+    "/pound4pound_mlp/chunk-HSO6H6TR.js": "8bc0e1186c7803c8515e59c6270b7bf3e72c9c55",
+    "/pound4pound_mlp/chunk-JGFETACD.js": "b9e53929222219e49cacf52e5a1eca1bdde5da45",
+    "/pound4pound_mlp/chunk-JQ3AV4TQ.js": "b8ac19137027abe01db2771505d082488e267086",
+    "/pound4pound_mlp/chunk-OX7H37VQ.js": "99cd85f17ce95ae0f507def85bd3311555328d5c",
+    "/pound4pound_mlp/chunk-PARHH72V.js": "52122d09cf07a254515d447d6ce456ea82d957f8",
+    "/pound4pound_mlp/chunk-Q3YCDHW2.js": "add01f86407a0cc831b13a13e83d05d8cecc3e07",
+    "/pound4pound_mlp/chunk-Q7IXXYS3.js": "ae331aa913a7e8facc7e7baf3e4453067fd1c720",
+    "/pound4pound_mlp/chunk-UE5MJFQH.js": "c1d5ff974d7d4af58783fead45f2089fbc6be069",
+    "/pound4pound_mlp/chunk-X6GVPDOY.js": "bd2ec2c4d1785c6c6927a2454fdd1681ac81dca5",
+    "/pound4pound_mlp/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "/pound4pound_mlp/index.html": "99b801d31fdd28e14960888a7e3d544d86409e4a",
+    "/pound4pound_mlp/main-3MBKLDBT.js": "3efa229e6a9aa33b540c3daae784f3365a11fdd4",
+    "/pound4pound_mlp/manifest.webmanifest": "d572ff17f40d56d8f7b7609ff9e48ccff4eb456d",
+    "/pound4pound_mlp/styles-5ZZWNIZX.css": "eeb4ea3eaf9b889da41c29d5aea0a1824503c199"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
