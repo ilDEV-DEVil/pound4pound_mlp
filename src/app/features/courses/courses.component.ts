@@ -125,7 +125,19 @@ export class CoursesComponent {
       mma: '🤼',
       muaythai: '🥋',
       bjj: '🐍',
-      funzionale: '🏋️'
+      funzionale: '🏋️',
+      fit: '🏃',
+      kids: '👶',
+      baby: '🍼',
+      junior: '🧑',
+      ragazzi: '👦',
+      genitori: '👪',
+      pt: '👤',
+      open: '🔓',
+      libero: '🆓',
+      'zero contact': '🛡️',
+      'fit & kick': '🏃',
+      agonisti: '🏆'
     };
     return icons[sport] || '❓';
   }
@@ -137,7 +149,19 @@ export class CoursesComponent {
       mma: 'MMA',
       muaythai: 'Muay Thai',
       bjj: 'BJJ',
-      funzionale: 'Funzionale'
+      funzionale: 'Funzionale',
+      fit: 'Fit',
+      kids: 'Kids',
+      baby: 'Baby',
+      junior: 'Junior',
+      ragazzi: 'Ragazzi',
+      genitori: 'Genitori',
+      pt: 'Personal Trainer',
+      open: 'Open',
+      libero: 'Libero',
+      'zero contact': 'Zero Contact',
+      'fit & kick': 'Fit & Kick',
+      agonisti: 'Agonisti'
     };
     return labels[sport] || sport;
   }

@@ -17,7 +17,9 @@ export class MemberService {
     }
 
     private ensureData() {
-        if (!this.storage.getItem('members')) {
+        const storedMembers = this.storage.getItem<Member[]>('members');
+        // Force reload if no members, or old mock set, or missing new fields
+        if (!storedMembers || storedMembers.length <= 10 || (storedMembers.length > 0 && (!storedMembers[0].birthDate || !storedMembers[0].activeDisciplines))) {
             // Load mock members from static JSON file
             const initialMembers = membersData.map((m: any) => ({
                 ...m,

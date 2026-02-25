@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -78,38 +78,7 @@ export class MemberDetailComponent implements OnInit {
   });
 
   // Discipline Records - Dati dinamici per disciplina
-  disciplines = signal<DisciplineRecord[]>([
-    {
-      id: '1',
-      discipline: 'MMA',
-      level: 'Intermedio',
-      record: {
-        wins: 12,
-        losses: 3,
-        draws: 1
-      }
-    },
-    {
-      id: '2',
-      discipline: 'Kickboxing',
-      level: 'Avanzato',
-      record: {
-        wins: 8,
-        losses: 2,
-        draws: 0
-      }
-    },
-    {
-      id: '3',
-      discipline: 'Boxe',
-      level: 'Principiante',
-      record: {
-        wins: 3,
-        losses: 1,
-        draws: 0
-      }
-    }
-  ]);
+  disciplines = signal<DisciplineRecord[]>([]);
 
   selectedDiscipline = signal<DisciplineRecord | undefined>(undefined);
 
@@ -138,40 +107,70 @@ export class MemberDetailComponent implements OnInit {
   currentStreak = 5;
   bestStreak = 14;
 
-  // Mock athlete data - in real app these would come from the Member model
+  // derived from member signal
+  gender = computed(() => {
+    const m = this.member();
+    return (m?.gender === 'F' ? 'F' : 'M') as 'M' | 'F';
+  });
+
+  birthDate = computed(() => {
+    const m = this.member();
+    return m?.birthDate ? new Date(m.birthDate) : new Date('1995-01-01');
+  });
+
   athleteData = {
-    birthDate: new Date('1995-03-15'),
-    gender: 'M' as 'M' | 'F',
     weight: 75.5,
     height: 180
   };
 
-  // Mock documents - in real app these would come from API
-  documents = signal<Document[]>([
-    {
-      id: '1',
-      name: 'Certificato Medico Sportivo',
-      type: 'medical',
-      uploadDate: new Date('2025-09-01'),
-      expiryDate: new Date('2026-09-01'),
-      status: 'valid'
-    },
-    {
-      id: '2',
-      name: 'Assicurazione Sportiva',
-      type: 'insurance',
-      uploadDate: new Date('2025-08-15'),
-      expiryDate: new Date('2026-08-15'),
-      status: 'valid'
-    },
-    {
-      id: '3',
-      name: 'Consenso Privacy',
-      type: 'other',
-      uploadDate: new Date('2025-01-10'),
-      status: 'valid'
+  // Update documents based on member data
+  documents = computed<Document[]>(() => {
+    const m = this.member();
+    const docs: Document[] = [
+      {
+        id: '2',
+        name: 'Assicurazione Sportiva',
+        type: 'insurance',
+        uploadDate: new Date('2025-08-15'),
+        expiryDate: new Date('2026-08-15'),
+        status: 'valid'
+      },
+      {
+        id: '3',
+        name: 'Consenso Privacy',
+        type: 'other',
+        uploadDate: new Date('2025-01-10'),
+        status: 'valid'
+      }
+    ];
+
+    if (m?.medicalExpiry) {
+      // Parse medical expiry from DD/MM/YYYY or ISO
+      let expDate: Date | undefined;
+      if (m.medicalExpiry.includes('/')) {
+        const parts = m.medicalExpiry.split('/');
+        expDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+      } else {
+        expDate = new Date(m.medicalExpiry);
+      }
+
+      const today = new Date();
+      let status: 'valid' | 'expiring' | 'expired' = 'valid';
+      if (expDate < today) status = 'expired';
+      else if (expDate.getTime() - today.getTime() < 30 * 24 * 60 * 60 * 1000) status = 'expiring';
+
+      docs.unshift({
+        id: '1',
+        name: 'Certificato Medico Sportivo',
+        type: 'medical',
+        uploadDate: new Date('2025-09-01'),
+        expiryDate: expDate,
+        status: status
+      });
     }
-  ]);
+
+    return docs;
+  });
 
   // Aggiungi questo signal per il dropdown
   isDisciplineDropdownOpen = signal<boolean>(false);
@@ -220,6 +219,23 @@ export class MemberDetailComponent implements OnInit {
       if (m?.subscriptionId) {
         this.loadSubscription(m.subscriptionId);
       }
+      // Populate disciplines from activeDisciplines
+      if (m?.activeDisciplines) {
+        const records: DisciplineRecord[] = m.activeDisciplines.map((d, index) => ({
+          id: `csv-${index}`,
+          discipline: d as any,
+          level: 'Amatore',
+          record: {
+            wins: Math.floor(Math.random() * 5),
+            losses: Math.floor(Math.random() * 3),
+            draws: Math.floor(Math.random() * 2)
+          }
+        }));
+        this.disciplines.set(records);
+        if (records.length > 0) {
+          this.selectedDiscipline.set(records[0]);
+        }
+      }
     });
   }
 
@@ -266,8 +282,8 @@ export class MemberDetailComponent implements OnInit {
       lastName: m.lastName,
       email: m.email,
       phone: m.phone || '',
-      gender: this.athleteData.gender,
-      birthDate: this.formatDateForInput(this.athleteData.birthDate),
+      gender: this.gender(),
+      birthDate: m.birthDate ? this.formatDateForInput(new Date(m.birthDate)) : '',
       weight: this.athleteData.weight,
       height: this.athleteData.height
     });
@@ -288,17 +304,14 @@ export class MemberDetailComponent implements OnInit {
       firstName: val.firstName!,
       lastName: val.lastName!,
       email: val.email!,
-      phone: val.phone || undefined
+      phone: val.phone || undefined,
+      gender: val.gender as string,
+      birthDate: val.birthDate ? new Date(val.birthDate).toISOString() : undefined
     }).subscribe(updated => {
       this.editProfileLoading = false;
       this.isEditingProfile.set(false);
       if (updated) {
         this.member.set(updated);
-      }
-      // Update mock athlete data locally
-      this.athleteData.gender = val.gender as 'M' | 'F';
-      if (val.birthDate) {
-        this.athleteData.birthDate = new Date(val.birthDate);
       }
       this.athleteData.weight = val.weight!;
       this.athleteData.height = val.height!;
@@ -409,13 +422,20 @@ export class MemberDetailComponent implements OnInit {
   }
 
   getDisciplineIcon(discipline: string): string {
-    switch (discipline) {
-      case 'MMA': return '🥋';
-      case 'Kickboxing': return '🦵';
-      case 'Boxe': return '🥊';
-      case 'Muay Thai': return '⚡';
-      default: return '🥊';
-    }
+    const d = discipline.toLowerCase();
+    if (d.includes('mma')) return '🥋';
+    if (d.includes('kick')) return '🦵';
+    if (d.includes('boxe')) return '�';
+    if (d.includes('muay')) return '⚡';
+    if (d.includes('bjj')) return '�';
+    if (d.includes('funz')) return '💪';
+    if (d.includes('fit')) return '🏃';
+    if (d.includes('kids') || d.includes('baby')) return '👶';
+    if (d.includes('junior') || d.includes('ragazzi')) return '🧑';
+    if (d.includes('genitori')) return '👪';
+    if (d.includes('pt')) return '👤';
+    if (d.includes('open') || d.includes('libero')) return '🔓';
+    return '🥊';
   }
 
   navigateToCourses(discipline: string) {

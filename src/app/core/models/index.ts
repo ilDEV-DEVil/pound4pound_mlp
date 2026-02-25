@@ -1,7 +1,7 @@
 // Core Models for Pound for Pound
 
 export type UserRole = 'manager' | 'athlete' | 'instructor';
-export type Sport = 'boxing' | 'kickboxing' | 'mma' | 'muaythai' | 'bjj' | 'funzionale';
+export type Sport = 'boxing' | 'kickboxing' | 'mma' | 'muaythai' | 'bjj' | 'funzionale' | 'fit' | 'kids' | 'baby' | 'junior' | 'ragazzi' | 'genitori' | 'pt' | 'open' | 'libero' | 'zero contact' | 'fit & kick' | 'agonisti';
 export type SubscriptionStatus = 'active' | 'expiring' | 'expired' | 'pending';
 export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
 
@@ -42,6 +42,18 @@ export interface Member {
   subscriptionId: string | null;
   enrolledCourses: string[];
   joinedAt: Date;
+  // Extended fields from real data
+  birthDate?: string;
+  birthPlace?: string;
+  address?: string;
+  city?: string;
+  taxCode?: string;
+  medicalExpiry?: string;
+  subscriptionExpiry?: string;
+  discipline?: string;
+  gender?: 'M' | 'F' | string;
+  notes?: string;
+  activeDisciplines?: string[];
 }
 
 export interface Subscription {

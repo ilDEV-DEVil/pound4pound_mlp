@@ -14,7 +14,9 @@ export class CourseService {
     }
 
     private ensureData() {
-        if (!this.storage.getItem('courses')) {
+        const storedCourses = this.storage.getItem<Course[]>('courses');
+        // Force reload if no courses or if we want to ensure the new "Funzionale" name is there
+        if (!storedCourses || !storedCourses.find(c => c.name === 'Funzionale')) {
             const initialCourses = this.generateMockCourses();
             this.storage.setItem('courses', initialCourses);
         }
@@ -169,8 +171,8 @@ export class CourseService {
             {
                 id: 'c-005',
                 gymId: 'gym-001',
-                name: 'Allenamento funzionale',
-                description: 'Allenamento funzionale per migliorare le capacità di movimento.',
+                name: 'Funzionale',
+                description: 'Allenamento funzionale per migliorare le capacità di movimento e la forza esplosiva.',
                 instructor: 'Nicholas Profili',
                 sport: 'funzionale',
                 maxCapacity: 15,
@@ -183,6 +185,91 @@ export class CourseService {
                     { day: 'friday', startTime: '18:00', endTime: '19:00' }
                 ]
             },
+            {
+                id: 'c-006',
+                gymId: 'gym-001',
+                name: 'Genitori',
+                description: 'Corso dedicato ai genitori per allenarsi insieme o in contemporanea ai figli.',
+                instructor: 'Nicholas Profili',
+                sport: 'genitori',
+                maxCapacity: 20,
+                enrolledMembers: [],
+                schedule: [
+                    { day: 'tuesday', startTime: '17:00', endTime: '18:00' },
+                    { day: 'thursday', startTime: '17:00', endTime: '18:00' }
+                ]
+            },
+            {
+                id: 'c-007',
+                gymId: 'gym-001',
+                name: 'Kids',
+                description: 'Divertimento e basi dello sport per bambini. (10-13 anni)',
+                instructor: 'Nicholas Profili',
+                sport: 'kickboxing',
+                maxCapacity: 15,
+                enrolledMembers: [],
+                schedule: [
+                    { day: 'monday', startTime: '17:00', endTime: '18:00' },
+                    { day: 'thursday', startTime: '17:00', endTime: '18:00' }
+                ]
+            },
+            {
+                id: 'c-007',
+                gymId: 'gym-001',
+                name: 'Kick Boxing (14-16 anni)',
+                description: 'Divertimento e basi dello sport per ragazzi. (14-16 anni)',
+                instructor: 'Matilde Crescentini',
+                sport: 'kickboxing',
+                maxCapacity: 15,
+                enrolledMembers: [],
+                schedule: [
+                    { day: 'tuesday', startTime: '18:00', endTime: '19:00' },
+                    { day: 'thursday', startTime: '18:00', endTime: '19:00' },
+                    { day: 'friday', startTime: '19:00', endTime: '20:00' }
+                ]
+            },
+            {
+                id: 'c-008',
+                gymId: 'gym-001',
+                name: 'Junior',
+                description: 'Preparazione atletica e tecnica per ragazzi (7-9 anni).',
+                instructor: 'Nicholas Profili',
+                sport: 'kickboxing',
+                maxCapacity: 20,
+                enrolledMembers: [],
+                schedule: [
+                    { day: 'tuesday', startTime: '17:00', endTime: '18:00' },
+                    { day: 'friday', startTime: '17:00', endTime: '18:00' }
+                ]
+            },
+            {
+                id: 'c-009',
+                gymId: 'gym-001',
+                name: 'Baby',
+                description: 'Attività motoria di base per i più piccoli. (4-6 anni)',
+                instructor: 'Nicholas Profili',
+                sport: 'baby',
+                maxCapacity: 12,
+                enrolledMembers: [],
+                schedule: [
+                    { day: 'wednesday', startTime: '17:00', endTime: '18:00' }
+                ]
+            },
+            {
+                id: 'c-010',
+                gymId: 'gym-001',
+                name: 'Agonisti',
+                description: 'Allenamento intensivo per atleti agonisti di tutte le discipline.',
+                instructor: 'Marco Pavone',
+                sport: 'agonisti',
+                maxCapacity: 20,
+                enrolledMembers: [],
+                schedule: [
+                    { day: 'monday', startTime: '19:00', endTime: '20:30' },
+                    { day: 'wednesday', startTime: '19:00', endTime: '20:30' },
+                    { day: 'friday', startTime: '19:00', endTime: '20:30' }
+                ]
+            }
         ];
     }
 }

@@ -17,12 +17,12 @@
 
         <div class="member-meta">
           <span class="meta-item">
-            <span class="meta-icon">{{ athleteData.gender === 'M' ? '♂️' : '♀️' }}</span>
-            <span class="meta-text">{{ athleteData.gender === 'M' ? 'Maschio' : 'Femmina' }}</span>
+            <span class="meta-icon">{{ gender() === 'M' ? '♂️' : '♀️' }}</span>
+            <span class="meta-text">{{ gender() === 'M' ? 'Maschio' : 'Femmina' }}</span>
           </span>
           <span class="meta-item">
             <span class="meta-icon">🎂</span>
-            <span class="meta-text">{{ getAge(athleteData.birthDate) }} anni</span>
+            <span class="meta-text">{{ getAge(birthDate()) }} anni</span>
           </span>
           <span class="meta-item">
             <span class="meta-icon">📅</span>
@@ -526,7 +526,7 @@
           <span class="contact-icon">🎂</span>
           <div class="contact-info">
             <span class="contact-label">Data di Nascita</span>
-            <span class="contact-value">{{ athleteData.birthDate | date:'dd/MM/yyyy' }}</span>
+            <span class="contact-value">{{ birthDate() | date:'dd/MM/yyyy' }}</span>
           </div>
         </div>
 
@@ -534,15 +534,15 @@
           <span class="contact-icon">⏳</span>
           <div class="contact-info">
             <span class="contact-label">Età</span>
-            <span class="contact-value">{{ getAge(athleteData.birthDate) }} anni</span>
+            <span class="contact-value">{{ getAge(birthDate()) }} anni</span>
           </div>
         </div>
 
         <div class="contact-item">
-          <span class="contact-icon">{{ athleteData.gender === 'M' ? '♂️' : '♀️' }}</span>
+          <span class="contact-icon">{{ gender() === 'M' ? '♂️' : '♀️' }}</span>
           <div class="contact-info">
             <span class="contact-label">Sesso</span>
-            <span class="contact-value">{{ athleteData.gender === 'M' ? 'Maschio' : 'Femmina' }}</span>
+            <span class="contact-value">{{ gender() === 'M' ? 'Maschio' : 'Femmina' }}</span>
           </div>
         </div>
 

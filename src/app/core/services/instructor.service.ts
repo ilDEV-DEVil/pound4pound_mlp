@@ -16,7 +16,9 @@ export class InstructorService {
     }
 
     private ensureData() {
-        if (!this.storage.getItem(this.STORAGE_KEY)) {
+        const stored = this.storage.getItem<Instructor[]>(this.STORAGE_KEY);
+        // Force reload if missing Matilde
+        if (!stored || !stored.find(i => i.lastName === 'Crescentini')) {
             const initialInstructors: Instructor[] = [
                 {
                     id: 'inst-1',
@@ -48,6 +50,26 @@ export class InstructorService {
                     specialties: ['muaythai', 'kickboxing'],
                     avatar: null,
                     socialLinks: { instagram: '@antonio_muaythai' }
+                },
+                {
+                    id: 'inst-4',
+                    gymId: 'gym-001',
+                    firstName: 'Nicholas',
+                    lastName: 'Profili',
+                    bio: 'Specialista in allenamento funzionale e preparazione atletica per sport da combattimento.',
+                    specialties: ['funzionale', 'kickboxing'],
+                    avatar: null,
+                    email: 'nicholas.profili@example.com'
+                },
+                {
+                    id: 'inst-5',
+                    gymId: 'gym-001',
+                    firstName: 'Matilde',
+                    lastName: 'Crescentini',
+                    bio: 'Maestra specializzata nel settore giovanile e agonistico.',
+                    specialties: ['ragazzi', 'agonisti'],
+                    avatar: null,
+                    email: 'matilde.crescentini@example.com'
                 }
             ];
             this.storage.setItem(this.STORAGE_KEY, initialInstructors);
